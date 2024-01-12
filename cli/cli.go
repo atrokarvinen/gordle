@@ -18,26 +18,31 @@ func (c Cli) Run() {
 	newGame := game.Game{DataProvider: dataProvider}
 
 	answer := newGame.GenerateRandomAnswer()
+	maxAttempts := 6
 
 	for {
-		previousGuesses := newGame.GetGuesses()
-		fmt.Println("\nPrevious guesses:\n", strings.Join(previousGuesses, "\n"))
-
 		guess := RequestGuessFromUser()
 
-		fmt.Println("Guess:", guess)
+		// fmt.Println("Guess:", guess)
 
 		results := newGame.CheckWord(guess, answer)
 
-		fmt.Println(strings.Join(strings.Split(answer, ""), ","))
-		fmt.Println(strings.Join(strings.Split(guess, ""), ","))
-		fmt.Println(strings.Join(results, ","))
+		// fmt.Println(strings.Join(strings.Split(answer, ""), ","))
+		// fmt.Println(strings.Join(strings.Split(guess, ""), ","))
+		// fmt.Println(strings.Join(results, ","))
 
 		newGame.DataProvider.AddGuess(guess)
+		previousGuesses := newGame.GetGuesses()
+		PrintGameState(previousGuesses, answer, newGame)
 
 		isCorrect := game.IsCorrectResult(results)
+		guessCount := len(previousGuesses)
+
 		if isCorrect {
 			fmt.Println("Correct!")
+			break
+		} else if guessCount >= maxAttempts {
+			fmt.Println("You lose! Answer was:", answer)
 			break
 		}
 	}
@@ -60,4 +65,15 @@ func Read() string {
 	text, _ := reader.ReadString('\n')
 	trimmedText := strings.Trim(text, "\r\n")
 	return trimmedText
+}
+
+func PrintGameState(guesses []string, answer string, newGame game.Game) {
+	fmt.Println("\nGame state:")
+
+	for i, guess := range guesses {
+		results := newGame.CheckWord(guess, answer)
+		fmt.Println(i+1, "/ 6 \t", guess, "\t => \t", strings.Join(results, ","))
+	}
+
+	fmt.Println()
 }
