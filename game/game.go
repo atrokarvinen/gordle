@@ -1,13 +1,28 @@
 package game
 
-import "strings"
+import (
+	"math/rand"
+	"strings"
+)
 
 const length = 6
 
 type Game struct {
+	DataProvider DataProvider
 }
 
-func CheckWord(guess string, answer string) []string {
+func (g Game) GetGuesses() []string {
+	return g.DataProvider.GetPreviousGuesses()
+}
+
+func (g Game) GenerateRandomAnswer() string {
+	var allAnswers = answers
+	randomIndex := rand.Intn(len(allAnswers))
+	answer := allAnswers[randomIndex]
+	return strings.ToLower(answer)
+}
+
+func (g Game) CheckWord(guess string, answer string) []string {
 	var results [length]string
 
 	// Find correct letters

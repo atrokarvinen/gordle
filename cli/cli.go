@@ -14,35 +14,43 @@ type Cli struct {
 const length = 6
 
 func (c Cli) Run() {
-	for i := 0; ; i++ {
-		var guess string
-		for i := 0; ; i++ {
-			text := Read()
-			if len(text) != 6 {
-				fmt.Printf("Word %q has length (%d). Expected (%d)\n", text, len(text), length)
-				continue
-			}
-			guess = text
-			break
-		}
+	dataProvider := game.InMemoryDataProvider{}
+	newGame := game.Game{DataProvider: dataProvider}
 
-		// var game game.Game = game.Game{}
+	answer := newGame.GenerateRandomAnswer()
+
+	for {
+		previousGuesses := newGame.GetGuesses()
+		fmt.Println("\nPrevious guesses:\n", strings.Join(previousGuesses, "\n"))
+
+		guess := RequestGuessFromUser()
 
 		fmt.Println("Guess:", guess)
 
-		answer := "gordle"
-
-		results := game.CheckWord(guess, answer)
+		results := newGame.CheckWord(guess, answer)
 
 		fmt.Println(strings.Join(strings.Split(answer, ""), ","))
 		fmt.Println(strings.Join(strings.Split(guess, ""), ","))
 		fmt.Println(strings.Join(results, ","))
+
+		newGame.DataProvider.AddGuess(guess)
 
 		isCorrect := game.IsCorrectResult(results)
 		if isCorrect {
 			fmt.Println("Correct!")
 			break
 		}
+	}
+}
+
+func RequestGuessFromUser() string {
+	for {
+		text := Read()
+		if len(text) != 6 {
+			fmt.Printf("Word %q has length (%d). Expected (%d)\n", text, len(text), length)
+			continue
+		}
+		return text
 	}
 }
 
