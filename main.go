@@ -12,7 +12,7 @@ func main() {
 		database.Migrate()
 	}
 
-	dataProvider := game.DatabaseDataProvider{}
+	dataProvider := database.DatabaseDataProvider{}
 	// dataProvider := game.InMemoryDataProvider{}
 	gameEngine := game.Game{DataProvider: dataProvider}
 	cli := cli.Cli{DataProvider: dataProvider, Game: gameEngine}
