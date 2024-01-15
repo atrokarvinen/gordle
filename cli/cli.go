@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"go-test/game"
+	"go-test/models"
 	"os"
 	"strings"
 )
@@ -11,29 +12,34 @@ import (
 type Cli struct {
 }
 
-const length = 6
-
 func (c Cli) Run() {
-	dataProvider := game.InMemoryDataProvider{}
-	newGame := game.Game{DataProvider: dataProvider}
+	settings := game.GameSettings{MaxAttempts: 6, WordLength: 6}
+	// dataProvider := game.InMemoryDataProvider{}
+	dataProvider := game.DatabaseDataProvider{}
+	newGame := game.Game{DataProvider: dataProvider, Settings: settings}
+
+	gameId := 1
 
 	answer := newGame.GenerateRandomAnswer()
-	maxAttempts := 6
-
 	for {
-		guess := RequestGuessFromUser()
+		guessedWord := RequestGuessFromUser(newGame.Settings.WordLength)
+		guess := models.Guess{Word: guessedWord, GameId: gameId}
 
 		// fmt.Println("Guess:", guess)
 
-		results := newGame.CheckWord(guess, answer)
+		results := newGame.CheckWord(guessedWord, answer)
 
 		// fmt.Println(strings.Join(strings.Split(answer, ""), ","))
 		// fmt.Println(strings.Join(strings.Split(guess, ""), ","))
 		// fmt.Println(strings.Join(results, ","))
 
 		newGame.DataProvider.AddGuess(guess)
-		previousGuesses := newGame.GetGuesses()
-		PrintGameState(previousGuesses, answer, newGame)
+		previousGuesses := newGame.GetGuesses(gameId)
+		guessedWords := make([]string, len(previousGuesses))
+		for i, guess := range previousGuesses {
+			guessedWords[i] = guess.Word
+		}
+		PrintGameState(guessedWords, answer, newGame)
 
 		isCorrect := game.IsCorrectResult(results)
 		guessCount := len(previousGuesses)
@@ -41,15 +47,16 @@ func (c Cli) Run() {
 		if isCorrect {
 			fmt.Println("Correct!")
 			break
-		} else if guessCount >= maxAttempts {
+		} else if guessCount >= newGame.Settings.MaxAttempts {
 			fmt.Println("You lose! Answer was:", answer)
 			break
 		}
 	}
 }
 
-func RequestGuessFromUser() string {
+func RequestGuessFromUser(length int) string {
 	for {
+		fmt.Printf("\nEnter guessed word of length (%d):\n", length)
 		text := Read()
 		if len(text) != 6 {
 			fmt.Printf("Word %q has length (%d). Expected (%d)\n", text, len(text), length)
@@ -60,7 +67,6 @@ func RequestGuessFromUser() string {
 }
 
 func Read() string {
-	fmt.Println("\nEnter guessed word:")
 	reader := bufio.NewReader(os.Stdin)
 	text, _ := reader.ReadString('\n')
 	trimmedText := strings.Trim(text, "\r\n")

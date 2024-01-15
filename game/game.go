@@ -1,18 +1,23 @@
 package game
 
 import (
+	"go-test/models"
 	"math/rand"
 	"strings"
 )
 
-const length = 6
-
 type Game struct {
 	DataProvider DataProvider
+	Settings     GameSettings
 }
 
-func (g Game) GetGuesses() []string {
-	return g.DataProvider.GetPreviousGuesses()
+func (g Game) SaveGameSettings() {
+	game := models.GameType{MaxAttempts: g.Settings.MaxAttempts, WordLength: g.Settings.WordLength}
+	g.DataProvider.CreateGame(game)
+}
+
+func (g Game) GetGuesses(gameId int) []models.Guess {
+	return g.DataProvider.GetPreviousGuesses(gameId)
 }
 
 func (g Game) GenerateRandomAnswer() string {
@@ -23,7 +28,8 @@ func (g Game) GenerateRandomAnswer() string {
 }
 
 func (g Game) CheckWord(guess string, answer string) []string {
-	var results [length]string
+	length := g.Settings.WordLength
+	results := make([]string, length)
 
 	// Find correct letters
 	var containedMap = make(map[string]int)

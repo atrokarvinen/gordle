@@ -1,12 +1,15 @@
 package main
 
 import (
-	cli "go-test/cli"
+	"go-test/cli"
+	"go-test/database"
 )
 
-const length = 6
-
 func main() {
+	if true {
+		database.Init()
+		database.Migrate()
+	}
 	var cli = cli.Cli{}
 	cli.Run()
 }
