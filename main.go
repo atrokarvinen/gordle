@@ -3,6 +3,7 @@ package main
 import (
 	"go-test/cli"
 	"go-test/database"
+	"go-test/game"
 )
 
 func main() {
@@ -10,6 +11,11 @@ func main() {
 		database.Init()
 		database.Migrate()
 	}
-	var cli = cli.Cli{}
+
+	dataProvider := game.DatabaseDataProvider{}
+	// dataProvider := game.InMemoryDataProvider{}
+	gameEngine := game.Game{DataProvider: dataProvider}
+	cli := cli.Cli{DataProvider: dataProvider, Game: gameEngine}
+
 	cli.Run()
 }

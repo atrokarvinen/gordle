@@ -8,6 +8,20 @@ import (
 type DatabaseDataProvider struct {
 }
 
+func (d DatabaseDataProvider) GetGame(gameId int) (models.GameType, error) {
+	db := database.Init()
+	var game models.GameType
+	result := db.First(&game, gameId)
+	return game, result.Error
+}
+
+func (d DatabaseDataProvider) GetGames() []models.GameType {
+	db := database.Init()
+	var games []models.GameType
+	db.Find(&games)
+	return games
+}
+
 func (d DatabaseDataProvider) CreateGame(game models.GameType) models.GameType {
 	db := database.Init()
 	db.Create(&game)

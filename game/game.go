@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"go-test/models"
 	"math/rand"
 	"strings"
@@ -8,12 +9,22 @@ import (
 
 type Game struct {
 	DataProvider DataProvider
-	Settings     GameSettings
 }
 
-func (g Game) SaveGameSettings() {
-	game := models.GameType{MaxAttempts: g.Settings.MaxAttempts, WordLength: g.Settings.WordLength}
-	g.DataProvider.CreateGame(game)
+func (g Game) CreateGame(name string) models.GameType {
+	answer := g.GenerateRandomAnswer()
+	game := models.GameType{Answer: answer, Name: name, MaxAttempts: 6, WordLength: 6}
+	createdGame := g.DataProvider.CreateGame(game)
+	return createdGame
+}
+
+func (g Game) GetGames() []models.GameType {
+	return g.DataProvider.GetGames()
+}
+
+func (g Game) LoadGame(gameId int) (models.GameType, error) {
+	fmt.Printf("Loading game '%d'...\n", gameId)
+	return g.DataProvider.GetGame(gameId)
 }
 
 func (g Game) GetGuesses(gameId int) []models.Guess {
@@ -27,8 +38,7 @@ func (g Game) GenerateRandomAnswer() string {
 	return strings.ToLower(answer)
 }
 
-func (g Game) CheckWord(guess string, answer string) []string {
-	length := g.Settings.WordLength
+func (g Game) CheckWord(guess string, answer string, length int) []string {
 	results := make([]string, length)
 
 	// Find correct letters
@@ -77,4 +87,10 @@ func IsCorrectResult(results []string) bool {
 		}
 	}
 	return true
+}
+
+func (g Game) IsGameOver(gameId int) bool {
+	guesses := g.DataProvider.GetPreviousGuesses(gameId)
+	game, _ := g.DataProvider.GetGame(gameId)
+	return len(guesses) >= game.MaxAttempts
 }

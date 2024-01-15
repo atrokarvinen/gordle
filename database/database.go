@@ -19,8 +19,6 @@ func Init() *gorm.DB {
 		panic(err)
 	}
 
-	fmt.Println("Successfully connected to db!")
-
 	return db
 }
 
