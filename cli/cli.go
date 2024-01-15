@@ -71,7 +71,7 @@ func (c Cli) SelectGameLoop() int {
 		gameId, err := strconv.Atoi(text)
 
 		if err != nil {
-			fmt.Println("Invalid option:", err)
+			fmt.Println("Invalid option: Input must be an integer")
 			continue
 		}
 
