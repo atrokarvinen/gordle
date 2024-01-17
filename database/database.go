@@ -3,9 +3,7 @@ package database
 import (
 	"fmt"
 	"go-test/models"
-	"os"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -20,14 +18,6 @@ func Init() *gorm.DB {
 	}
 
 	return db
-}
-
-func InitEnv() {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Error loading .env file")
-	}
-	fmt.Println("CGO_ENABLED:", os.Getenv("CGO_ENABLED"))
 }
 
 func Migrate() {

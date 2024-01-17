@@ -38,6 +38,12 @@ func (g Game) GenerateRandomAnswer() string {
 	return strings.ToLower(answer)
 }
 
+func (g Game) GuessWord(gameId int, guess string) []string {
+	game, _ := g.DataProvider.GetGame(gameId)
+	results := g.CheckWord(guess, game.Answer, game.WordLength)
+	return results
+}
+
 func (g Game) CheckWord(guess string, answer string, length int) []string {
 	results := make([]string, length)
 
