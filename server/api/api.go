@@ -7,7 +7,9 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -54,10 +56,11 @@ func (a Api) DeleteGame(c *gin.Context) {
 }
 
 func (a Api) GuessWord(c *gin.Context) {
-	gameIdStr := c.Param("id")
-	gameId, _ := strconv.Atoi(gameIdStr)
+	fmt.Println("Guessing word...")
+	gameId := GetIdFromParam(c)
 	var guess models.Guess
 	c.BindJSON(&guess)
+	fmt.Printf("Guessing word %q for game '%d'\n", guess.Word, gameId)
 	results := a.Game.GuessWord(gameId, guess.Word)
 	c.JSON(http.StatusOK, results)
 }
@@ -66,6 +69,15 @@ func (a Api) Run() {
 	mode := os.Getenv("GIN_MODE")
 	gin.SetMode(mode)
 	r := gin.Default()
+
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	r.GET("/games", a.GetGames)
 	r.GET("/games/:id", a.GetGame)
