@@ -13,6 +13,7 @@ type Game struct {
 
 func (g Game) CreateGame(name string) models.GameType {
 	answer := g.GenerateRandomAnswer()
+	fmt.Println("answer", answer)
 	game := models.GameType{Answer: answer, Name: name, MaxAttempts: 6, WordLength: 6}
 	createdGame := g.DataProvider.CreateGame(game)
 	return createdGame
@@ -46,6 +47,15 @@ func (g Game) GuessWord(gameId int, guess string) []string {
 	results := g.CheckWord(guess, game.Answer, game.WordLength)
 	g.DataProvider.AddGuess(models.Guess{Word: guess, GameId: gameId})
 	return results
+}
+
+func (g Game) CheckGameOver(gameId int) models.Gameover {
+	game, _ := g.DataProvider.GetGame(gameId)
+	guesses := g.DataProvider.GetPreviousGuesses(gameId)
+	isGameWon := IsCorrectResult(g.CheckWord(guesses[len(guesses)-1].Word, game.Answer, game.WordLength))
+	isGameOver := len(guesses) >= game.MaxAttempts || isGameWon
+	fmt.Println("Is game over?", isGameOver, "Is game won?", isGameWon, "attempts", len(guesses), "max attempts", game.MaxAttempts)
+	return models.Gameover{IsGameover: isGameOver, Win: isGameWon, Answer: game.Answer, AnswerDescription: "description"}
 }
 
 func (g Game) CheckWord(guess string, answer string, length int) []string {

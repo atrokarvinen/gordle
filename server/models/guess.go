@@ -15,3 +15,9 @@ type LetterDto struct {
 	Letter string `json:"letter"`
 	State  int    `json:"state"`
 }
+
+type GuessResultDto struct {
+	Word     string   `json:"word"`
+	Results  []string `json:"results"`
+	Gameover Gameover `json:"gameover"`
+}

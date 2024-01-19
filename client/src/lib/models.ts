@@ -21,7 +21,17 @@ export type GuessDto = {
 	word: string;
 };
 
-export type GuessResultDto = string[];
+export type GuessResultDto = {
+	results: string[];
+	gameover: GameoverDto;
+};
+
+export type GameoverDto = {
+	isGameover: boolean;
+	win: boolean;
+	answer: string;
+	answerDescription: string;
+};
 
 export type GameDto = {
 	id: number;

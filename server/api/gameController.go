@@ -85,7 +85,9 @@ func (a Api) GuessWord(c *gin.Context) {
 	c.BindJSON(&guess)
 	fmt.Printf("Guessing word %q for game '%d'\n", guess.Word, gameId)
 	results := a.Game.GuessWord(gameId, guess.Word)
-	c.JSON(http.StatusOK, results)
+	gameover := a.Game.CheckGameOver(gameId)
+	var dto models.GuessResultDto = models.GuessResultDto{Word: guess.Word, Results: results, Gameover: gameover}
+	c.JSON(http.StatusOK, dto)
 }
 
 func getIdFromParam(c *gin.Context) int {

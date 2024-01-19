@@ -3,7 +3,6 @@
 	import { axios } from '$lib/axios';
 	import Keyboard from '$lib/components/Keyboard.svelte';
 	import WordBoard from '$lib/components/WordBoard.svelte';
-	import { LETTERS_COUNT } from '$lib/constants.js';
 	import type { Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
 	import { convertLetterState } from '$lib/utils';
 
@@ -15,6 +14,9 @@
 	$: console.log('loaded game:', data.game);
 
 	let guesses: Guess[] = data.guesses ?? [];
+	let isGameover = false;
+	let isGameWon = false;
+	let answer: string | undefined;
 
 	const submitGuess = async () => {
 		const payload: GuessDto = { gameId, word };
@@ -22,14 +24,20 @@
 		console.log(response.data);
 
 		const results: GuessResultDto = response.data;
-		const letters: GuessedLetter[] = results.map((x, i) => {
+		const letters: GuessedLetter[] = results.results.map((x, i) => {
 			const letter = word[i];
 			const state = convertLetterState(x);
 			return { letter, state };
 		});
 		const g: Guess = { letters, word };
 		guesses = [...guesses, g];
-		currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
+		// currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
+
+		if (results.gameover.isGameover) {
+			isGameover = true;
+			isGameWon = results.gameover.win;
+			answer = results.gameover.answer;
+		}
 	};
 
 	const quit = async () => {
@@ -45,6 +53,14 @@
 	$: console.log('currentGuess:', currentGuess);
 </script>
 
+{#if isGameover}
+	<div>
+		<p>Game over! You {isGameWon ? 'win' : 'lose'}!</p>
+		<p>
+			Answer was: '{answer}'
+		</p>
+	</div>
+{/if}
 <WordBoard words={guesses} {currentGuessIndex} bind:currentGuess />
 <Keyboard {guesses} onKeyDown={(e) => console.log(`pressed '${e}'`)} />
 
