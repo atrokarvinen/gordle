@@ -1,4 +1,0 @@
-- Add client
-- Add WordAPI
-- Add GoGin for web WebAPI
-- Add Dockerfile
