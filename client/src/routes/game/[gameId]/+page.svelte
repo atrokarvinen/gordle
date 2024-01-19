@@ -3,7 +3,7 @@
 	import { axios } from '$lib/axios';
 	import Keyboard from '$lib/components/Keyboard.svelte';
 	import WordBoard from '$lib/components/WordBoard.svelte';
-	import WordGuess from '$lib/components/WordGuess.svelte';
+	import { LETTERS_COUNT } from '$lib/constants.js';
 	import type { Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
 	import { convertLetterState } from '$lib/utils';
 
@@ -29,6 +29,7 @@
 		});
 		const g: Guess = { letters, word };
 		guesses = [...guesses, g];
+		currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
 	};
 
 	const quit = async () => {
@@ -37,14 +38,14 @@
 	};
 
 	let currentGuess = 'koalas'.split('');
-	// let currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
+	$: currentGuessIndex = guesses.length;
 	$: word = currentGuess.join('');
 	$: console.log('word: "' + word + '"');
 	$: console.log('guesses:', guesses);
+	$: console.log('currentGuess:', currentGuess);
 </script>
 
-<WordBoard words={guesses} />
-<WordGuess bind:inputLetters={currentGuess} />
+<WordBoard words={guesses} {currentGuessIndex} bind:currentGuess />
 <Keyboard {guesses} onKeyDown={(e) => console.log(`pressed '${e}'`)} />
 
 <button on:click={quit}>Quit</button>

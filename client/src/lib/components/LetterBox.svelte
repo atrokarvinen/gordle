@@ -46,7 +46,7 @@
 	}
 
 	.warning {
-		background-color: burlywood;
+		background-color: gold;
 	}
 
 	.error {

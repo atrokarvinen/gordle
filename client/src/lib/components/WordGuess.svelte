@@ -30,15 +30,8 @@
 	};
 </script>
 
-<div>
-	<span>
-		<span>Guess:</span>
-		<span>{inputLetters.join('')}</span>
-	</span>
-</div>
 <div class="letters">
 	{#each inputLetters as letter, i}
-		<!-- <LetterBox {letter} letterState={LetterState.INCORRECT} readonly={false} /> -->
 		<input
 			class="letter-box"
 			bind:this={inputElements[i]}
@@ -49,6 +42,9 @@
 			value={letter}
 		/>
 	{/each}
+	<div style="font-size: larger; font-weight: bold; height: 50px; display:flex;align-items:center">
+		<span>&lt;=</span>
+	</div>
 </div>
 
 <style>
@@ -63,8 +59,8 @@
 		width: 50px;
 		height: 50px;
 		margin: 2px;
-		border: 1px solid black;
-		background-color: black;
+		border: 1px solid gray;
+		background-color: gray;
 
 		font-weight: bold;
 		font-family: 'Verdana';
