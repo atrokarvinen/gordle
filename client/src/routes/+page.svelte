@@ -1,14 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { axios } from '$lib/axios';
+	import NewGameButton from '$lib/components/NewGameButton.svelte';
 	import type { GameDto } from '$lib/models';
-
-	const createGame = async () => {
-		const response = await axios.post<GameDto>(`/games`);
-		const game = response.data;
-		console.log('created game:', game);
-		goto(`/game/${game.id}`);
-	};
 
 	const loadGame = async () => {
 		const response = await axios.get<GameDto>(`/games/latest`);
@@ -19,6 +13,6 @@
 </script>
 
 <div>
-	<button on:click={createGame}>Start new game</button>
+	<NewGameButton />
 	<button on:click={loadGame}>Continue</button>
 </div>

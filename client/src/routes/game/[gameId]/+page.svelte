@@ -1,22 +1,20 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { axios } from '$lib/axios';
+	import Gameover from '$lib/components/Gameover.svelte';
 	import Keyboard from '$lib/components/Keyboard.svelte';
+	import NewGameButton from '$lib/components/NewGameButton.svelte';
 	import WordBoard from '$lib/components/WordBoard.svelte';
-	import type { Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
+	import type { GameoverDto, Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
 	import { convertLetterState } from '$lib/utils';
 
 	export let data;
 
-	const gameId = Number($page.params.gameId);
-	console.log('gameId:', gameId);
-
+	$: gameId = Number($page.params.gameId);
+	$: console.log('gameId:', gameId);
 	$: console.log('loaded game:', data.game);
-
-	let guesses: Guess[] = data.guesses ?? [];
-	let isGameover = false;
-	let isGameWon = false;
-	let answer: string | undefined;
+	$: guesses = data.guesses ?? [];
+	let gameover: GameoverDto | undefined;
 
 	const submitGuess = async () => {
 		const payload: GuessDto = { gameId, word };
@@ -31,13 +29,8 @@
 		});
 		const g: Guess = { letters, word };
 		guesses = [...guesses, g];
+		gameover = results.gameover;
 		// currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
-
-		if (results.gameover.isGameover) {
-			isGameover = true;
-			isGameWon = results.gameover.win;
-			answer = results.gameover.answer;
-		}
 	};
 
 	const quit = async () => {
@@ -53,17 +46,18 @@
 	$: console.log('currentGuess:', currentGuess);
 </script>
 
-{#if isGameover}
-	<div>
-		<p>Game over! You {isGameWon ? 'win' : 'lose'}!</p>
-		<p>
-			Answer was: '{answer}'
-		</p>
-	</div>
+{#if gameover}
+	<Gameover {gameover} />
 {/if}
-<WordBoard words={guesses} {currentGuessIndex} bind:currentGuess />
+<WordBoard
+	words={guesses}
+	{currentGuessIndex}
+	bind:currentGuess
+	isGameover={gameover?.isGameover ?? false}
+/>
 <Keyboard {guesses} onKeyDown={(e) => console.log(`pressed '${e}'`)} />
 
+<NewGameButton />
 <button on:click={quit}>Quit</button>
 <button on:click={submitGuess}>Guess</button>
 

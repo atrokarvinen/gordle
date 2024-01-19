@@ -7,6 +7,7 @@
 	export let currentGuess: string[];
 	export let words: Guess[];
 	export let currentGuessIndex: number;
+	export let isGameover: boolean;
 
 	const emptyLetter = { letter: '', state: LetterState.UNKNOWN };
 	$: mappedData = Array.from(Array(MAX_GUESSES).keys()).map((i) => {
@@ -19,7 +20,7 @@
 
 <div class="words">
 	{#each mappedData as word, index}
-		{#if index === currentGuessIndex}
+		{#if index === currentGuessIndex && !isGameover}
 			<WordGuess bind:inputLetters={currentGuess} />
 		{:else}
 			<div class="word">
