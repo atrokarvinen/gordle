@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { axios } from '$lib/axios';
 	import Keyboard from '$lib/components/Keyboard.svelte';
 	import WordBoard from '$lib/components/WordBoard.svelte';
@@ -6,14 +7,14 @@
 	import type { Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
 	import { convertLetterState } from '$lib/utils';
 
-	// const data = guesses;
-	let data: Guess[] = [];
-	const gameId = 1;
+	export let data;
 
-	const getGames = async () => {
-		const response = await axios.get('/games');
-		console.log(response.data);
-	};
+	const gameId = Number($page.params.gameId);
+	console.log('gameId:', gameId);
+
+	$: console.log('loaded game:', data.game);
+
+	let guesses: Guess[] = data.guesses ?? [];
 
 	const submitGuess = async () => {
 		const payload: GuessDto = { gameId, word };
@@ -27,12 +28,11 @@
 			return { letter, state };
 		});
 		const g: Guess = { letters, word };
-		data = [...data, g];
+		guesses = [...guesses, g];
 	};
 
-	const createGame = async () => {
-		const response = await axios.post(`/games`);
-
+	const quit = async () => {
+		const response = await axios.delete(`/games/${gameId}`);
 		console.log(response.data);
 	};
 
@@ -40,16 +40,15 @@
 	// let currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
 	$: word = currentGuess.join('');
 	$: console.log('word: "' + word + '"');
-	$: console.log('guesses:', data);
+	$: console.log('guesses:', guesses);
 </script>
 
-<WordBoard words={data} />
+<WordBoard words={guesses} />
 <WordGuess bind:inputLetters={currentGuess} />
-<Keyboard guesses={data} onKeyDown={(e) => console.log(`pressed '${e}'`)} />
+<Keyboard {guesses} onKeyDown={(e) => console.log(`pressed '${e}'`)} />
 
-<button on:click={getGames}>Get games</button>
+<button on:click={quit}>Quit</button>
 <button on:click={submitGuess}>Guess</button>
-<button on:click={createGame}>New game</button>
 
 <style>
 	button {

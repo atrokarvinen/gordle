@@ -22,3 +22,10 @@ export type GuessDto = {
 };
 
 export type GuessResultDto = string[];
+
+export type GameDto = {
+	id: number;
+	name: string;
+	maxAttempts: number;
+	wordLength: number;
+};

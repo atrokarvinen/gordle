@@ -1,6 +1,6 @@
 <nav class="navi">
 	<a href="/">Home</a>
-	<a href="/game">Game</a>
+	<a href="/game/2">Game</a>
 	<a href="/dummy-solved">Dummy solved</a>
 	<a href="/dummy-half-filled">Dummy half filled</a>
 	<a href="/dummy-empty">Dummy empty</a>

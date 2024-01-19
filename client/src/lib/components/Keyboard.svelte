@@ -10,19 +10,24 @@
 	const qwertyLine2 = 'asdfghjkl'.split('');
 	const qwertyLine3 = 'zxcvbnm'.split('');
 
-	const guessLetterMap: Record<string, LetterState> = {};
-	alphabets.forEach((letter) => {
-		guessLetterMap[letter] = LetterState.UNKNOWN;
-	});
-	$: guesses.forEach((guess) => {
-		guess.letters.forEach((letter) => {
-			const currentValue = guessLetterMap[letter.letter];
-			const newValue = letter.state;
-			if (currentValue === LetterState.CORRECT) return;
-			if (currentValue === LetterState.CONTAINED && newValue !== LetterState.CORRECT) return;
-			guessLetterMap[letter.letter] = letter.state;
+	let guessLetterMap: Record<string, LetterState> = {};
+	$: {
+		const newMap: Record<string, LetterState> = {};
+		alphabets.forEach((letter) => {
+			newMap[letter] = LetterState.UNKNOWN;
 		});
-	});
+		guesses.forEach((guess) => {
+			guess.letters.forEach((letter) => {
+				const char = letter.letter.toLowerCase();
+				const currentValue = newMap[char];
+				const newValue = letter.state;
+				if (currentValue === LetterState.CORRECT) return;
+				if (currentValue === LetterState.CONTAINED && newValue !== LetterState.CORRECT) return;
+				newMap[char] = letter.state;
+			});
+		});
+		guessLetterMap = newMap;
+	}
 </script>
 
 <div class="col">
@@ -57,9 +62,9 @@
 		margin-left: 0;
 	}
 	.qwerty2 {
-		margin-left: 1rem;
+		margin-left: 2rem;
 	}
 	.qwerty3 {
-		margin-left: 2rem;
+		margin-left: 4rem;
 	}
 </style>

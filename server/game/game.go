@@ -18,6 +18,9 @@ func (g Game) CreateGame(name string) models.GameType {
 	return createdGame
 }
 
+func (g Game) GetLatestGame() models.GameType {
+	return g.DataProvider.GetLatestGame()
+}
 func (g Game) GetGames() []models.GameType {
 	return g.DataProvider.GetGames()
 }
@@ -41,6 +44,7 @@ func (g Game) GenerateRandomAnswer() string {
 func (g Game) GuessWord(gameId int, guess string) []string {
 	game, _ := g.DataProvider.GetGame(gameId)
 	results := g.CheckWord(guess, game.Answer, game.WordLength)
+	g.DataProvider.AddGuess(models.Guess{Word: guess, GameId: gameId})
 	return results
 }
 

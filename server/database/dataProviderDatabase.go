@@ -14,6 +14,13 @@ func (d DatabaseDataProvider) GetGame(gameId int) (models.GameType, error) {
 	return game, result.Error
 }
 
+func (d DatabaseDataProvider) GetLatestGame() models.GameType {
+	db := Init()
+	var game models.GameType
+	db.Last(&game)
+	return game
+}
+
 func (d DatabaseDataProvider) GetGames() []models.GameType {
 	db := Init()
 	var games []models.GameType
