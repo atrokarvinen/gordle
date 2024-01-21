@@ -26,7 +26,7 @@ func (g Game) GetGames() []models.GameType {
 	return g.DataProvider.GetGames()
 }
 
-func (g Game) LoadGame(gameId int) (models.GameType, error) {
+func (g Game) GetGame(gameId int) (models.GameType, error) {
 	fmt.Printf("Loading game '%d'...\n", gameId)
 	return g.DataProvider.GetGame(gameId)
 }
@@ -52,7 +52,10 @@ func (g Game) GuessWord(gameId int, guess string) []string {
 func (g Game) CheckGameOver(gameId int) models.Gameover {
 	game, _ := g.DataProvider.GetGame(gameId)
 	guesses := g.DataProvider.GetPreviousGuesses(gameId)
-	isGameWon := IsCorrectResult(g.CheckWord(guesses[len(guesses)-1].Word, game.Answer, game.WordLength))
+	isGameWon := false
+	if len(guesses) > 0 {
+		isGameWon = IsCorrectResult(g.CheckWord(guesses[len(guesses)-1].Word, game.Answer, game.WordLength))
+	}
 	isGameOver := len(guesses) >= game.MaxAttempts || isGameWon
 	fmt.Println("Is game over?", isGameOver, "Is game won?", isGameWon, "attempts", len(guesses), "max attempts", game.MaxAttempts)
 	return models.Gameover{IsGameover: isGameOver, Win: isGameWon, Answer: game.Answer, AnswerDescription: "description"}

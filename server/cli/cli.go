@@ -35,7 +35,7 @@ func (c Cli) LobbyLoop() {
 		} else if text == "2" {
 			fmt.Println("Continuing game...")
 			gameId := c.SelectGameLoop()
-			game, err := c.Game.LoadGame(gameId)
+			game, err := c.Game.GetGame(gameId)
 			if err != nil {
 				fmt.Printf("Game '%d' not found\n", gameId)
 				continue

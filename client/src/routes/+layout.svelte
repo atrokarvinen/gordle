@@ -7,7 +7,12 @@
 	<a href="/dummy-guess">Guess</a>
 	<a href="/dummy-keyboard">Keyboard</a>
 </nav>
-<slot />
+
+<div class="container">
+	<div class="content">
+		<slot />
+	</div>
+</div>
 
 <style global>
 	.navi {
@@ -19,5 +24,21 @@
 
 	:global(*) {
 		box-sizing: border-box;
+	}
+
+	.container {
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	.content {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 400px;
 	}
 </style>

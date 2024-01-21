@@ -12,18 +12,22 @@ import (
 func (a Api) GetGame(c *gin.Context) {
 	gameId := getIdFromParam(c)
 	fmt.Printf("Getting game '%d'...\n", gameId)
-	game, err := a.Game.LoadGame(gameId)
+	game, err := a.Game.GetGame(gameId)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": "game not found"})
 		return
 	}
-	c.JSON(http.StatusOK, game)
+	gameover := a.Game.CheckGameOver(gameId)
+	gameDto := models.GameDto{Id: game.Id, Name: game.Name, MaxAttempts: game.MaxAttempts, WordLength: game.WordLength, Gameover: gameover}
+	c.JSON(http.StatusOK, gameDto)
 }
 
 func (a Api) GetLatestGame(c *gin.Context) {
 	fmt.Println("Getting latest game...")
 	game := a.Game.GetLatestGame()
-	c.JSON(http.StatusOK, game)
+	gameover := a.Game.CheckGameOver(game.Id)
+	gameDto := models.GameDto{Id: game.Id, Name: game.Name, MaxAttempts: game.MaxAttempts, WordLength: game.WordLength, Gameover: gameover}
+	c.JSON(http.StatusOK, gameDto)
 }
 
 func (a Api) GetGames(c *gin.Context) {

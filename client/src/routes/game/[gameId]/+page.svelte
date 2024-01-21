@@ -5,7 +5,8 @@
 	import Keyboard from '$lib/components/Keyboard.svelte';
 	import NewGameButton from '$lib/components/NewGameButton.svelte';
 	import WordBoard from '$lib/components/WordBoard.svelte';
-	import type { GameoverDto, Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
+	import { LETTERS_COUNT } from '$lib/constants.js';
+	import type { Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
 	import { convertLetterState } from '$lib/utils';
 
 	export let data;
@@ -14,7 +15,7 @@
 	$: console.log('gameId:', gameId);
 	$: console.log('loaded game:', data.game);
 	$: guesses = data.guesses ?? [];
-	let gameover: GameoverDto | undefined;
+	$: gameover = data.game?.gameover ?? undefined;
 
 	const submitGuess = async () => {
 		const payload: GuessDto = { gameId, word };
@@ -30,7 +31,7 @@
 		const g: Guess = { letters, word };
 		guesses = [...guesses, g];
 		gameover = results.gameover;
-		// currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
+		currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
 	};
 
 	const quit = async () => {
@@ -55,15 +56,23 @@
 	bind:currentGuess
 	isGameover={gameover?.isGameover ?? false}
 />
-<Keyboard {guesses} onKeyDown={(e) => console.log(`pressed '${e}'`)} />
+<div style="margin-top: 1rem;">
+	<Keyboard {guesses} onKeyDown={(e) => console.log(`pressed '${e}'`)} />
+</div>
 
-<NewGameButton />
-<button on:click={quit}>Quit</button>
-<button on:click={submitGuess}>Guess</button>
+<div class="col-stack">
+	<NewGameButton />
+	<button on:click={quit}>Quit</button>
+	<button on:click={submitGuess}>Guess</button>
+</div>
 
 <style>
-	button {
-		color: 'white';
-		background-color: 'green';
+	.col-stack {
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+	}
+	.col-stack > * {
+		margin-top: 0.5rem;
 	}
 </style>

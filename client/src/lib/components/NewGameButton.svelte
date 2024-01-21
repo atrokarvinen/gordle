@@ -11,4 +11,4 @@
 	};
 </script>
 
-<button on:click={createGame}>Start new game</button>
+<button on:click={createGame}>New game</button>

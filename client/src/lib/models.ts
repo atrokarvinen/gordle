@@ -38,4 +38,5 @@ export type GameDto = {
 	name: string;
 	maxAttempts: number;
 	wordLength: number;
+	gameover: GameoverDto;
 };
