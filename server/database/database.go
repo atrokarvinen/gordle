@@ -3,15 +3,23 @@ package database
 import (
 	"fmt"
 	"go-test/models"
+	"os"
 
+	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 func Init() *gorm.DB {
-	// connectionString := "user=username password=password host=db sslmode=disable"
-	// connectionString := "postgresql://username:password@localhost:5432/library?sslmode=disable"
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	connectionString := os.Getenv("DATABASE_URL")
+	provider := os.Getenv("DATABASE_PROVIDER")
+	var db *gorm.DB
+	var err error
+	if provider == "sqlite" {
+		db, err = gorm.Open(sqlite.Open(connectionString), &gorm.Config{})
+	} else if provider == "postgres" {
+		db, err = gorm.Open(postgres.Open(connectionString), &gorm.Config{})
+	}
 
 	if err != nil {
 		panic(err)
@@ -20,8 +28,7 @@ func Init() *gorm.DB {
 	return db
 }
 
-func Migrate() {
+func Migrate(db *gorm.DB) {
 	fmt.Println("Migrating...")
-	db := Init()
 	db.AutoMigrate(&models.Guess{}, &models.GameType{})
 }

@@ -14,12 +14,13 @@ import (
 func main() {
 	InitEnv()
 
-	database.Init()
-	database.Migrate()
+	db := database.Init()
+	database.Migrate(db)
 
-	dataProvider := database.DatabaseDataProvider{}
+	dataProvider := database.DatabaseDataProvider{Db: db}
 	gameEngine := game.Game{DataProvider: dataProvider}
 	wordsClient := wordsApi.WordsApiClient{}
+
 	if false {
 		cli := cli.Cli{DataProvider: dataProvider, Game: gameEngine}
 		cli.Run()
@@ -27,6 +28,7 @@ func main() {
 		api := api.Api{DataProvider: dataProvider, Game: gameEngine, WordsApi: wordsClient}
 		api.Run()
 	}
+
 }
 
 func InitEnv() {
