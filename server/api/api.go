@@ -2,6 +2,7 @@ package api
 
 import (
 	"go-test/game"
+	"go-test/wordsApi"
 	"os"
 	"time"
 
@@ -12,6 +13,7 @@ import (
 type Api struct {
 	DataProvider game.DataProvider
 	Game         game.Game
+	WordsApi     wordsApi.IWordsApiClient
 }
 
 func (a Api) Run() {

@@ -3,12 +3,14 @@ package game
 import (
 	"fmt"
 	"go-test/models"
+	"go-test/wordsApi"
 	"math/rand"
 	"strings"
 )
 
 type Game struct {
 	DataProvider DataProvider
+	WordsApi     wordsApi.IWordsApiClient
 }
 
 func (g Game) CreateGame(name string) models.GameType {
