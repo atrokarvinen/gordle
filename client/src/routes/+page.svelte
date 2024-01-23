@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { axios } from '$lib/axios';
 	import NewGameButton from '$lib/components/NewGameButton.svelte';
 	import type { GameDto } from '$lib/models';
@@ -8,7 +9,7 @@
 		const response = await axios.get<GameDto>(`/games/latest`);
 		console.log(response.data);
 		const game = response.data;
-		goto(`/game/${game.id}`);
+		goto(`${base}/game/${game.id}`);
 	};
 </script>
 

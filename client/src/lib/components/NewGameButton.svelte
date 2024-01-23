@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { axios } from '$lib/axios';
 	import type { GameDto } from '$lib/models';
 
@@ -7,7 +8,7 @@
 		const response = await axios.post<GameDto>(`/games`);
 		const game = response.data;
 		console.log('created game:', game);
-		goto(`/game/${game.id}`);
+		goto(`${base}/game/${game.id}`);
 	};
 </script>
 
