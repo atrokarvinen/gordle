@@ -17,6 +17,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+env:
+  PUBLIC_BACKEND_URL: "https://gordle.fly.dev"
+
 jobs:
   build:
     defaults:
