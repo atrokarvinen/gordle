@@ -5,6 +5,9 @@ on:
       - master    # change to main if needed
 jobs:
   deploy:
+    defaults:
+      run:
+        working-directory: ./server
     name: Deploy app
     runs-on: ubuntu-latest
     concurrency: deploy-group    # optional: ensure only one action runs at a time
