@@ -17,6 +17,7 @@ type Api struct {
 }
 
 func (a Api) Run() {
+	host_address := os.Getenv("HOST_ADDRESS")
 	client_address := os.Getenv("CLIENT_ADDRESS")
 	mode := os.Getenv("GIN_MODE")
 	gin.SetMode(mode)
@@ -41,5 +42,5 @@ func (a Api) Run() {
 
 	r.POST("/games/:id/guesses", a.GuessWord)
 
-	r.Run("localhost:8080")
+	r.Run(host_address)
 }
