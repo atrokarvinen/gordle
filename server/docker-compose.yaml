@@ -1,0 +1,14 @@
+version: "3.9"
+name: gordle
+services:
+  gordle-backend:
+    image: gordle
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gordle-backend
+    env_file:
+      - .prod.env
+    ports:
+      - 8080:8080
+    user: 1001:1001

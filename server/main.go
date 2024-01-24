@@ -7,6 +7,7 @@ import (
 	"go-test/database"
 	"go-test/game"
 	"go-test/wordsApi"
+	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -32,8 +33,16 @@ func main() {
 }
 
 func InitEnv() {
+	appEnv := os.Getenv("APP_ENV")
+	fmt.Println("APP_ENV: " + appEnv)
+
+	if appEnv == "prod" {
+		fmt.Println("Not loading .env file in production, variables passed in elsewhere")
+		return
+	}
+
 	err := godotenv.Load()
 	if err != nil {
-		fmt.Println("Error loading .env file")
+		fmt.Println("Error loading .env file:" + err.Error())
 	}
 }

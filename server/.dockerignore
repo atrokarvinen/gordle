@@ -1,0 +1,10 @@
+.dockerignore
+.gitignore
+docker-compose*
+Dockerfile
+README.md
+fly.toml
+test.db
+
+**/*_test.go
+.env

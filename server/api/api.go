@@ -17,12 +17,13 @@ type Api struct {
 }
 
 func (a Api) Run() {
+	client_address := os.Getenv("CLIENT_ADDRESS")
 	mode := os.Getenv("GIN_MODE")
 	gin.SetMode(mode)
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowOrigins:     []string{client_address},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -40,5 +41,5 @@ func (a Api) Run() {
 
 	r.POST("/games/:id/guesses", a.GuessWord)
 
-	r.Run("localhost:9000")
+	r.Run("localhost:8080")
 }

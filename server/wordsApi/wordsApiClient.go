@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/http/httputil"
 	"os"
 )
 
@@ -36,11 +35,11 @@ func (w WordsApiClient) GetWord(word string) (WordDetails, error) {
 		return WordDetails{}, errors.New("Word not found")
 	}
 
-	dump, err := httputil.DumpResponse(response, true)
-	if err != nil {
-		return WordDetails{}, err
-	}
-	fmt.Println("response:", string(dump))
+	// dump, err := httputil.DumpResponse(response, true)
+	// if err != nil {
+	// 	return WordDetails{}, err
+	// }
+	// fmt.Println("response:", string(dump))
 
 	var details WordDetails
 	json.NewDecoder(response.Body).Decode(&details)
