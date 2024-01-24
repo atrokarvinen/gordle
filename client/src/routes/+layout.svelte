@@ -5,11 +5,6 @@
 <nav class="navi">
 	<a href="{base}/">Home</a>
 	<a href="{base}/game/2">Game</a>
-	<a href="{base}/dummy-solved">Dummy solved</a>
-	<a href="{base}/dummy-half-filled">Dummy half filled</a>
-	<a href="{base}/dummy-empty">Dummy empty</a>
-	<a href="{base}/dummy-guess">Guess</a>
-	<a href="{base}/dummy-keyboard">Keyboard</a>
 </nav>
 
 <div class="container">

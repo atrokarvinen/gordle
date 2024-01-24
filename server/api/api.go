@@ -19,6 +19,7 @@ type Api struct {
 func (a Api) Run() {
 	host_address := os.Getenv("HOST_ADDRESS")
 	client_address := os.Getenv("CLIENT_ADDRESS")
+
 	mode := os.Getenv("GIN_MODE")
 	gin.SetMode(mode)
 	r := gin.Default()
@@ -41,6 +42,12 @@ func (a Api) Run() {
 	r.DELETE("/games/:id", a.DeleteGame)
 
 	r.POST("/games/:id/guesses", a.GuessWord)
+
+	r.GET("/echo", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 
 	r.Run(host_address)
 }

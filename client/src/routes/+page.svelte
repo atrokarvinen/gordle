@@ -11,9 +11,15 @@
 		const game = response.data;
 		goto(`${base}/game/${game.id}`);
 	};
+
+	const echo = async () => {
+		const response = await axios.get<string>(`/echo`);
+		console.log(response.data);
+	};
 </script>
 
 <div>
 	<NewGameButton />
 	<button on:click={loadGame}>Continue</button>
+	<button on:click={echo}>Echo</button>
 </div>
