@@ -45,7 +45,7 @@ func (a Api) Run() {
 
 	r.GET("/echo", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"message": "ping",
 		})
 	})
 
