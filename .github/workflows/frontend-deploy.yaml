@@ -1,10 +1,10 @@
-name: Build and Deploy to Pages
-
+name: Frontend deploy Github Pages
 on:
   push:
     branches: ["master"]
-
-  workflow_dispatch:
+    paths:
+      - client/**
+      - .github/workflows/frontend-deploy.yaml
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
