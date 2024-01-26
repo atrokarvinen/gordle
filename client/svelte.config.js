@@ -10,7 +10,7 @@ const config = {
 			entries: ['/game/-1']
 		},
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/gordle' : ''
+			base: process.env.NODE_ENV === 'production' ? '/gordle/#' : ''
 		}
 	}
 };
