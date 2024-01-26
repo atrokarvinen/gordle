@@ -35,16 +35,20 @@
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
 	</div>
-	<div class="ml-8 flex gap-x-1">
+	<div class="ml-4 flex gap-x-1">
 		{#each qwertyLine2 as letter}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
 	</div>
 	<div class="ml-0 flex gap-x-1">
-		<KeyboardButton letter="" state={LetterState.UNKNOWN} icon="fa-solid fa-right-to-bracket" />
+		<KeyboardButton
+			letter="Enter"
+			state={LetterState.UNKNOWN}
+			icon="fa-solid fa-right-to-bracket"
+		/>
 		{#each qwertyLine3 as letter}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
-		<KeyboardButton letter="" state={LetterState.UNKNOWN} icon="fa-solid fa-delete-left" />
+		<KeyboardButton letter="Backspace" state={LetterState.UNKNOWN} icon="fa-solid fa-delete-left" />
 	</div>
 </div>

@@ -9,8 +9,12 @@
 		readonly?: boolean;
 		cursor?: string;
 		focused?: boolean;
+		as?: 'input' | 'button';
+		icon?: string;
 	}
 
+	export let icon: string | undefined = undefined;
+	export let as: 'input' | 'button' = 'input';
 	export let letterState: LetterState;
 	export let letter: string;
 	export let font: string = 'Verdana';
@@ -35,14 +39,25 @@
 	$: bgColor = getBackgroundColor(letterState);
 	$: border = $$props.focused ? 'border-2 border-primary-500' : 'border-2 border-transparent';
 	const height = 'md:h-16 h-8';
-	const width = 'md:w-16 w-8';
+	$: width = icon ? 'md:w-24 w-12' : 'md:w-16 w-8';
+	$: classNames = `font-verdana text-center font-bold uppercase text-white outline-none md:text-2xl  ${width} ${height} ${cursor} ${bgColor} ${border}`;
 </script>
 
-<input
-	{...$$restProps}
-	class={`font-verdana text-center font-bold uppercase text-white outline-none md:text-2xl  ${width} ${height} ${cursor} ${bgColor} ${border}`}
-	style={`font-family: ${font};`}
-	value={letter}
-	{readonly}
-	on:click
-/>
+{#if as === 'button'}
+	<button class={classNames} style={`font-family: ${font};`}>
+		{#if icon}
+			<i class={icon} />
+		{:else}
+			{letter}
+		{/if}
+	</button>
+{:else if as === 'input'}
+	<input
+		{...$$restProps}
+		class={classNames}
+		style={`font-family: ${font};`}
+		value={letter}
+		{readonly}
+		on:click
+	/>
+{/if}

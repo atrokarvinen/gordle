@@ -14,9 +14,6 @@
 	};
 </script>
 
-<button on:click={dispatchKey} class={icon ? 'btn-icon' : ''}>
-	{#if icon}
-		<i class={icon} />
-	{/if}
-	<LetterBox {letter} letterState={state} cursor="cursor-pointer" />
+<button on:click={dispatchKey}>
+	<LetterBox {letter} letterState={state} cursor="cursor-pointer" as="button" {icon} />
 </button>
