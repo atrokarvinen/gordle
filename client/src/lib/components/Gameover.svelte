@@ -13,7 +13,7 @@
 	<div>
 		<p>Game over! You {isGameWon ? 'win' : 'lose'}!</p>
 		<p>
-			Answer was: '{answer}'
+			Answer was: '{answer.toUpperCase()}'
 		</p>
 		<p>
 			{description}

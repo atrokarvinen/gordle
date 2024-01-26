@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"go-test/models"
+	"go-test/wordsApi"
 	"net/http"
 	"strconv"
 
@@ -89,17 +90,19 @@ func (a Api) GuessWord(c *gin.Context) {
 	c.BindJSON(&guess)
 	fmt.Printf("Guessing word %q for game '%d'\n", guess.Word, gameId)
 	wordDetails, err := a.WordsApi.GetWord(guess.Word)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Word not found: " + err.Error()})
+	if err != nil && err.Error() == "Word not found" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-
 	results := a.Game.GuessWord(gameId, guess.Word)
 	gameover := a.Game.CheckGameOver(gameId)
 	if gameover.IsGameover {
 		answerDetails := wordDetails
 		if !gameover.Win {
-			answerDetails, _ = a.WordsApi.GetWord(gameover.Answer)
+			answerDetails, err = a.WordsApi.GetWord(gameover.Answer)
+			if err != nil {
+				answerDetails = wordsApi.GetDefaultWordDetails(gameover.Answer)
+			}
 		}
 		gameover.Answer = answerDetails.Word
 		gameover.AnswerDescription = answerDetails.Results[0].Definition

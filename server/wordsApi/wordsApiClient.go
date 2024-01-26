@@ -13,10 +13,6 @@ type WordsApiClient struct{}
 func (w WordsApiClient) GetWord(word string) (WordDetails, error) {
 	apiKey := os.Getenv("RAPID_API_KEY")
 
-	if apiKey == "" {
-		return WordDetails{}, nil
-	}
-
 	url := "https://wordsapiv1.p.rapidapi.com/words/" + word
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -31,27 +27,35 @@ func (w WordsApiClient) GetWord(word string) (WordDetails, error) {
 	fmt.Println("response status:", response.StatusCode)
 
 	if response.StatusCode == http.StatusNotFound {
-		fmt.Printf("Word not %q found\n", word)
+		fmt.Printf("Word %q not found\n", word)
 		return WordDetails{}, errors.New("Word not found")
+	} else if response.StatusCode == http.StatusForbidden {
+		return WordDetails{}, errors.New("Invalid Api Key")
+	} else if response.StatusCode == http.StatusTooManyRequests {
+		return WordDetails{}, errors.New("Too many requests")
+	} else if response.StatusCode == http.StatusUnauthorized {
+		return WordDetails{}, errors.New("No Api Key provided")
+	} else if response.StatusCode != http.StatusOK {
+		return WordDetails{}, errors.New("Unknown error")
 	}
-
-	// dump, err := httputil.DumpResponse(response, true)
-	// if err != nil {
-	// 	return WordDetails{}, err
-	// }
-	// fmt.Println("response:", string(dump))
 
 	var details WordDetails
 	json.NewDecoder(response.Body).Decode(&details)
 	fmt.Println("word details:", details)
-	fmt.Println("results count:", len(details.Results))
-	if len(details.Results) > 0 {
-		fmt.Println("word definition #1:", details.Results[0].Definition)
-	}
 	return details, nil
 }
 
 func (w WordsApiClient) WordExists(word string) bool {
 	_, err := w.GetWord(word)
 	return err == nil
+}
+
+func GetDefaultWordDetails(word string) WordDetails {
+	var defaultWord WordDetails = WordDetails{
+		Word: word,
+		Results: []WordResults{
+			{Definition: "No definition found"},
+		},
+	}
+	return defaultWord
 }
