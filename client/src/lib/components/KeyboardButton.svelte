@@ -5,9 +5,18 @@
 
 	export let letter: string;
 	export let state: LetterState;
-	export let onKeyDown: (key: string) => void;
+	export let icon: string | undefined = undefined;
+
+	const dispatchKey = () => {
+		console.log('dispatching key:', letter);
+		const event = new KeyboardEvent('keydown', { key: letter });
+		window.dispatchEvent(event);
+	};
 </script>
 
-<button on:click={() => onKeyDown(letter)}>
+<button on:click={dispatchKey} class={icon ? 'btn-icon' : ''}>
+	{#if icon}
+		<i class={icon} />
+	{/if}
 	<LetterBox {letter} letterState={state} cursor="cursor-pointer" />
 </button>

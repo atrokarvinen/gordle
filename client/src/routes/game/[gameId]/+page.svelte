@@ -45,7 +45,46 @@
 	$: console.log('word: "' + word + '"');
 	$: console.log('guesses:', guesses);
 	$: console.log('currentGuess:', currentGuess);
+
+	let currentIndex = 0;
+
+	const onKeyDown = (e: KeyboardEvent) => {
+		const index = currentIndex;
+		const key = e.key;
+		console.log('keydown:', key);
+		const currentValue = currentGuess[index];
+		if (key === 'Backspace' && currentValue === '') {
+			const previous = Math.max(index - 1, 0);
+			currentGuess = currentGuess.map((l, i) => (i === previous ? '' : l));
+			currentIndex = Math.max(index - 1, 0);
+		} else if (key === 'Backspace') {
+			currentGuess = currentGuess.map((l, i) => (i === index ? '' : l));
+		}
+		if (key === 'ArrowLeft') {
+			currentIndex = Math.max(index - 1, 0);
+		}
+		if (key === 'ArrowRight') {
+			currentIndex = Math.min(index + 1, currentGuess.length - 1);
+		}
+		if (key === 'ArrowUp') {
+			currentIndex = 0;
+		}
+		if (key === 'ArrowDown') {
+			currentIndex = currentGuess.length - 1;
+		}
+		if (key === 'Enter') {
+			console.log('submitting word...');
+		}
+
+		const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
+		if (alphabets.includes(key.toLocaleLowerCase())) {
+			currentGuess = currentGuess.map((l, i) => (i === index ? key.toUpperCase() : l));
+			currentIndex = Math.min(index + 1, currentGuess.length - 1);
+		}
+	};
 </script>
+
+<svelte:window on:keydown={onKeyDown} />
 
 <div class="flex flex-col items-center gap-y-3">
 	{#if gameover}
@@ -54,10 +93,11 @@
 	<WordBoard
 		words={guesses}
 		{currentGuessIndex}
+		currentLetterIndex={currentIndex}
 		bind:currentGuess
 		isGameover={gameover?.isGameover ?? false}
 	/>
-	<Keyboard {guesses} onKeyDown={(e) => console.log(`pressed '${e}'`)} />
+	<Keyboard {guesses} />
 
 	<div class="flex flex-row gap-x-3">
 		<NewGameButton />

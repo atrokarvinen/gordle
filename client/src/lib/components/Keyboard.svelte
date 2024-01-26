@@ -3,7 +3,6 @@
 	import KeyboardButton from './KeyboardButton.svelte';
 
 	export let guesses: Guess[];
-	export let onKeyDown: (key: string) => void;
 
 	const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
 	const qwertyLine1 = 'qwertyuiop'.split('');
@@ -33,17 +32,19 @@
 <div class="flex flex-col gap-y-1">
 	<div class="ml-0 flex gap-x-1">
 		{#each qwertyLine1 as letter}
-			<KeyboardButton {letter} state={guessLetterMap[letter]} {onKeyDown} />
+			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
 	</div>
 	<div class="ml-8 flex gap-x-1">
 		{#each qwertyLine2 as letter}
-			<KeyboardButton {letter} state={guessLetterMap[letter]} {onKeyDown} />
+			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
 	</div>
-	<div class="ml-16 flex gap-x-1">
+	<div class="ml-0 flex gap-x-1">
+		<KeyboardButton letter="" state={LetterState.UNKNOWN} icon="fa-solid fa-right-to-bracket" />
 		{#each qwertyLine3 as letter}
-			<KeyboardButton {letter} state={guessLetterMap[letter]} {onKeyDown} />
+			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
+		<KeyboardButton letter="" state={LetterState.UNKNOWN} icon="fa-solid fa-delete-left" />
 	</div>
 </div>
