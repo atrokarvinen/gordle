@@ -1,43 +1,23 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { AppBar, AppShell } from '@skeletonlabs/skeleton';
+	import '../app.pcss';
 </script>
 
-<nav class="navi">
-	<a href="{base}/">Home</a>
-	<a href="{base}/game/2">Game</a>
-</nav>
-
-<div class="container">
-	<div class="content">
-		<slot />
-	</div>
-</div>
+<AppShell regionPage="" slotPageContent="p-4 items-center justify-center flex flex-col">
+	<svelte:fragment slot="header">
+		<AppBar>
+			<nav class="navi">
+				<a href="{base}/">Home</a>
+				<a href="{base}/game/2">Game</a>
+			</nav>
+		</AppBar>
+	</svelte:fragment>
+	<slot />
+</AppShell>
 
 <style global>
-	.navi {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-evenly;
-		align-items: center;
-	}
-
 	:global(*) {
 		box-sizing: border-box;
-	}
-
-	.container {
-		width: 100vw;
-		height: 100vh;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-	}
-	.content {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		width: 400px;
 	}
 </style>

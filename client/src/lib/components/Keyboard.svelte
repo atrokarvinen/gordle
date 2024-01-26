@@ -30,41 +30,20 @@
 	}
 </script>
 
-<div class="col">
-	<div class="row qwerty1">
+<div class="flex flex-col gap-y-1">
+	<div class="ml-0 flex gap-x-1">
 		{#each qwertyLine1 as letter}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} {onKeyDown} />
 		{/each}
 	</div>
-	<div class="row qwerty2">
+	<div class="ml-8 flex gap-x-1">
 		{#each qwertyLine2 as letter}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} {onKeyDown} />
 		{/each}
 	</div>
-	<div class="row qwerty3">
+	<div class="ml-16 flex gap-x-1">
 		{#each qwertyLine3 as letter}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} {onKeyDown} />
 		{/each}
 	</div>
 </div>
-
-<style>
-	.col {
-		display: flex;
-		flex-direction: column;
-	}
-	.row {
-		display: flex;
-		flex-direction: row;
-	}
-
-	.qwerty1 {
-		margin-left: 0;
-	}
-	.qwerty2 {
-		margin-left: 2rem;
-	}
-	.qwerty3 {
-		margin-left: 4rem;
-	}
-</style>

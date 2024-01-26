@@ -39,7 +39,7 @@
 		console.log(response.data);
 	};
 
-	let currentGuess = 'koalas'.split('');
+	let currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
 	$: currentGuessIndex = guesses.length;
 	$: word = currentGuess.join('');
 	$: console.log('word: "' + word + '"');
@@ -47,32 +47,21 @@
 	$: console.log('currentGuess:', currentGuess);
 </script>
 
-{#if gameover}
-	<Gameover {gameover} />
-{/if}
-<WordBoard
-	words={guesses}
-	{currentGuessIndex}
-	bind:currentGuess
-	isGameover={gameover?.isGameover ?? false}
-/>
-<div style="margin-top: 1rem;">
+<div class="flex flex-col items-center gap-y-3">
+	{#if gameover}
+		<Gameover {gameover} />
+	{/if}
+	<WordBoard
+		words={guesses}
+		{currentGuessIndex}
+		bind:currentGuess
+		isGameover={gameover?.isGameover ?? false}
+	/>
 	<Keyboard {guesses} onKeyDown={(e) => console.log(`pressed '${e}'`)} />
-</div>
 
-<div class="col-stack">
-	<NewGameButton />
-	<button on:click={quit}>Quit</button>
-	<button on:click={submitGuess}>Guess</button>
+	<div class="flex flex-row gap-x-3">
+		<NewGameButton />
+		<button class="btn variant-filled-secondary" on:click={quit}>Quit</button>
+		<button class="btn variant-filled-secondary" on:click={submitGuess}>Guess</button>
+	</div>
 </div>
-
-<style>
-	.col-stack {
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-	}
-	.col-stack > * {
-		margin-top: 0.5rem;
-	}
-</style>

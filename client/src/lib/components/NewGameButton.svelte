@@ -12,4 +12,4 @@
 	};
 </script>
 
-<button on:click={createGame}>New game</button>
+<button class="btn variant-filled-primary" on:click={createGame}>New game</button>

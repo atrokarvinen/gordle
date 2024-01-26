@@ -15,5 +15,5 @@
 
 <div>
 	<NewGameButton />
-	<button on:click={loadGame}>Continue</button>
+	<button class="btn variant-filled-secondary" on:click={loadGame}>Continue</button>
 </div>

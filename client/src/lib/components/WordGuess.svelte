@@ -1,76 +1,55 @@
 <script lang="ts">
+	import { LetterState } from '$lib/models';
+	import LetterBox from './LetterBox.svelte';
+
 	export let inputLetters: string[];
-	const len = inputLetters.length;
-	let inputElements: (HTMLInputElement | undefined)[] = Array.from(Array(len).keys()).map(
-		() => undefined
-	);
+	let currentIndex = 0;
 
-	const onChange = (value: string, index: number) => {
-		const oldValue = inputLetters[index];
-		const lastLetter = value.toUpperCase().split('')[value.length - 1];
-
-		const alphabets = 'abcdefghijklmnopqrstuvwxyz';
-		if (!alphabets.includes(lastLetter.toLowerCase())) {
-			inputElements[index]!.value = oldValue;
-			return;
+	const onKeyDown = (e: KeyboardEvent) => {
+		const index = currentIndex;
+		const key = e.key;
+		console.log('keydown:', key);
+		const currentValue = inputLetters[index];
+		if (key === 'Backspace' && currentValue === '') {
+			const previous = Math.max(index - 1, 0);
+			inputLetters = inputLetters.map((l, i) => (i === previous ? '' : l));
+			currentIndex = Math.max(index - 1, 0);
+		} else if (key === 'Backspace') {
+			inputLetters = inputLetters.map((l, i) => (i === index ? '' : l));
+		}
+		if (key === 'ArrowLeft') {
+			currentIndex = Math.max(index - 1, 0);
+		}
+		if (key === 'ArrowRight') {
+			currentIndex = Math.min(index + 1, inputLetters.length - 1);
+		}
+		if (key === 'ArrowUp') {
+			currentIndex = 0;
+		}
+		if (key === 'ArrowDown') {
+			currentIndex = inputLetters.length - 1;
+		}
+		if (key === 'Enter') {
+			console.log('submitting word...');
 		}
 
-		inputLetters = inputLetters.map((l, i) => (i === index ? lastLetter : l));
-		if (inputElements[index]) {
-			inputElements[index]!.value = lastLetter;
+		const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
+		if (alphabets.includes(key.toLocaleLowerCase())) {
+			inputLetters = inputLetters.map((l, i) => (i === index ? key.toUpperCase() : l));
+			currentIndex = Math.min(index + 1, inputLetters.length - 1);
 		}
-
-		const isLast = index === len - 1;
-		if (isLast) {
-			inputElements[index]?.blur();
-			return;
-		}
-		const next = inputElements[index + 1];
-		next?.focus();
 	};
 </script>
 
-<div class="letters">
+<svelte:window on:keydown={onKeyDown} />
+
+<div class="flex gap-x-1">
 	{#each inputLetters as letter, i}
-		<input
-			class="letter-box"
-			bind:this={inputElements[i]}
-			on:input={(e) => {
-				console.log('input', e.currentTarget.value);
-				onChange(e.currentTarget.value, i);
-			}}
+		<LetterBox
+			focused={currentIndex === i}
+			{letter}
+			letterState={LetterState.UNKNOWN}
 			value={letter}
 		/>
 	{/each}
-	<div style="font-size: larger; font-weight: bold; height: 50px; display:flex;align-items:center">
-		<span>&lt;=</span>
-	</div>
 </div>
-
-<style>
-	.letters {
-		display: flex;
-		flex-direction: row;
-	}
-
-	.letter-box {
-		display: flex;
-		flex-direction: row;
-		width: 50px;
-		height: 50px;
-		margin: 2px;
-		border: 1px solid gray;
-		background-color: gray;
-
-		font-weight: bold;
-		font-family: 'Verdana';
-		font-size: 1.5rem;
-
-		text-transform: uppercase;
-		text-align: center;
-
-		color: white;
-		align-items: center;
-		justify-content: center;
-	}
-</style>

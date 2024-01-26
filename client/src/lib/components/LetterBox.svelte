@@ -1,59 +1,46 @@
 <script lang="ts">
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { LetterState } from '../models';
 
-	export let letterState: LetterState = LetterState.CORRECT;
-	export let letter: string = 'a';
+	interface $$Props extends HTMLInputAttributes {
+		letterState: LetterState;
+		letter: string;
+		font?: string;
+		readonly?: boolean;
+		cursor?: string;
+		focused?: boolean;
+	}
+
+	export let letterState: LetterState;
+	export let letter: string;
 	export let font: string = 'Verdana';
 	export let readonly = true;
+	export let cursor = 'default';
+
+	const getBackgroundColor = (letterState: LetterState) => {
+		switch (letterState) {
+			case LetterState.CORRECT:
+				return 'bg-success-500';
+			case LetterState.CONTAINED:
+				return 'bg-warning-500';
+			case LetterState.UNKNOWN:
+				return 'bg-surface-400';
+			case LetterState.INCORRECT:
+				return 'bg-surface-900';
+			default:
+				return 'bg-error-500';
+		}
+	};
+
+	$: bgColor = getBackgroundColor(letterState);
+	$: border = $$props.focused ? 'border-2 border-primary-500' : 'border-2 border-transparent';
 </script>
 
-<div
-	class={`letter-box ${letterState === LetterState.CORRECT ? 'success' : letterState === LetterState.CONTAINED ? 'warning' : letterState === LetterState.UNKNOWN ? 'unknown' : 'error'}`}
+<input
+	{...$$restProps}
+	class={`font-verdana h-16 w-16 text-center text-2xl font-bold uppercase text-white outline-none ${cursor} ${bgColor} ${border}`}
 	style={`font-family: ${font};`}
->
-	{#if readonly}
-		<p>
-			{letter}
-		</p>
-	{:else}
-		<input type="text" class="letter-box error" value={letter} />
-	{/if}
-</div>
-
-<style>
-	.letter-box {
-		display: flex;
-		flex-direction: row;
-		width: 50px;
-		height: 50px;
-		margin: 2px;
-		border: 1px solid black;
-
-		font-weight: bold;
-		font-family: 'Verdana';
-		font-size: 1.5rem;
-
-		text-transform: uppercase;
-		text-align: center;
-
-		color: white;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.success {
-		background-color: green;
-	}
-
-	.warning {
-		background-color: gold;
-	}
-
-	.error {
-		background-color: black;
-	}
-
-	.unknown {
-		background-color: gray;
-	}
-</style>
+	value={letter}
+	{readonly}
+	on:click
+/>

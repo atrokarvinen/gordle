@@ -18,12 +18,12 @@
 	$: console.log('[WordBoard] currentGuess:', currentGuess);
 </script>
 
-<div class="words">
+<div class="flex flex-col gap-y-1">
 	{#each mappedData as word, index}
 		{#if index === currentGuessIndex && !isGameover}
 			<WordGuess bind:inputLetters={currentGuess} />
 		{:else}
-			<div class="word">
+			<div class="flex gap-x-1">
 				{#each word.letters as letter}
 					<LetterBox letter={letter.letter} letterState={letter.state} />
 				{/each}
@@ -31,14 +31,3 @@
 		{/if}
 	{/each}
 </div>
-
-<style>
-	.words {
-		display: flex;
-		flex-direction: column;
-	}
-	.word {
-		display: flex;
-		flex-direction: row;
-	}
-</style>
