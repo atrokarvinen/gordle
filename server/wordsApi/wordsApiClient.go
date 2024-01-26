@@ -40,7 +40,10 @@ func (w WordsApiClient) GetWord(word string) (WordDetails, error) {
 	}
 
 	var details WordDetails
-	json.NewDecoder(response.Body).Decode(&details)
+	decodeError := json.NewDecoder(response.Body).Decode(&details)
+	if decodeError != nil {
+		return WordDetails{}, decodeError
+	}
 	fmt.Println("word details:", details)
 	return details, nil
 }
