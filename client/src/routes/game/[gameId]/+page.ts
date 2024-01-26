@@ -7,6 +7,9 @@ export const load = async ({ params }) => {
 		return { game: null };
 	}
 	const gameId = params.gameId;
+	if (gameId === '-1') {
+		return { game: null };
+	}
 	console.log('[load] gameId', gameId);
 
 	const gameResponse = await axios.get<GameDto>(`/games/${gameId}`);

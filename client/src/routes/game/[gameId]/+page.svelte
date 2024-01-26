@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { axios } from '$lib/axios';
+	import { axios, getApiErrorMessage } from '$lib/axios';
 	import Gameover from '$lib/components/Gameover.svelte';
 	import Keyboard from '$lib/components/Keyboard.svelte';
 	import NewGameButton from '$lib/components/NewGameButton.svelte';
@@ -8,6 +8,7 @@
 	import { LETTERS_COUNT } from '$lib/constants.js';
 	import type { Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
 	import { convertLetterState } from '$lib/utils';
+	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 
 	export let data;
 
@@ -23,25 +24,45 @@
 			return;
 		}
 		const payload: GuessDto = { gameId, word };
-		const response = await axios.post(`/games/${gameId}/guesses`, payload);
-		console.log(response.data);
-
-		const results: GuessResultDto = response.data;
-		const letters: GuessedLetter[] = results.results.map((x, i) => {
-			const letter = word[i];
-			const state = convertLetterState(x);
-			return { letter, state };
-		});
-		const g: Guess = { letters, word };
-		guesses = [...guesses, g];
-		gameover = results.gameover;
-		currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
-		currentIndex = 0;
+		try {
+			const response = await axios.post(`/games/${gameId}/guesses`, payload);
+			console.log(response.data);
+			const results: GuessResultDto = response.data;
+			const letters: GuessedLetter[] = results.results.map((x, i) => {
+				const letter = word[i];
+				const state = convertLetterState(x);
+				return { letter, state };
+			});
+			const g: Guess = { letters, word };
+			guesses = [...guesses, g];
+			gameover = results.gameover;
+			currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
+			currentIndex = 0;
+		} catch (error) {
+			toastStore.trigger({
+				background: 'variant-filled-error',
+				message: getApiErrorMessage(error),
+				autohide: true
+			});
+		}
 	};
 
 	const quit = async () => {
 		const response = await axios.delete(`/games/${gameId}`);
 		console.log(response.data);
+	};
+
+	const confirmQuit = () => {
+		modalStore.trigger({
+			type: 'confirm',
+			title: 'Confirm',
+			body: 'Are you sure you want to quit?',
+			response: (response) => {
+				if (response) {
+					quit();
+				}
+			}
+		});
 	};
 
 	let currentIndex = 0;
@@ -85,6 +106,9 @@
 			currentIndex = Math.min(index + 1, currentGuess.length - 1);
 		}
 	};
+
+	const modalStore = getModalStore();
+	const toastStore = getToastStore();
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
@@ -103,7 +127,7 @@
 	<Keyboard {guesses} />
 
 	<div class="flex flex-row gap-x-3">
-		<NewGameButton />
-		<button class="btn variant-filled-secondary" on:click={quit}>Quit</button>
+		<NewGameButton isGameover={gameover?.isGameover ?? false} />
+		<button class="btn variant-filled-secondary" on:click={confirmQuit}>Quit</button>
 	</div>
 </div>
