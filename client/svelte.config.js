@@ -6,6 +6,9 @@ const config = {
 	preprocess: [vitePreprocess({})],
 	kit: {
 		adapter: adapter(),
+		prerender: {
+			entries: ['/game/-1']
+		},
 		paths: {
 			base: process.env.NODE_ENV === 'production' ? '/gordle' : ''
 		}
