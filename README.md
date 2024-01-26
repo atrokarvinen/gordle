@@ -1,0 +1,1 @@
+This is a copy of the Wordle word guessing game. Players have limited amount of tries to guess the correct word. Information about correct, contained or incorrect characters are given for each new guess.
