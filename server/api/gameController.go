@@ -89,18 +89,18 @@ func (a Api) GuessWord(c *gin.Context) {
 	var guess models.Guess
 	c.BindJSON(&guess)
 	fmt.Printf("Guessing word %q for game '%d'\n", guess.Word, gameId)
-	wordDetails, err := a.WordsApi.GetWord(guess.Word)
-	if err != nil && err.Error() == "Word not found" {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+	wordDetails, getWordErr := a.WordsApi.GetWord(guess.Word)
+	if getWordErr != nil && getWordErr.Error() == "Word not found" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": getWordErr.Error()})
 		return
 	}
 	results := a.Game.GuessWord(gameId, guess.Word)
 	gameover := a.Game.CheckGameOver(gameId)
 	if gameover.IsGameover {
 		answerDetails := wordDetails
-		if !gameover.Win {
-			answerDetails, err = a.WordsApi.GetWord(gameover.Answer)
-			if err != nil {
+		if !gameover.Win || getWordErr != nil {
+			answerDetails, getWordErr = a.WordsApi.GetWord(gameover.Answer)
+			if getWordErr != nil {
 				answerDetails = wordsApi.GetDefaultWordDetails(gameover.Answer)
 			}
 		}
