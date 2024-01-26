@@ -20,7 +20,7 @@ func main() {
 
 	dataProvider := database.DatabaseDataProvider{Db: db}
 	gameEngine := game.Game{DataProvider: dataProvider}
-	wordsClient := wordsApi.WordsApiClient{}
+	wordsClient := wordsApi.WordsApiClient{DataProvider: dataProvider}
 
 	if false {
 		cli := cli.Cli{DataProvider: dataProvider, Game: gameEngine}

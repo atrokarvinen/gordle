@@ -11,41 +11,50 @@ type DatabaseDataProvider struct {
 }
 
 func (d DatabaseDataProvider) GetGame(gameId int) (models.GameType, error) {
-	db := d.Db
 	var game models.GameType
-	result := db.First(&game, gameId)
+	result := d.Db.First(&game, gameId)
 	return game, result.Error
 }
 
 func (d DatabaseDataProvider) GetLatestGame() models.GameType {
-	db := d.Db
 	var game models.GameType
-	db.Last(&game)
+	d.Db.Last(&game)
 	return game
 }
 
 func (d DatabaseDataProvider) GetGames() []models.GameType {
-	db := d.Db
 	var games []models.GameType
-	db.Find(&games)
+	d.Db.Find(&games)
 	return games
 }
 
 func (d DatabaseDataProvider) CreateGame(game models.GameType) models.GameType {
-	db := d.Db
-	db.Create(&game)
+	d.Db.Create(&game)
 	return game
 }
 
 func (d DatabaseDataProvider) GetPreviousGuesses(gameId int) []models.Guess {
-	db := d.Db
 	var guesses []models.Guess
-	db.Where(&models.Guess{GameId: gameId}).Find(&guesses)
+	d.Db.Where(&models.Guess{GameId: gameId}).Find(&guesses)
 	return guesses
 }
 
 func (d DatabaseDataProvider) AddGuess(guess models.Guess) models.Guess {
-	db := d.Db
-	db.Create(&guess)
+	d.Db.Create(&guess)
 	return guess
+}
+
+func (d DatabaseDataProvider) GetWordsApiCalls() []models.WordsApiCall {
+	var calls []models.WordsApiCall
+	d.Db.Find(&calls)
+	return calls
+}
+
+func (d DatabaseDataProvider) AddWordsApiCall(wordsApiCall models.WordsApiCall) models.WordsApiCall {
+	d.Db.Create(&wordsApiCall)
+	return wordsApiCall
+}
+
+func (d DatabaseDataProvider) DeleteWordsApiCalls(calls []models.WordsApiCall) {
+	d.Db.Delete(&calls)
 }

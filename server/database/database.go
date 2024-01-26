@@ -30,5 +30,5 @@ func Init() *gorm.DB {
 
 func Migrate(db *gorm.DB) {
 	fmt.Println("Migrating...")
-	db.AutoMigrate(&models.Guess{}, &models.GameType{})
+	db.AutoMigrate(&models.Guess{}, &models.GameType{}, &models.WordsApiCall{})
 }

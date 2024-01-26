@@ -90,6 +90,9 @@ func (a Api) GuessWord(c *gin.Context) {
 	c.BindJSON(&guess)
 	fmt.Printf("Guessing word %q for game '%d'\n", guess.Word, gameId)
 	wordDetails, getWordErr := a.WordsApi.GetWord(guess.Word)
+	if getWordErr != nil {
+		fmt.Println("Error getting word:", getWordErr)
+	}
 	if getWordErr != nil && getWordErr.Error() == "Word not found" {
 		c.JSON(http.StatusBadRequest, gin.H{"message": getWordErr.Error()})
 		return
