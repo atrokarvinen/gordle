@@ -18,6 +18,10 @@
 	$: gameover = data.game?.gameover ?? undefined;
 
 	const submitGuess = async () => {
+		if (word.length !== LETTERS_COUNT) {
+			console.log('word "%s" length is not correct', word);
+			return;
+		}
 		const payload: GuessDto = { gameId, word };
 		const response = await axios.post(`/games/${gameId}/guesses`, payload);
 		console.log(response.data);
@@ -32,6 +36,7 @@
 		guesses = [...guesses, g];
 		gameover = results.gameover;
 		currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
+		currentIndex = 0;
 	};
 
 	const quit = async () => {
@@ -39,14 +44,13 @@
 		console.log(response.data);
 	};
 
+	let currentIndex = 0;
 	let currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
 	$: currentGuessIndex = guesses.length;
 	$: word = currentGuess.join('');
 	$: console.log('word: "' + word + '"');
 	$: console.log('guesses:', guesses);
 	$: console.log('currentGuess:', currentGuess);
-
-	let currentIndex = 0;
 
 	const onKeyDown = (e: KeyboardEvent) => {
 		const index = currentIndex;
@@ -73,9 +77,8 @@
 			currentIndex = currentGuess.length - 1;
 		}
 		if (key === 'Enter') {
-			console.log('submitting word...');
+			submitGuess();
 		}
-
 		const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
 		if (alphabets.includes(key.toLocaleLowerCase())) {
 			currentGuess = currentGuess.map((l, i) => (i === index ? key.toUpperCase() : l));
@@ -102,6 +105,5 @@
 	<div class="flex flex-row gap-x-3">
 		<NewGameButton />
 		<button class="btn variant-filled-secondary" on:click={quit}>Quit</button>
-		<button class="btn variant-filled-secondary" on:click={submitGuess}>Guess</button>
 	</div>
 </div>

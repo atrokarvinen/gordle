@@ -7,7 +7,7 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/gordle' : '/test'
+			base: process.env.NODE_ENV === 'production' ? '/gordle' : '/'
 		}
 	}
 };
