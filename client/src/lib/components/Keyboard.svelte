@@ -29,7 +29,7 @@
 	}
 </script>
 
-<div class="flex flex-col gap-y-1">
+<div class="flex flex-col items-center gap-y-1">
 	<div class="ml-0 flex gap-x-1">
 		{#each qwertyLine1 as letter}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />

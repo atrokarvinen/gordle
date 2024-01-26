@@ -4,6 +4,7 @@
 
 	export let currentIndex: number;
 	export let inputLetters: string[];
+	export let letterClicked: (index: number) => void;
 </script>
 
 <div class="flex gap-x-1">
@@ -13,6 +14,7 @@
 			{letter}
 			letterState={LetterState.UNKNOWN}
 			value={letter}
+			on:click={() => letterClicked(i)}
 		/>
 	{/each}
 </div>

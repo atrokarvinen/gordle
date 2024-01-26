@@ -8,7 +8,7 @@
 
 <Modal />
 <Toast position="t" />
-<AppShell regionPage="" slotPageContent="p-4 items-center justify-center flex flex-col">
+<AppShell regionPage="" slotPageContent="md:p-4 p-1 items-center justify-center flex flex-col">
 	<svelte:fragment slot="header">
 		<Navigation />
 	</svelte:fragment>

@@ -109,6 +109,10 @@
 
 	const modalStore = getModalStore();
 	const toastStore = getToastStore();
+
+	const letterClicked = (i: number) => {
+		currentIndex = i;
+	};
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
@@ -118,11 +122,12 @@
 		<Gameover {gameover} />
 	{/if}
 	<WordBoard
+		bind:currentGuess
 		words={guesses}
 		{currentGuessIndex}
 		currentLetterIndex={currentIndex}
-		bind:currentGuess
 		isGameover={gameover?.isGameover ?? false}
+		{letterClicked}
 	/>
 	<Keyboard {guesses} />
 

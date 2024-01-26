@@ -9,6 +9,7 @@
 	export let currentGuessIndex: number;
 	export let currentLetterIndex: number;
 	export let isGameover: boolean;
+	export let letterClicked: (index: number) => void;
 
 	const emptyLetter = { letter: '', state: LetterState.UNKNOWN };
 	$: mappedData = Array.from(Array(MAX_GUESSES).keys()).map((i) => {
@@ -22,7 +23,7 @@
 <div class="flex flex-col gap-y-1">
 	{#each mappedData as word, index}
 		{#if index === currentGuessIndex && !isGameover}
-			<WordGuess inputLetters={currentGuess} currentIndex={currentLetterIndex} />
+			<WordGuess inputLetters={currentGuess} currentIndex={currentLetterIndex} {letterClicked} />
 		{:else}
 			<div class="flex gap-x-1">
 				{#each word.letters as letter}
