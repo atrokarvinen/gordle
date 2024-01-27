@@ -54,7 +54,8 @@ func (w WordsApiClient) GetWord(word string) (WordDetails, error) {
 	if decodeError != nil {
 		return WordDetails{}, decodeError
 	}
-	fmt.Println("word details:", details)
+	// fmt.Println("word details:", details)
+	fmt.Printf("Word %q is valid\n", word)
 	return details, nil
 }
 
@@ -74,16 +75,16 @@ func GetDefaultWordDetails(word string) WordDetails {
 }
 
 func (w WordsApiClient) getApiCallsCount() error {
-	fmt.Println("Getting calls count...")
+	// fmt.Println("Getting calls count...")
 
 	calls := w.DataProvider.GetWordsApiCalls()
 
 	minDate := time.Now().UTC().AddDate(0, 0, -1).String()
 	pastCalls, dailyCalls := filterCallsByDate(calls, minDate)
 
-	fmt.Println("Total calls count:", len(calls))
+	// fmt.Println("Total calls count:", len(calls))
 	fmt.Println("Past 24h calls count:", len(dailyCalls))
-	fmt.Println("Beoynd 24h calls count:", len(pastCalls))
+	// fmt.Println("Beoynd 24h calls count:", len(pastCalls))
 
 	if len(pastCalls) > 0 {
 		w.DataProvider.DeleteWordsApiCalls(pastCalls)
