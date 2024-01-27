@@ -93,7 +93,7 @@ func (a Api) GuessWord(c *gin.Context) {
 	if getWordErr != nil {
 		fmt.Println("Error getting word:", getWordErr)
 	}
-	if getWordErr != nil && getWordErr.Error() == "Word not found" {
+	if getWordErr != nil && getWordErr.Error() == fmt.Sprintf("Word '%s' not found", guess.Word) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": getWordErr.Error()})
 		return
 	}
