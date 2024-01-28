@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { axios } from '$lib/axios';
-import type { GameDto, Guess } from '$lib/models.js';
+import type { GameDto } from '$lib/models.js';
 
 export const load = async ({ params }) => {
 	if (!browser) {
@@ -15,8 +15,5 @@ export const load = async ({ params }) => {
 	const gameResponse = await axios.get<GameDto>(`/games/${gameId}`);
 	const game = gameResponse.data;
 
-	const guessResponse = await axios.get<Guess[]>(`/games/${gameId}/guesses`);
-	const guesses = guessResponse.data;
-
-	return { game, guesses };
+	return { game };
 };

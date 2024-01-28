@@ -1,8 +1,6 @@
-package models
+package dto
 
-type Guess struct {
-	Id      int      `json:"id"`
-	GameId  int      `json:"gameId"`
+type GuessRequest struct {
 	Word    string   `json:"word"`
 	Letters []Letter `json:"letters"`
 }

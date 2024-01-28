@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"go-test/database"
-	"go-test/models"
+	"go-test/models/dbModels"
 	"net/http"
 	"os"
 	"time"
@@ -97,9 +97,9 @@ func (w WordsApiClient) getApiCallsCount() error {
 	return nil
 }
 
-func filterCallsByDate(calls []models.WordsApiCall, date string) ([]models.WordsApiCall, []models.WordsApiCall) {
-	var before []models.WordsApiCall
-	var after []models.WordsApiCall
+func filterCallsByDate(calls []dbModels.WordsApiCall, date string) ([]dbModels.WordsApiCall, []dbModels.WordsApiCall) {
+	var before []dbModels.WordsApiCall
+	var after []dbModels.WordsApiCall
 	for _, call := range calls {
 		if date > call.CreatedAt {
 			before = append(before, call)
@@ -118,7 +118,7 @@ func (w WordsApiClient) addApiCallToDb(word string, statusCode int) {
 	}
 
 	now := time.Now().UTC().String()
-	call := models.WordsApiCall{Word: word, CreatedAt: now}
+	call := dbModels.WordsApiCall{Word: word, CreatedAt: now}
 
 	fmt.Println("Adding api call", call)
 

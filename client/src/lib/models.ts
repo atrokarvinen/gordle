@@ -39,4 +39,5 @@ export type GameDto = {
 	maxAttempts: number;
 	wordLength: number;
 	gameover: GameoverDto;
+	guesses: Guess[];
 };

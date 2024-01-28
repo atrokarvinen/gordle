@@ -15,7 +15,7 @@
 	$: gameId = Number($page.params.gameId);
 	$: console.log('gameId:', gameId);
 	$: console.log('loaded game:', data.game);
-	$: guesses = data.guesses ?? [];
+	$: guesses = data.game?.guesses ?? [];
 	$: gameover = data.game?.gameover ?? undefined;
 
 	const submitGuess = async () => {
@@ -113,6 +113,14 @@
 	const letterClicked = (i: number) => {
 		currentIndex = i;
 	};
+
+	let isGameStopped = false;
+	$: {
+		const isGameover = gameover?.isGameover ?? false;
+		const isNewGame = gameId === -1;
+		isGameStopped = isGameover || isNewGame;
+		console.log('isGameStopped:', isGameStopped);
+	}
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
@@ -132,7 +140,7 @@
 	<Keyboard {guesses} />
 
 	<div class="flex flex-row gap-x-3">
-		<NewGameButton isGameover={gameover?.isGameover ?? false} />
+		<NewGameButton {isGameStopped} />
 		<button class="btn variant-filled-secondary" on:click={confirmQuit}>Quit</button>
 	</div>
 </div>

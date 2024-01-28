@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"go-test/models"
+	"go-test/models/dbModels"
 	"go-test/wordsApi"
 	"math/rand"
 	"strings"
@@ -13,28 +14,35 @@ type Game struct {
 	WordsApi     wordsApi.IWordsApiClient
 }
 
-func (g Game) CreateGame(name string) models.GameType {
+func (g Game) CreateGame() models.Game {
 	answer := g.GenerateRandomAnswer()
 	fmt.Println("answer", answer)
-	game := models.GameType{Answer: answer, Name: name, MaxAttempts: 6, WordLength: 6}
+	game := dbModels.Game{Answer: answer, MaxAttempts: 6, WordLength: 6}
 	createdGame := g.DataProvider.CreateGame(game)
-	return createdGame
+	dto := g.MapDbGameToGame(createdGame)
+	return dto
 }
 
-func (g Game) GetLatestGame() models.GameType {
-	return g.DataProvider.GetLatestGame()
-}
-func (g Game) GetGames() []models.GameType {
-	return g.DataProvider.GetGames()
+func (g Game) GetLatestGame() (models.Game, error) {
+	game, err := g.DataProvider.GetLatestGame()
+	if err != nil {
+		return models.Game{}, err
+	}
+	return g.MapDbGameToGame(game), nil
 }
 
-func (g Game) GetGame(gameId int) (models.GameType, error) {
+func (g Game) GetGames() []models.Game {
+	games := g.DataProvider.GetGames()
+	return g.MapDbGamesToGames(games)
+}
+
+func (g Game) GetGame(gameId int) (models.Game, error) {
 	fmt.Printf("Loading game '%d'...\n", gameId)
-	return g.DataProvider.GetGame(gameId)
-}
-
-func (g Game) GetGuesses(gameId int) []models.Guess {
-	return g.DataProvider.GetPreviousGuesses(gameId)
+	game, err := g.DataProvider.GetGame(gameId)
+	if err != nil {
+		return models.Game{}, err
+	}
+	return g.MapDbGameToGame(game), nil
 }
 
 func (g Game) GenerateRandomAnswer() string {
@@ -46,8 +54,9 @@ func (g Game) GenerateRandomAnswer() string {
 
 func (g Game) GuessWord(gameId int, guess string) []string {
 	game, _ := g.DataProvider.GetGame(gameId)
-	results := g.CheckWord(guess, game.Answer, game.WordLength)
-	g.DataProvider.AddGuess(models.Guess{Word: guess, GameId: gameId})
+	results := g.CheckWord(guess, game.Answer)
+	guessToCreate := dbModels.Guess{Word: guess, GameID: gameId}
+	g.DataProvider.AddGuess(guessToCreate)
 	return results
 }
 
@@ -56,14 +65,19 @@ func (g Game) CheckGameOver(gameId int) models.Gameover {
 	guesses := g.DataProvider.GetPreviousGuesses(gameId)
 	isGameWon := false
 	if len(guesses) > 0 {
-		isGameWon = IsCorrectResult(g.CheckWord(guesses[len(guesses)-1].Word, game.Answer, game.WordLength))
+		isGameWon = IsCorrectResult(g.CheckWord(guesses[len(guesses)-1].Word, game.Answer))
 	}
 	isGameOver := len(guesses) >= game.MaxAttempts || isGameWon
 	fmt.Println("Is game over?", isGameOver, "Is game won?", isGameWon, "attempts", len(guesses), "max attempts", game.MaxAttempts)
-	return models.Gameover{IsGameover: isGameOver, Win: isGameWon, Answer: game.Answer, AnswerDescription: "description"}
+	var answer string = ""
+	if isGameOver {
+		answer = game.Answer
+	}
+	return models.Gameover{IsGameover: isGameOver, Win: isGameWon, Answer: answer, AnswerDescription: ""}
 }
 
-func (g Game) CheckWord(guess string, answer string, length int) []string {
+func (g Game) CheckWord(guess string, answer string) []string {
+	length := len(answer)
 	results := make([]string, length)
 
 	// Find correct letters

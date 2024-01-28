@@ -1,7 +1,9 @@
 package database
 
 import (
-	"go-test/models"
+	"errors"
+	"fmt"
+	"go-test/models/dbModels"
 
 	"gorm.io/gorm"
 )
@@ -10,51 +12,55 @@ type DatabaseDataProvider struct {
 	Db *gorm.DB
 }
 
-func (d DatabaseDataProvider) GetGame(gameId int) (models.GameType, error) {
-	var game models.GameType
-	result := d.Db.First(&game, gameId)
+func (d DatabaseDataProvider) GetGame(gameId int) (dbModels.Game, error) {
+	var game dbModels.Game
+	result := d.Db.Model(&dbModels.Game{}).Preload("Guesses").First(&game, gameId)
+	fmt.Println("game guesses", game.Guesses)
 	return game, result.Error
 }
 
-func (d DatabaseDataProvider) GetLatestGame() models.GameType {
-	var game models.GameType
-	d.Db.Last(&game)
-	return game
+func (d DatabaseDataProvider) GetLatestGame() (dbModels.Game, error) {
+	var game dbModels.Game
+	result := d.Db.Preload("Guesses").Last(&game)
+	if result.Error != nil {
+		return dbModels.Game{}, errors.New("No latest game found")
+	}
+	return game, nil
 }
 
-func (d DatabaseDataProvider) GetGames() []models.GameType {
-	var games []models.GameType
-	d.Db.Find(&games)
+func (d DatabaseDataProvider) GetGames() []dbModels.Game {
+	var games []dbModels.Game
+	d.Db.Preload("Guesses").Find(&games)
 	return games
 }
 
-func (d DatabaseDataProvider) CreateGame(game models.GameType) models.GameType {
+func (d DatabaseDataProvider) CreateGame(game dbModels.Game) dbModels.Game {
 	d.Db.Create(&game)
 	return game
 }
 
-func (d DatabaseDataProvider) GetPreviousGuesses(gameId int) []models.Guess {
-	var guesses []models.Guess
-	d.Db.Where(&models.Guess{GameId: gameId}).Find(&guesses)
+func (d DatabaseDataProvider) GetPreviousGuesses(gameId int) []dbModels.Guess {
+	var guesses []dbModels.Guess
+	d.Db.Where(&dbModels.Guess{GameID: gameId}).Find(&guesses)
 	return guesses
 }
 
-func (d DatabaseDataProvider) AddGuess(guess models.Guess) models.Guess {
+func (d DatabaseDataProvider) AddGuess(guess dbModels.Guess) dbModels.Guess {
 	d.Db.Create(&guess)
 	return guess
 }
 
-func (d DatabaseDataProvider) GetWordsApiCalls() []models.WordsApiCall {
-	var calls []models.WordsApiCall
+func (d DatabaseDataProvider) GetWordsApiCalls() []dbModels.WordsApiCall {
+	var calls []dbModels.WordsApiCall
 	d.Db.Find(&calls)
 	return calls
 }
 
-func (d DatabaseDataProvider) AddWordsApiCall(wordsApiCall models.WordsApiCall) models.WordsApiCall {
+func (d DatabaseDataProvider) AddWordsApiCall(wordsApiCall dbModels.WordsApiCall) dbModels.WordsApiCall {
 	d.Db.Create(&wordsApiCall)
 	return wordsApiCall
 }
 
-func (d DatabaseDataProvider) DeleteWordsApiCalls(calls []models.WordsApiCall) {
+func (d DatabaseDataProvider) DeleteWordsApiCalls(calls []dbModels.WordsApiCall) {
 	d.Db.Delete(&calls)
 }

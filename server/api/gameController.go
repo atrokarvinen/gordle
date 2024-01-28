@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"go-test/models"
+	"go-test/models/dto"
 	"go-test/wordsApi"
 	"net/http"
 	"strconv"
@@ -19,16 +20,22 @@ func (a Api) GetGame(c *gin.Context) {
 		return
 	}
 	gameover := a.Game.CheckGameOver(gameId)
-	gameDto := models.GameDto{Id: game.Id, Name: game.Name, MaxAttempts: game.MaxAttempts, WordLength: game.WordLength, Gameover: gameover}
-	c.JSON(http.StatusOK, gameDto)
+	dto := game
+	dto.Gameover = gameover
+	c.JSON(http.StatusOK, dto)
 }
 
 func (a Api) GetLatestGame(c *gin.Context) {
 	fmt.Println("Getting latest game...")
-	game := a.Game.GetLatestGame()
+	game, err := a.Game.GetLatestGame()
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
+		return
+	}
 	gameover := a.Game.CheckGameOver(game.Id)
-	gameDto := models.GameDto{Id: game.Id, Name: game.Name, MaxAttempts: game.MaxAttempts, WordLength: game.WordLength, Gameover: gameover}
-	c.JSON(http.StatusOK, gameDto)
+	dto := game
+	dto.Gameover = gameover
+	c.JSON(http.StatusOK, dto)
 }
 
 func (a Api) GetGames(c *gin.Context) {
@@ -37,38 +44,11 @@ func (a Api) GetGames(c *gin.Context) {
 	c.JSON(http.StatusOK, games)
 }
 
-func (a Api) GetGuesses(c *gin.Context) {
-	gameId := getIdFromParam(c)
-	fmt.Printf("Getting guesses for game '%d'...\n", gameId)
-	game, _ := a.DataProvider.GetGame(gameId)
-	guesses := a.Game.GetGuesses(gameId)
-	guessesDto := make([]models.GuessDto, len(guesses))
-	for i, guess := range guesses {
-		results := a.Game.CheckWord(guess.Word, game.Answer, len(guess.Word))
-		letters := make([]models.LetterDto, len(guess.Word))
-		for j, letter := range guess.Word {
-			state := convertLetterState(results[j])
-			letters[j] = models.LetterDto{Letter: string(letter), State: state}
-		}
-		guessesDto[i] = models.GuessDto{Word: guess.Word, Letters: letters}
-	}
-	c.JSON(http.StatusOK, guessesDto)
-}
-
-func convertLetterState(result string) int {
-	if result == "v" {
-		return 0
-	} else if result == "?" {
-		return 1
-	}
-	return 2
-}
-
 func (a Api) CreateGame(c *gin.Context) {
-	var game models.GameType = models.GameType{Name: "New Game"}
-	fmt.Printf("Creating game '%s'...\n", game.Name)
-	game = a.Game.CreateGame(game.Name)
-	c.JSON(http.StatusOK, game)
+	fmt.Printf("Creating game...\n")
+	createdGame := a.Game.CreateGame()
+	fmt.Println("Created game:", createdGame)
+	c.JSON(http.StatusOK, createdGame)
 }
 
 func (a Api) UpdateGame(c *gin.Context) {
@@ -113,7 +93,7 @@ func (a Api) GuessWord(c *gin.Context) {
 		gameover.Answer = ""
 		gameover.AnswerDescription = ""
 	}
-	var dto models.GuessResultDto = models.GuessResultDto{Word: guess.Word, Results: results, Gameover: gameover}
+	dto := dto.GuessResponse{Word: guess.Word, Results: results, Gameover: gameover}
 	c.JSON(http.StatusOK, dto)
 }
 
