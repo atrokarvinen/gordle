@@ -5,6 +5,7 @@ import (
 	"go-test/api"
 	"go-test/database"
 	"go-test/game"
+	"go-test/user"
 	"go-test/wordsApi"
 	"os"
 
@@ -21,6 +22,7 @@ func main() {
 	// database.PrintDb(db)
 
 	dataProvider := database.DatabaseDataProvider{Db: db}
+	userService := user.User{Db: dataProvider}
 	gameEngine := game.Game{DataProvider: dataProvider}
 	wordsClient := wordsApi.WordsApiClient{DataProvider: dataProvider}
 
@@ -28,7 +30,7 @@ func main() {
 		// cli := cli.Cli{DataProvider: dataProvider, Game: gameEngine}
 		// cli.Run()
 	} else {
-		api := api.Api{DataProvider: dataProvider, Game: gameEngine, WordsApi: wordsClient}
+		api := api.Api{DataProvider: dataProvider, Game: gameEngine, WordsApi: wordsClient, User: userService}
 		api.Run()
 	}
 
