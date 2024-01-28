@@ -44,16 +44,9 @@ func (a Api) Run() {
 
 	r.POST("/games/:id/guesses", a.GuessWord)
 
-	r.GET("users/new", a.CreateNewUser)
-	r.GET("users/me", a.GetUserExists)
+	r.GET("users/me", a.GetUser)
 	r.POST("users/login", a.Login)
 	r.DELETE("users/logout", a.Logout)
-
-	r.GET("/echo", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "ping",
-		})
-	})
 
 	r.Run(host_address)
 }

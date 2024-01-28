@@ -6,7 +6,7 @@ import (
 
 type DataProvider interface {
 	GetGame(gameId int) (dbModels.Game, error)
-	GetLatestGame() (dbModels.Game, error)
+	GetLatestGame(userId int) (dbModels.Game, error)
 	GetGames() []dbModels.Game
 	CreateGame(game dbModels.Game) dbModels.Game
 	GetPreviousGuesses(gameId int) []dbModels.Guess

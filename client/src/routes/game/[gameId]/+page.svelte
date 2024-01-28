@@ -77,6 +77,9 @@
 		const index = currentIndex;
 		const key = e.key;
 		console.log('keydown:', key);
+		if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
+			return;
+		}
 		const currentValue = currentGuess[index];
 		if (key === 'Backspace' && currentValue === '') {
 			const previous = Math.max(index - 1, 0);
@@ -121,25 +124,6 @@
 		isGameStopped = isGameover || isNewGame;
 		console.log('isGameStopped:', isGameStopped);
 	}
-
-	const getUser = async () => {
-		const response = await axios.get('/users/me');
-		console.log(response.data);
-		const userId = response.data.ID;
-		localStorage.setItem('userId', userId);
-	};
-
-	const login = async () => {
-		const userId = localStorage.getItem('userId') ?? 0;
-		const response = await axios.post('/users/login', { userId: Number(userId) });
-		const user = response.data;
-		localStorage.setItem('userId', user.ID);
-	};
-
-	const logout = async () => {
-		await axios.delete('/users/logout');
-		localStorage.removeItem('userId');
-	};
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
@@ -161,8 +145,5 @@
 	<div class="flex flex-col gap-y-3">
 		<NewGameButton {isGameStopped} />
 		<button class="btn variant-filled-secondary" on:click={confirmQuit}>Quit</button>
-		<button class="btn variant-filled-secondary" on:click={getUser}>Get user</button>
-		<button class="btn variant-filled-secondary" on:click={login}>Login</button>
-		<button class="btn variant-filled-secondary" on:click={logout}>Logout</button>
 	</div>
 </div>

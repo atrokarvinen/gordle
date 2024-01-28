@@ -14,17 +14,17 @@ type Game struct {
 	WordsApi     wordsApi.IWordsApiClient
 }
 
-func (g Game) CreateGame() models.Game {
+func (g Game) CreateGame(userId int) models.Game {
 	answer := g.GenerateRandomAnswer()
 	fmt.Println("answer", answer)
-	game := dbModels.Game{Answer: answer, MaxAttempts: 6, WordLength: 6}
+	game := dbModels.Game{Answer: answer, MaxAttempts: 6, WordLength: 6, UserID: userId}
 	createdGame := g.DataProvider.CreateGame(game)
 	dto := g.MapDbGameToGame(createdGame)
 	return dto
 }
 
-func (g Game) GetLatestGame() (models.Game, error) {
-	game, err := g.DataProvider.GetLatestGame()
+func (g Game) GetLatestGame(userId int) (models.Game, error) {
+	game, err := g.DataProvider.GetLatestGame(userId)
 	if err != nil {
 		return models.Game{}, err
 	}

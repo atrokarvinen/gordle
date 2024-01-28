@@ -19,9 +19,9 @@ func (d DatabaseDataProvider) GetGame(gameId int) (dbModels.Game, error) {
 	return game, result.Error
 }
 
-func (d DatabaseDataProvider) GetLatestGame() (dbModels.Game, error) {
+func (d DatabaseDataProvider) GetLatestGame(userId int) (dbModels.Game, error) {
 	var game dbModels.Game
-	result := d.Db.Preload("Guesses").Last(&game)
+	result := d.Db.Where(&dbModels.Game{UserID: userId}).Preload("Guesses").Last(&game)
 	if result.Error != nil {
 		return dbModels.Game{}, errors.New("No latest game found")
 	}

@@ -13,8 +13,17 @@ import (
 
 func (a Api) GetGame(c *gin.Context) {
 	gameId := getIdFromParam(c)
+	userId, err := getUserIdFromCookie(c)
+	if err != nil {
+		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
+		return
+	}
 	fmt.Printf("Getting game '%d'...\n", gameId)
 	game, err := a.Game.GetGame(gameId)
+	if game.UserId != userId {
+		c.JSON(http.StatusForbidden, gin.H{"message": "User has no access to this game"})
+		return
+	}
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": "game not found"})
 		return
@@ -27,7 +36,12 @@ func (a Api) GetGame(c *gin.Context) {
 
 func (a Api) GetLatestGame(c *gin.Context) {
 	fmt.Println("Getting latest game...")
-	game, err := a.Game.GetLatestGame()
+	userId, err := getUserIdFromCookie(c)
+	if err != nil {
+		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
+		return
+	}
+	game, err := a.Game.GetLatestGame(userId)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
 		return
@@ -46,7 +60,12 @@ func (a Api) GetGames(c *gin.Context) {
 
 func (a Api) CreateGame(c *gin.Context) {
 	fmt.Printf("Creating game...\n")
-	createdGame := a.Game.CreateGame()
+	userId, err := getUserIdFromCookie(c)
+	if err != nil {
+		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
+		return
+	}
+	createdGame := a.Game.CreateGame(userId)
 	fmt.Println("Created game:", createdGame)
 	c.JSON(http.StatusOK, createdGame)
 }
@@ -101,4 +120,16 @@ func getIdFromParam(c *gin.Context) int {
 	gameIdStr := c.Param("id")
 	gameId, _ := strconv.Atoi(gameIdStr)
 	return gameId
+}
+
+func getUserIdFromCookie(c *gin.Context) (int, error) {
+	userIdStr, err := c.Cookie(userIdCookie)
+	if err != nil {
+		return 0, err
+	}
+	userId, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		return 0, err
+	}
+	return userId, nil
 }

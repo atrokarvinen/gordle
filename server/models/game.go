@@ -6,4 +6,5 @@ type Game struct {
 	WordLength  int      `json:"wordLength"`
 	Gameover    Gameover `json:"gameover"`
 	Guesses     []Guess  `json:"guesses"`
+	UserId      int      `json:"userId"`
 }
