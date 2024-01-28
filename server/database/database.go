@@ -32,13 +32,11 @@ func Init() *gorm.DB {
 
 func Migrate(db *gorm.DB) {
 	fmt.Println("Migrating...")
-
-	db.AutoMigrate(
-		&dbModels.Game{},
-		&dbModels.Guess{},
-		&dbModels.User{},
-		&dbModels.WordsApiCall{},
-	)
+	
+        db.AutoMigrate(&dbModels.User{})
+	db.AutoMigrate(&dbModels.Game{})
+	db.AutoMigrate(&dbModels.Guess{})
+	db.AutoMigrate(&dbModels.WordsApiCall{})
 }
 
 func Seed(db *gorm.DB) {
