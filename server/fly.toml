@@ -15,7 +15,7 @@ primary_region = "arn"
   CGO_ENABLED=1
   GIN_MODE="debug"
   DATABASE_PROVIDER="postgres"
-  CLIENT_ADDRESS="https://atrokarvinen.github.io"
+  CLIENT_ADDRESS="https://gordle-nine.vercel.app"
   HOST_ADDRESS="0.0.0.0:8080"
 
 [http_service]
