@@ -2,7 +2,6 @@ package database
 
 import (
 	"errors"
-	"fmt"
 	"go-test/models/dbModels"
 
 	"gorm.io/gorm"
@@ -15,7 +14,6 @@ type DatabaseDataProvider struct {
 func (d DatabaseDataProvider) GetGame(gameId int) (dbModels.Game, error) {
 	var game dbModels.Game
 	result := d.Db.Model(&dbModels.Game{}).Preload("Guesses").First(&game, gameId)
-	fmt.Println("game guesses", game.Guesses)
 	return game, result.Error
 }
 

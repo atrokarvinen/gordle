@@ -46,7 +46,7 @@ func (g Game) GetGame(gameId int) (models.Game, error) {
 }
 
 func (g Game) GenerateRandomAnswer() string {
-	var allAnswers = answers
+	var allAnswers = Answers
 	randomIndex := rand.Intn(len(allAnswers))
 	answer := allAnswers[randomIndex]
 	return strings.ToLower(answer)

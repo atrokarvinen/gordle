@@ -16,6 +16,7 @@ type WordsApiClient struct {
 }
 
 func (w WordsApiClient) GetWord(word string) (WordDetails, error) {
+	fmt.Println("Getting word from Words API:", word)
 	err := w.getApiCallsCount()
 	if err != nil {
 		return WordDetails{}, err

@@ -6,6 +6,7 @@ import (
 	"go-test/models/dto"
 	"go-test/wordsApi"
 	"net/http"
+	"reflect"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -85,35 +86,56 @@ func (a Api) DeleteGame(c *gin.Context) {
 func (a Api) GuessWord(c *gin.Context) {
 	fmt.Println("Guessing word...")
 	gameId := getGameIdFromParam(c)
+	userId, err := getUserIdFromCookie(c)
+	if err != nil {
+		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
+		return
+	}
+
 	var guess models.Guess
 	c.BindJSON(&guess)
 	fmt.Printf("Guessing word %q for game '%d'\n", guess.Word, gameId)
-	wordDetails, getWordErr := a.WordsApi.GetWord(guess.Word)
-	if getWordErr != nil {
-		fmt.Println("Error getting word:", getWordErr)
+	err = a.ValidateGuess(guess.Word, gameId, userId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
 	}
-	if getWordErr != nil && getWordErr.Error() == fmt.Sprintf("Word '%s' not found", guess.Word) {
+	wordDetails, getWordErr := a.ValidateWordExists(guess.Word)
+	if getWordErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": getWordErr.Error()})
 		return
 	}
+
 	results := a.Game.GuessWord(gameId, guess.Word)
 	gameover := a.Game.CheckGameOver(gameId)
-	if gameover.IsGameover {
-		answerDetails := wordDetails
-		if !gameover.Win || getWordErr != nil {
-			answerDetails, getWordErr = a.WordsApi.GetWord(gameover.Answer)
-			if getWordErr != nil {
-				answerDetails = wordsApi.GetDefaultWordDetails(gameover.Answer)
-			}
-		}
-		gameover.Answer = answerDetails.Word
-		gameover.AnswerDescription = answerDetails.Results[0].Definition
-	} else {
-		gameover.Answer = ""
-		gameover.AnswerDescription = ""
-	}
+	gameover.AnswerDescription = a.getAnswerDetails(gameover, wordDetails)
+
 	dto := dto.GuessResponse{Word: guess.Word, Results: results, Gameover: gameover}
 	c.JSON(http.StatusOK, dto)
+}
+
+func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.WordDetails) string {
+	isGameover := gameover.IsGameover
+	answer := gameover.Answer
+	isWon := gameover.Win
+
+	if !isGameover {
+		return ""
+	}
+
+	detailsUndefined := reflect.DeepEqual(wordDetails, wordsApi.WordDetails{})
+	haveDetailsAlready := isWon && !detailsUndefined
+	if haveDetailsAlready {
+		fmt.Println("Already have details for answer.")
+		return wordDetails.Results[0].Definition
+	}
+
+	answerDetails, err := a.WordsApi.GetWord(answer)
+	if err != nil {
+		fmt.Println("Error getting word:", err.Error(), ", using default word details")
+		answerDetails = wordsApi.GetDefaultWordDetails(answer)
+	}
+	return answerDetails.Results[0].Definition
 }
 
 func getGameIdFromParam(c *gin.Context) int {

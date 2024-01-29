@@ -12,6 +12,8 @@
 
 	export let data;
 
+	const emptyGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
+
 	$: gameId = Number($page.params.gameId);
 	$: console.log('gameId:', gameId);
 	$: console.log('loaded game:', data.game);
@@ -36,7 +38,7 @@
 			const g: Guess = { letters, word };
 			guesses = [...guesses, g];
 			gameover = results.gameover;
-			currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
+			currentGuess = emptyGuess;
 			currentIndex = 0;
 		} catch (error) {
 			toastStore.trigger({
@@ -66,7 +68,7 @@
 	};
 
 	let currentIndex = 0;
-	let currentGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
+	let currentGuess = emptyGuess;
 	$: currentGuessIndex = guesses.length;
 	$: word = currentGuess.join('');
 	$: console.log('word: "' + word + '"');
@@ -123,6 +125,9 @@
 		const isNewGame = gameId === -1;
 		isGameStopped = isGameover || isNewGame;
 		console.log('isGameStopped:', isGameStopped);
+
+		currentGuess = emptyGuess;
+		currentIndex = 0;
 	}
 </script>
 

@@ -1,6 +1,6 @@
 package game
 
-var answers = []string{
+var Answers = []string{
 	"abroad",
 	"absent",
 	"accent",
