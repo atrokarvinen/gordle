@@ -121,7 +121,7 @@ func (w WordsApiClient) addApiCallToDb(word string, statusCode int) {
 	now := time.Now().UTC().String()
 	call := dbModels.WordsApiCall{Word: word, CreatedAt: now}
 
-	fmt.Println("Adding api call", call)
+	fmt.Println("Adding api call...")
 
 	w.DataProvider.AddWordsApiCall(call)
 }

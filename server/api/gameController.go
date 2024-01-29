@@ -75,8 +75,10 @@ func (a Api) DeleteGame(c *gin.Context) {
 	}
 	fmt.Printf("Deleting game '%d'...\n", gameId)
 
-	answerDescription := a.getAnswerDetails(game.Gameover, wordsApi.WordDetails{})
+	gameover := models.Gameover{IsGameover: true, Win: false, Answer: game.Answer}
+	answerDescription := a.getAnswerDetails(gameover, wordsApi.WordDetails{})
 	fmt.Println("Answer description:", answerDescription)
+	game.Gameover.IsGameover = true
 	game.Gameover.AnswerDescription = answerDescription
 
 	game.AnswerDescription = answerDescription

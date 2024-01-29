@@ -7,13 +7,12 @@
 	export let state: LetterState;
 	export let icon: string | undefined = undefined;
 
-	const dispatchKey = () => {
-		console.log('dispatching key:', letter);
+	const dispatchKeyboardEvent = () => {
 		const event = new KeyboardEvent('keydown', { key: letter });
 		window.dispatchEvent(event);
 	};
 </script>
 
-<button on:click={dispatchKey}>
+<button on:click={dispatchKeyboardEvent}>
 	<LetterBox {letter} letterState={state} cursor="cursor-pointer" as="button" {icon} />
 </button>

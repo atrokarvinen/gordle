@@ -11,12 +11,15 @@
 
 {#if isGameover}
 	<div>
-		<p>Game over! You {isGameWon ? 'win' : 'lose'}!</p>
+		<p>Game over!</p>
+		{#if isGameWon}
+			<p>Victory!</p>
+		{/if}
 		<p>
-			Answer was: '{answer.toUpperCase()}'
+			Answer was: <span class="font-bold capitalize">{answer}</span>
 		</p>
-		<p>
-			{description}
+		<p class="italic first-letter:capitalize">
+			"{description}"
 		</p>
 	</div>
 {/if}

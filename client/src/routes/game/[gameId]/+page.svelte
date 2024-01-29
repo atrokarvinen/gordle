@@ -1,136 +1,66 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { axios, getApiErrorMessage } from '$lib/axios';
 	import Gameover from '$lib/components/Gameover.svelte';
 	import Keyboard from '$lib/components/Keyboard.svelte';
+	import KeyboardObserver from '$lib/components/KeyboardObserver.svelte';
 	import NewGameButton from '$lib/components/NewGameButton.svelte';
+	import QuitGameButton from '$lib/components/QuitGameButton.svelte';
 	import WordBoard from '$lib/components/WordBoard.svelte';
 	import { LETTERS_COUNT } from '$lib/constants.js';
-	import type { GameDto, Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
-	import { convertLetterState } from '$lib/utils';
-	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
+	import type { GameoverDto } from '$lib/models';
+	import { getToastStore } from '@skeletonlabs/skeleton';
+	import { submitGuess as createGuessRequest } from './api.js';
 
 	export let data;
 
+	const toastStore = getToastStore();
 	const emptyGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
-
-	$: gameId = Number($page.params.gameId);
-	$: console.log('gameId:', gameId);
-	$: console.log('loaded game:', data.game);
-	$: guesses = data.game?.guesses ?? [];
-	$: gameover = data.game?.gameover ?? undefined;
-
-	const submitGuess = async () => {
-		if (word.length !== LETTERS_COUNT) {
-			console.log('word "%s" length is not correct', word);
-			return;
-		}
-		const payload: GuessDto = { gameId, word };
-		try {
-			const response = await axios.post(`/games/${gameId}/guesses`, payload);
-			console.log(response.data);
-			const results: GuessResultDto = response.data;
-			const letters: GuessedLetter[] = results.results.map((x, i) => {
-				const letter = word[i];
-				const state = convertLetterState(x);
-				return { letter, state };
-			});
-			const g: Guess = { letters, word };
-			guesses = [...guesses, g];
-			gameover = results.gameover;
-		} catch (error) {
-			toastStore.trigger({
-				background: 'variant-filled-error',
-				message: getApiErrorMessage(error),
-				autohide: true
-			});
-		}
-	};
-
-	const quit = async () => {
-		const response = await axios.delete<GameDto>(`/games/${gameId}`);
-		console.log(response.data);
-		gameover = response.data.gameover;
-	};
-
-	const confirmQuit = () => {
-		modalStore.trigger({
-			type: 'confirm',
-			title: 'Confirm',
-			body: 'Are you sure you want to quit?',
-			response: (response) => {
-				if (response) {
-					quit();
-				}
-			}
-		});
-	};
 
 	let currentIndex = 0;
 	let currentGuess = emptyGuess;
+	let isGameStopped = false;
+
+	$: gameId = Number($page.params.gameId);
+	$: guesses = data.game?.guesses ?? [];
+	$: gameover = data.game?.gameover ?? undefined;
 	$: currentGuessIndex = guesses.length;
 	$: word = currentGuess.join('');
-	$: console.log('word: "' + word + '"');
-	$: console.log('guesses:', guesses);
+
+	$: console.log('loaded game:', data.game);
 	$: console.log('currentGuess:', currentGuess);
 
-	const onKeyDown = (e: KeyboardEvent) => {
-		const index = currentIndex;
-		const key = e.key;
-		console.log('keydown:', key);
-		if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
-			return;
-		}
-		const currentValue = currentGuess[index];
-		if (key === 'Backspace' && currentValue === '') {
-			const previous = Math.max(index - 1, 0);
-			currentGuess = currentGuess.map((l, i) => (i === previous ? '' : l));
-			currentIndex = Math.max(index - 1, 0);
-		} else if (key === 'Backspace') {
-			currentGuess = currentGuess.map((l, i) => (i === index ? '' : l));
-		}
-		if (key === 'ArrowLeft') {
-			currentIndex = Math.max(index - 1, 0);
-		}
-		if (key === 'ArrowRight') {
-			currentIndex = Math.min(index + 1, currentGuess.length - 1);
-		}
-		if (key === 'ArrowUp') {
-			currentIndex = 0;
-		}
-		if (key === 'ArrowDown') {
-			currentIndex = currentGuess.length - 1;
-		}
-		if (key === 'Enter') {
-			submitGuess();
-		}
-		const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
-		if (alphabets.includes(key.toLocaleLowerCase())) {
-			currentGuess = currentGuess.map((l, i) => (i === index ? key.toUpperCase() : l));
-			currentIndex = Math.min(index + 1, currentGuess.length - 1);
-		}
-	};
-
-	const modalStore = getModalStore();
-	const toastStore = getToastStore();
-
-	const letterClicked = (i: number) => {
-		currentIndex = i;
-	};
-
-	let isGameStopped = false;
 	$: {
 		const isGameover = gameover?.isGameover ?? false;
-		const isNewGame = gameId === -1;
-		isGameStopped = isGameover || isNewGame;
-		console.log('isGameStopped:', isGameStopped);
+		const noGameFound = gameId === -1;
+		isGameStopped = isGameover || noGameFound;
+		resetGuess();
+	}
 
+	const submitGuess = async () => {
+		const result = await createGuessRequest(gameId, word);
+		console.log('error:', result.errorMessage);
+		if (typeof result.errorMessage === 'string') {
+			toastStore.trigger({
+				background: 'variant-filled-error',
+				message: result.errorMessage,
+				autohide: true
+			});
+			return;
+		}
+		const { gameover: go, guess } = result;
+		gameover = go;
+		guesses = [...guesses, guess];
+	};
+
+	const letterClicked = (i: number) => (currentIndex = i);
+	const onGameover = (go: GameoverDto) => (gameover = go);
+	const resetGuess = () => {
 		currentGuess = emptyGuess;
 		currentIndex = 0;
-	}
+	};
 </script>
 
-<svelte:window on:keydown={onKeyDown} />
+<KeyboardObserver bind:currentGuess bind:currentIndex {submitGuess} />
 
 <div class="flex flex-col items-center gap-y-3">
 	{#if gameover}
@@ -148,6 +78,6 @@
 
 	<div class="flex flex-col gap-y-3">
 		<NewGameButton {isGameStopped} />
-		<button class="btn variant-filled-secondary" on:click={confirmQuit}>Quit</button>
+		<QuitGameButton {gameId} {onGameover} />
 	</div>
 </div>
