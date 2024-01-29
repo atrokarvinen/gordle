@@ -10,7 +10,7 @@
 </script>
 
 {#if isGameover}
-	<div>
+	<div class="p-4">
 		<p>Game over!</p>
 		{#if isGameWon}
 			<p>Victory!</p>
