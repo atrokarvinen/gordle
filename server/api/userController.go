@@ -60,7 +60,9 @@ func (a Api) Login(c *gin.Context) {
 func SetLoginResponse(c *gin.Context, user dbModels.User) {
 	userId := fmt.Sprint(user.ID)
 	userIdStr := fmt.Sprint(userId)
-	c.SetCookie(userIdCookie, userIdStr, 3600, "/", "", false, true)
+	c.SetSameSite(http.SameSiteNoneMode)
+	c.SetCookie(userIdCookie, userIdStr, 3600, "/", "", true, true)
+	c.JSON(http.StatusOK, user)
 }
 
 func (a Api) Logout(c *gin.Context) {
