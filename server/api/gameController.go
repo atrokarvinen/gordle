@@ -12,7 +12,7 @@ import (
 )
 
 func (a Api) GetGame(c *gin.Context) {
-	gameId := getIdFromParam(c)
+	gameId := getGameIdFromParam(c)
 	userId, err := getUserIdFromCookie(c)
 	if err != nil {
 		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
@@ -35,8 +35,8 @@ func (a Api) GetGame(c *gin.Context) {
 }
 
 func (a Api) GetLatestGame(c *gin.Context) {
-	fmt.Println("Getting latest game...")
 	userId, err := getUserIdFromCookie(c)
+	fmt.Println("Getting latest game for user '", userId, "'...")
 	if err != nil {
 		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
 		return
@@ -59,8 +59,8 @@ func (a Api) GetGames(c *gin.Context) {
 }
 
 func (a Api) CreateGame(c *gin.Context) {
-	fmt.Printf("Creating game...\n")
 	userId, err := getUserIdFromCookie(c)
+	fmt.Printf("Creating game for userId '%d'...\n", userId)
 	if err != nil {
 		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
 		return
@@ -71,20 +71,20 @@ func (a Api) CreateGame(c *gin.Context) {
 }
 
 func (a Api) UpdateGame(c *gin.Context) {
-	gameId := getIdFromParam(c)
+	gameId := getGameIdFromParam(c)
 	fmt.Printf("Updating game '%d'...\n", gameId)
 	c.Status(http.StatusOK)
 }
 
 func (a Api) DeleteGame(c *gin.Context) {
-	gameId := getIdFromParam(c)
+	gameId := getGameIdFromParam(c)
 	fmt.Printf("Deleting game '%d'...\n", gameId)
 	c.Status(http.StatusOK)
 }
 
 func (a Api) GuessWord(c *gin.Context) {
 	fmt.Println("Guessing word...")
-	gameId := getIdFromParam(c)
+	gameId := getGameIdFromParam(c)
 	var guess models.Guess
 	c.BindJSON(&guess)
 	fmt.Printf("Guessing word %q for game '%d'\n", guess.Word, gameId)
@@ -116,7 +116,7 @@ func (a Api) GuessWord(c *gin.Context) {
 	c.JSON(http.StatusOK, dto)
 }
 
-func getIdFromParam(c *gin.Context) int {
+func getGameIdFromParam(c *gin.Context) int {
 	gameIdStr := c.Param("id")
 	gameId, _ := strconv.Atoi(gameIdStr)
 	return gameId
@@ -125,10 +125,12 @@ func getIdFromParam(c *gin.Context) int {
 func getUserIdFromCookie(c *gin.Context) (int, error) {
 	userIdStr, err := c.Cookie(userIdCookie)
 	if err != nil {
+		fmt.Println("Error getting user id from cookie:", err.Error())
 		return 0, err
 	}
 	userId, err := strconv.Atoi(userIdStr)
 	if err != nil {
+		fmt.Println("Error converting cookie value '", userIdStr, "' to int:", err.Error())
 		return 0, err
 	}
 	return userId, nil

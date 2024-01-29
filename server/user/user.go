@@ -1,6 +1,7 @@
 package user
 
 import (
+	"fmt"
 	"go-test/database"
 	"go-test/models/dbModels"
 )
@@ -19,7 +20,9 @@ func (u User) GetUser(userId int) (dbModels.User, error) {
 }
 
 func (u User) CreateUser() dbModels.User {
+	fmt.Println("Creating new user...")
 	createdUser := u.Db.CreateUser()
+	fmt.Println("Created user with id:", createdUser.ID)
 	return createdUser
 }
 

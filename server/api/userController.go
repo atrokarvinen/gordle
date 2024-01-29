@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"go-test/models/dbModels"
 	"net/http"
 	"strconv"
 
@@ -36,28 +37,30 @@ func (a Api) GetUser(c *gin.Context) {
 func (a Api) Login(c *gin.Context) {
 	var loginRequest LoginRequest
 	err := c.BindJSON(&loginRequest)
-	fmt.Println("LoginRequest.UserId:", loginRequest.UserId, "loginRequest.UserId == 0 => ", loginRequest.UserId == 0)
+	fmt.Println("LoginRequest.UserId:", loginRequest.UserId)
 	if err != nil || loginRequest.UserId == 0 {
 		fmt.Println("Failed to bind body to LoginRequest, creating new user...")
 
 		user := a.User.CreateUser()
-
-		fmt.Println("Created user:", user)
-
-		userId := fmt.Sprint(user.ID)
-		c.SetCookie(userIdCookie, userId, 3600, "/", "", false, true)
-		c.JSON(http.StatusOK, user)
+		SetLoginResponse(c, user)
 		return
 	}
 	userId := loginRequest.UserId
 	user, err := a.User.GetUser(userId)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
+		fmt.Println("Error finding user '", userId, "':", err.Error())
+		user := a.User.CreateUser()
+		SetLoginResponse(c, user)
 		return
 	}
-	userIdStr := fmt.Sprint(user.ID)
+	fmt.Println("Found User:", user)
+	SetLoginResponse(c, user)
+}
+
+func SetLoginResponse(c *gin.Context, user dbModels.User) {
+	userId := fmt.Sprint(user.ID)
+	userIdStr := fmt.Sprint(userId)
 	c.SetCookie(userIdCookie, userIdStr, 3600, "/", "", false, true)
-	c.JSON(http.StatusOK, user)
 }
 
 func (a Api) Logout(c *gin.Context) {
