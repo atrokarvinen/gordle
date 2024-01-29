@@ -3,8 +3,12 @@ package api
 import (
 	"fmt"
 	"go-test/game"
+	"go-test/models"
 	"go-test/wordsApi"
+	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (a Api) ValidateGuess(word string, gameId int, userId int) error {
@@ -44,4 +48,16 @@ func (a Api) ValidateWordExists(word string) (wordsApi.WordDetails, error) {
 	}
 
 	return wordDetails, nil
+}
+
+func (a Api) ValidateGameFoundAndHasAccess(c *gin.Context, game models.Game, getGameErr error, userId int) error {
+	if getGameErr != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "game not found"})
+		return getGameErr
+	}
+	if game.UserId != userId {
+		c.JSON(http.StatusForbidden, gin.H{"message": "User has no access to this game"})
+		return fmt.Errorf("User has no access to this game")
+	}
+	return nil
 }

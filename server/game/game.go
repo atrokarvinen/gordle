@@ -17,7 +17,15 @@ type Game struct {
 func (g Game) CreateGame(userId int) models.Game {
 	answer := g.GenerateRandomAnswer()
 	fmt.Println("answer", answer)
-	game := dbModels.Game{Answer: answer, MaxAttempts: 6, WordLength: 6, UserID: userId}
+
+	game := dbModels.Game{
+		Answer:      answer,
+		MaxAttempts: 6,
+		WordLength:  6,
+		UserID:      userId,
+		State:       int(dbModels.Active),
+	}
+
 	createdGame := g.DataProvider.CreateGame(game)
 	dto := g.MapDbGameToGame(createdGame)
 	return dto
@@ -29,11 +37,6 @@ func (g Game) GetLatestGame(userId int) (models.Game, error) {
 		return models.Game{}, err
 	}
 	return g.MapDbGameToGame(game), nil
-}
-
-func (g Game) GetGames() []models.Game {
-	games := g.DataProvider.GetGames()
-	return g.MapDbGamesToGames(games)
 }
 
 func (g Game) GetGame(gameId int) (models.Game, error) {
@@ -74,6 +77,12 @@ func (g Game) CheckGameOver(gameId int) models.Gameover {
 		answer = game.Answer
 	}
 	return models.Gameover{IsGameover: isGameOver, Win: isGameWon, Answer: answer, AnswerDescription: ""}
+}
+
+func (g Game) UpdateGame(game models.Game) error {
+	fmt.Printf("Updating game '%d', state '%d'.", game.Id, game.State)
+	gameDb := g.MapGameToDbGame(game)
+	return g.DataProvider.UpdateGame(gameDb)
 }
 
 func (g Game) CheckWord(guess string, answer string) []string {

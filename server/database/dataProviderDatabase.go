@@ -26,15 +26,14 @@ func (d DatabaseDataProvider) GetLatestGame(userId int) (dbModels.Game, error) {
 	return game, nil
 }
 
-func (d DatabaseDataProvider) GetGames() []dbModels.Game {
-	var games []dbModels.Game
-	d.Db.Preload("Guesses").Find(&games)
-	return games
-}
-
 func (d DatabaseDataProvider) CreateGame(game dbModels.Game) dbModels.Game {
 	d.Db.Create(&game)
 	return game
+}
+
+func (d DatabaseDataProvider) UpdateGame(game dbModels.Game) error {
+	d.Db.Model(&game).Updates(&game)
+	return nil
 }
 
 func (d DatabaseDataProvider) GetPreviousGuesses(gameId int) []dbModels.Guess {

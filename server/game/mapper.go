@@ -3,6 +3,8 @@ package game
 import (
 	"go-test/models"
 	"go-test/models/dbModels"
+
+	"gorm.io/gorm"
 )
 
 func (g Game) MapDbGamesToGames(dbGames []dbModels.Game) []models.Game {
@@ -15,11 +17,25 @@ func (g Game) MapDbGamesToGames(dbGames []dbModels.Game) []models.Game {
 
 func (g Game) MapDbGameToGame(dbGame dbModels.Game) models.Game {
 	return models.Game{
-		Id:          int(dbGame.ID),
-		Guesses:     g.MapDbGuessesToGuesses(dbGame.Guesses, dbGame.Answer),
-		MaxAttempts: dbGame.MaxAttempts,
-		WordLength:  dbGame.WordLength,
-		UserId:      dbGame.UserID,
+		Id:                int(dbGame.ID),
+		Guesses:           g.MapDbGuessesToGuesses(dbGame.Guesses, dbGame.Answer),
+		MaxAttempts:       dbGame.MaxAttempts,
+		WordLength:        dbGame.WordLength,
+		UserId:            dbGame.UserID,
+		Answer:            dbGame.Answer,
+		AnswerDescription: dbGame.AnswerDescription,
+		State:             dbGame.State,
+		Gameover:          MapDbGameToGameover(dbGame),
+	}
+}
+
+func MapDbGameToGameover(game dbModels.Game) models.Gameover {
+
+	return models.Gameover{
+		IsGameover:        game.State != int(dbModels.Active),
+		Win:               game.State == int(dbModels.Win),
+		Answer:            game.Answer,
+		AnswerDescription: game.AnswerDescription,
 	}
 }
 
@@ -55,4 +71,16 @@ func convertLetterState(result string) int {
 		return 1
 	}
 	return 2
+}
+
+func (g Game) MapGameToDbGame(game models.Game) dbModels.Game {
+	return dbModels.Game{
+		Model:             gorm.Model{ID: uint(game.Id)},
+		Answer:            game.Answer,
+		MaxAttempts:       game.MaxAttempts,
+		WordLength:        game.WordLength,
+		UserID:            game.UserId,
+		State:             game.State,
+		AnswerDescription: game.AnswerDescription,
+	}
 }

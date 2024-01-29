@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"go-test/models"
+	"go-test/models/dbModels"
 	"go-test/models/dto"
 	"go-test/wordsApi"
 	"net/http"
@@ -13,26 +14,17 @@ import (
 )
 
 func (a Api) GetGame(c *gin.Context) {
-	gameId := getGameIdFromParam(c)
-	userId, err := getUserIdFromCookie(c)
+	userId, gameId, err := getIdsFromContext(c)
 	if err != nil {
-		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
 		return
 	}
 	fmt.Printf("Getting game '%d'...\n", gameId)
 	game, err := a.Game.GetGame(gameId)
-	if game.UserId != userId {
-		c.JSON(http.StatusForbidden, gin.H{"message": "User has no access to this game"})
-		return
-	}
+	err = a.ValidateGameFoundAndHasAccess(c, game, err, userId)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "game not found"})
 		return
 	}
-	gameover := a.Game.CheckGameOver(gameId)
-	dto := game
-	dto.Gameover = gameover
-	c.JSON(http.StatusOK, dto)
+	c.JSON(http.StatusOK, game)
 }
 
 func (a Api) GetLatestGame(c *gin.Context) {
@@ -43,20 +35,14 @@ func (a Api) GetLatestGame(c *gin.Context) {
 		return
 	}
 	game, err := a.Game.GetLatestGame(userId)
+	err = a.ValidateGameFoundAndHasAccess(c, game, err, userId)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
 		return
 	}
 	gameover := a.Game.CheckGameOver(game.Id)
 	dto := game
 	dto.Gameover = gameover
 	c.JSON(http.StatusOK, dto)
-}
-
-func (a Api) GetGames(c *gin.Context) {
-	fmt.Println("Getting games...")
-	games := a.Game.GetGames()
-	c.JSON(http.StatusOK, games)
 }
 
 func (a Api) CreateGame(c *gin.Context) {
@@ -78,17 +64,36 @@ func (a Api) UpdateGame(c *gin.Context) {
 }
 
 func (a Api) DeleteGame(c *gin.Context) {
-	gameId := getGameIdFromParam(c)
+	userId, gameId, err := getIdsFromContext(c)
+	if err != nil {
+		return
+	}
+	game, err := a.Game.GetGame(gameId)
+	err = a.ValidateGameFoundAndHasAccess(c, game, err, userId)
+	if err != nil {
+		return
+	}
 	fmt.Printf("Deleting game '%d'...\n", gameId)
-	c.Status(http.StatusOK)
+
+	answerDescription := a.getAnswerDetails(game.Gameover, wordsApi.WordDetails{})
+	fmt.Println("Answer description:", answerDescription)
+	game.Gameover.AnswerDescription = answerDescription
+
+	game.AnswerDescription = answerDescription
+	game.State = int(dbModels.Lose)
+	err = a.Game.UpdateGame(game)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, game)
 }
 
 func (a Api) GuessWord(c *gin.Context) {
 	fmt.Println("Guessing word...")
-	gameId := getGameIdFromParam(c)
-	userId, err := getUserIdFromCookie(c)
+	userId, gameId, err := getIdsFromContext(c)
 	if err != nil {
-		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -109,6 +114,16 @@ func (a Api) GuessWord(c *gin.Context) {
 	results := a.Game.GuessWord(gameId, guess.Word)
 	gameover := a.Game.CheckGameOver(gameId)
 	gameover.AnswerDescription = a.getAnswerDetails(gameover, wordDetails)
+	if gameover.IsGameover {
+		game, _ := a.Game.GetGame(gameId)
+		game.AnswerDescription = gameover.AnswerDescription
+		if gameover.Win {
+			game.State = int(dbModels.Win)
+		} else {
+			game.State = int(dbModels.Lose)
+		}
+		a.Game.UpdateGame(game)
+	}
 
 	dto := dto.GuessResponse{Word: guess.Word, Results: results, Gameover: gameover}
 	c.JSON(http.StatusOK, dto)
@@ -120,6 +135,7 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.Wor
 	isWon := gameover.Win
 
 	if !isGameover {
+		fmt.Println("Game is not over, not getting answer details")
 		return ""
 	}
 
@@ -136,6 +152,16 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.Wor
 		answerDetails = wordsApi.GetDefaultWordDetails(answer)
 	}
 	return answerDetails.Results[0].Definition
+}
+
+func getIdsFromContext(c *gin.Context) (int, int, error) {
+	userId, err := getUserIdFromCookie(c)
+	if err != nil {
+		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
+		return 0, 0, err
+	}
+	gameId := getGameIdFromParam(c)
+	return userId, gameId, nil
 }
 
 func getGameIdFromParam(c *gin.Context) int {

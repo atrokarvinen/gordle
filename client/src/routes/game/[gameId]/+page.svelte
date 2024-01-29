@@ -6,7 +6,7 @@
 	import NewGameButton from '$lib/components/NewGameButton.svelte';
 	import WordBoard from '$lib/components/WordBoard.svelte';
 	import { LETTERS_COUNT } from '$lib/constants.js';
-	import type { Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
+	import type { GameDto, Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
 	import { convertLetterState } from '$lib/utils';
 	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 
@@ -38,8 +38,6 @@
 			const g: Guess = { letters, word };
 			guesses = [...guesses, g];
 			gameover = results.gameover;
-			currentGuess = emptyGuess;
-			currentIndex = 0;
 		} catch (error) {
 			toastStore.trigger({
 				background: 'variant-filled-error',
@@ -50,8 +48,9 @@
 	};
 
 	const quit = async () => {
-		const response = await axios.delete(`/games/${gameId}`);
+		const response = await axios.delete<GameDto>(`/games/${gameId}`);
 		console.log(response.data);
+		gameover = response.data.gameover;
 	};
 
 	const confirmQuit = () => {

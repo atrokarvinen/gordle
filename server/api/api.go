@@ -35,7 +35,6 @@ func (a Api) Run() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	r.GET("/games", a.GetGames)
 	r.GET("/games/latest", a.GetLatestGame)
 	r.GET("/games/:id", a.GetGame)
 	r.POST("/games", a.CreateGame)

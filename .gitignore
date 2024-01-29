@@ -1,6 +1,6 @@
 *.env
 todo.txt
-test.db
+test.db*
 tmp/
 valids.txt
 invalids.txt
