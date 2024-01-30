@@ -10,15 +10,17 @@
 
 	let maxAttempts = 6;
 	let wordLength = 6;
+	let language = 'en';
 
 	const attemptsOptions = [4, 5, 6, 7, 8];
 	const wordLengthOptions = [5, 6, 7, 8];
+	const languageOptions = ['en', 'fi'];
 
 	const modalStore = getModalStore();
 	const toastStore = getToastStore();
 	const createGame = async () => {
 		try {
-			const payload = { maxAttempts, wordLength };
+			const payload = { maxAttempts, wordLength, language };
 			console.log('payload:', payload);
 			const response = await axios.post<GameDto>(`/games`, payload);
 			const game = response.data;
@@ -39,6 +41,9 @@
 			});
 		}
 	};
+
+	const selectedLangBorder = 'border-success-500 ';
+	const unselectedLangBorder = 'border-transparent ';
 </script>
 
 {#if $modalStore[0]}
@@ -46,6 +51,16 @@
 		<header class="h2">{$modalStore[0].title}</header>
 		<article>{$modalStore[0].body}</article>
 		<form class="form space-y-2">
+			<div class="flex gap-x-3">
+				{#each languageOptions as lang}
+					<button
+						on:click={() => (language = lang)}
+						class={`rounded border-2 border-solid p-2  ${lang === language ? selectedLangBorder : unselectedLangBorder}`}
+					>
+						<img alt={lang} src="{base}/{lang}.png" class="w-16" />
+					</button>
+				{/each}
+			</div>
 			<label class="label">
 				Max guesses
 				<select class="select" bind:value={maxAttempts}>

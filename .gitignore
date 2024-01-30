@@ -4,3 +4,5 @@ test.db*
 tmp/
 valids.txt
 invalids.txt
+*.csv
+suomi-answers*.txt

@@ -8,6 +8,7 @@ type Game struct {
 	AnswerDescription string
 	MaxAttempts       int
 	WordLength        int
+	Language          string
 	UserID            int
 	Guesses           []Guess
 	State             int
