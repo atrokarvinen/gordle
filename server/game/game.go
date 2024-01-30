@@ -90,17 +90,19 @@ func (g Game) UpdateGame(game models.Game) error {
 	return g.DataProvider.UpdateGame(gameDb)
 }
 
-func (g Game) CheckWord(guess string, answer string) []string {
-	length := utf8.RuneCountInString(answer)
+func (g Game) CheckWord(guessStr string, answerStr string) []string {
+	length := utf8.RuneCountInString(answerStr)
 	results := make([]string, length)
+	guess := []rune(strings.ToLower(guessStr))
+	answer := []rune(strings.ToLower(answerStr))
 
-	fmt.Println("Checking word", guess, "against", answer)
+	fmt.Println("Checking word", guessStr, "against", answerStr)
 
 	// Find correct letters
-	var containedMap = make(map[string]int)
+	var containedMap = make(map[rune]int)
 	for i := 0; i < length; i++ {
-		answerChar := strings.ToLower(string(answer[i]))
-		guessChar := strings.ToLower(string(guess[i]))
+		answerChar := answer[i]
+		guessChar := guess[i]
 		isGuessCorrect := answerChar == guessChar
 		if isGuessCorrect {
 			containedMap[guessChar]++
@@ -110,13 +112,20 @@ func (g Game) CheckWord(guess string, answer string) []string {
 
 	// Find contained letters
 	for i := 0; i < length; i++ {
-		guessChar := strings.ToLower(string(guess[i]))
+		guessChar := guess[i]
 		if results[i] == "v" {
 			continue
 		}
-		isGuessContained := strings.Contains(answer, guessChar)
-		if isGuessContained {
-			if containedMap[guessChar] >= strings.Count(answer, guessChar) {
+		count := 0
+		for j := 0; j < length; j++ {
+			answerChar := answer[j]
+			if guessChar == answerChar {
+				count++
+				break
+			}
+		}
+		if count > 0 {
+			if containedMap[guessChar] >= count {
 				results[i] = "x"
 			} else {
 				containedMap[guessChar]++
