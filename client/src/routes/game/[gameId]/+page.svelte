@@ -9,7 +9,7 @@
 	import { LETTERS_COUNT } from '$lib/constants.js';
 	import type { GameoverDto } from '$lib/models';
 	import { getToastStore } from '@skeletonlabs/skeleton';
-	import { submitGuess as createGuessRequest } from './api.js';
+	import { submitGuess as requestCreateGuess } from './api.js';
 
 	export let data;
 
@@ -19,6 +19,7 @@
 	let currentIndex = 0;
 	let currentGuess = emptyGuess;
 	let isGameStopped = false;
+	let submitting = false;
 
 	$: gameId = Number($page.params.gameId);
 	$: guesses = data.game?.guesses ?? [];
@@ -37,19 +38,24 @@
 	}
 
 	const submitGuess = async () => {
-		const result = await createGuessRequest(gameId, word);
-		console.log('error:', result.errorMessage);
-		if (typeof result.errorMessage === 'string') {
-			toastStore.trigger({
-				background: 'variant-filled-error',
-				message: result.errorMessage,
-				autohide: true
-			});
-			return;
+		if (submitting) return;
+		submitting = true;
+		try {
+			const result = await requestCreateGuess(gameId, word);
+			if (typeof result.errorMessage === 'string') {
+				toastStore.trigger({
+					background: 'variant-filled-error',
+					message: result.errorMessage,
+					autohide: true
+				});
+				return;
+			}
+			const { gameover: go, guess } = result;
+			gameover = go;
+			guesses = [...guesses, guess];
+		} finally {
+			submitting = false;
 		}
-		const { gameover: go, guess } = result;
-		gameover = go;
-		guesses = [...guesses, guess];
 	};
 
 	const letterClicked = (i: number) => (currentIndex = i);
@@ -74,7 +80,7 @@
 		isGameover={gameover?.isGameover ?? false}
 		{letterClicked}
 	/>
-	<Keyboard {guesses} />
+	<Keyboard {guesses} {submitting} />
 
 	<div class="flex flex-col gap-y-3">
 		<NewGameButton {isGameStopped} />

@@ -3,6 +3,7 @@
 	import KeyboardButton from './KeyboardButton.svelte';
 
 	export let guesses: Guess[];
+	export let submitting: boolean;
 
 	const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
 	const qwertyLine1 = 'qwertyuiop'.split('');
@@ -45,6 +46,7 @@
 			letter="Enter"
 			state={LetterState.UNKNOWN}
 			icon="fa-solid fa-right-to-bracket"
+			{submitting}
 		/>
 		{#each qwertyLine3 as letter}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />

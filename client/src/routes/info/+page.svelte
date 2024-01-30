@@ -14,8 +14,8 @@
 		Guess the word by typing in letters and submit by pressing Enter. Inserted words must be real
 		words. Player has limited amount of guesses before the game is over.
 	</p>
-	<LetterInfo letter={'A'} letterState={LetterState.CORRECT} text={textCorrect} />
-	<LetterInfo letter={'A'} letterState={LetterState.CONTAINED} text={textContained} />
-	<LetterInfo letter={'A'} letterState={LetterState.INCORRECT} text={textIncorrect} />
-	<LetterInfo letter={'A'} letterState={LetterState.UNKNOWN} text={textUnknown} />
+	<LetterInfo letter="A" letterState={LetterState.CORRECT} text={textCorrect} />
+	<LetterInfo letter="A" letterState={LetterState.CONTAINED} text={textContained} />
+	<LetterInfo letter="A" letterState={LetterState.INCORRECT} text={textIncorrect} />
+	<LetterInfo letter="A" letterState={LetterState.UNKNOWN} text={textUnknown} />
 </div>

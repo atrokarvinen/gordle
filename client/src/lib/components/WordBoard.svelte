@@ -17,7 +17,6 @@
 		else
 			return { word: '', letters: Array.from(Array(LETTERS_COUNT).keys()).map(() => emptyLetter) };
 	});
-	$: console.log('[WordBoard] currentGuess:', currentGuess);
 </script>
 
 <div class="flex flex-col gap-y-1">
