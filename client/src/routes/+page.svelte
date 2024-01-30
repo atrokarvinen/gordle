@@ -6,12 +6,13 @@
 	export let data;
 
 	$: {
-		if (data.loading === false) {
-			goto(`${base}/game/${data.gameId}`);
+		if (data.loader) {
+			data.loader().then((r) => {
+				const gameId = r.gameId;
+				goto(`${base}/game/${gameId}`);
+			});
 		}
 	}
 </script>
 
-{#if data.loading}
-	<ProgressRadial />
-{/if}
+<ProgressRadial width="w-16" />

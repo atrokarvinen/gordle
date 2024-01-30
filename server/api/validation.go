@@ -12,6 +12,9 @@ import (
 )
 
 func (a Api) ValidateGuess(word string, gameId int, userId int) error {
+	if gameId == -1 {
+		return fmt.Errorf("No previous games found, please start a new one")
+	}
 	game, err := a.Game.GetGame(gameId)
 	if err != nil {
 		return fmt.Errorf("Game for game id '%d' not found", gameId)

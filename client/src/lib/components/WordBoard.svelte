@@ -8,7 +8,7 @@
 	export let words: Guess[];
 	export let currentGuessIndex: number;
 	export let currentLetterIndex: number;
-	export let isGameover: boolean;
+	export let isGameStopped: boolean;
 	export let letterClicked: (index: number) => void;
 
 	const emptyLetter = { letter: '', state: LetterState.UNKNOWN };
@@ -21,7 +21,7 @@
 
 <div class="flex flex-col gap-y-1">
 	{#each mappedData as word, index}
-		{#if index === currentGuessIndex && !isGameover}
+		{#if index === currentGuessIndex && !isGameStopped}
 			<WordGuess inputLetters={currentGuess} currentIndex={currentLetterIndex} {letterClicked} />
 		{:else}
 			<div class="flex gap-x-1">

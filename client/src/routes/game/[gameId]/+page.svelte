@@ -39,6 +39,7 @@
 
 	const submitGuess = async () => {
 		if (submitting) return;
+		if (isGameStopped) return;
 		submitting = true;
 		try {
 			const result = await requestCreateGuess(gameId, word);
@@ -77,7 +78,7 @@
 		words={guesses}
 		{currentGuessIndex}
 		currentLetterIndex={currentIndex}
-		isGameover={gameover?.isGameover ?? false}
+		{isGameStopped}
 		{letterClicked}
 	/>
 	<Keyboard {guesses} {submitting} />

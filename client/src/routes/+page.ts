@@ -4,21 +4,15 @@ import type { GameDto } from '$lib/models';
 
 export const load = async () => {
 	if (!browser) {
-		return { game: null, loading: true };
+		return { gameId: null };
 	}
 
-	console.log('[load] latest game');
+	const loader = async () => {
+		await login();
+		return await getGame();
+	};
 
-	await login();
-
-	try {
-		const response = await axios.get<GameDto>(`/games/latest`);
-		console.log(response.data);
-		const game = response.data;
-		return { gameId: game.id, loading: false };
-	} catch (error) {
-		return { gameId: '-1', loading: false };
-	}
+	return { loader };
 };
 
 const login = async () => {
@@ -31,4 +25,24 @@ const login = async () => {
 
 	localStorage.setItem('userId', loginId);
 	console.log('received loginId:', loginId);
+};
+
+const getGame = async () => {
+	try {
+		const response = await axios.get<GameDto>(`/games/latest`);
+		console.log(response.data);
+		const game = response.data;
+		return { gameId: game.id };
+	} catch (error) {
+		console.log('No game found:', error);
+	}
+	try {
+		console.log('Creating new game...');
+		const response = await axios.post<GameDto>(`/games`);
+		const game = response.data;
+		return { gameId: game.id };
+	} catch (error) {
+		return { gameId: '-1' };
+	}
+	return { gameId: '-1' };
 };
