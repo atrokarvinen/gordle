@@ -2,21 +2,23 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { axios, getApiErrorMessage } from '$lib/axios';
+	import { languageStore } from '$lib/languageStore';
 	import type { GameDto } from '$lib/models';
 	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	import type { SvelteComponent } from 'svelte';
 
 	export let parent: SvelteComponent;
 
+	const modalStore = getModalStore();
+
 	let maxAttempts = 6;
 	let wordLength = 6;
-	let language = 'en';
+	let language = $languageStore;
 
 	const attemptsOptions = [4, 5, 6, 7, 8];
 	const wordLengthOptions = [5, 6, 7, 8];
 	const languageOptions = ['en', 'fi'];
 
-	const modalStore = getModalStore();
 	const toastStore = getToastStore();
 	const createGame = async () => {
 		try {
@@ -55,7 +57,8 @@
 				{#each languageOptions as lang}
 					<button
 						on:click={() => (language = lang)}
-						class={`rounded border-2 border-solid p-2  ${lang === language ? selectedLangBorder : unselectedLangBorder}`}
+						class={`rounded border-2 border-solid p-2 ${lang === language ? selectedLangBorder : unselectedLangBorder}`}
+						style="outline: none;"
 					>
 						<img alt={lang} src="{base}/{lang}.png" class="w-16" />
 					</button>

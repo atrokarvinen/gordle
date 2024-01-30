@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { languageStore } from '$lib/languageStore';
 	import { LetterState, type Guess } from '$lib/models';
 	import KeyboardButton from './KeyboardButton.svelte';
 
 	export let guesses: Guess[];
 	export let submitting: boolean;
-	export let lang: string;
-
+	$: lang = $languageStore;
 	$: alphabets = ('abcdefghijklmnopqrstuvwxyz' + (lang === 'fi' ? 'åäö' : '')).split('');
 	$: qwertyLine1 = ('qwertyuiop' + (lang === 'fi' ? 'å' : '')).split('');
 	$: qwertyLine2 = ('asdfghjkl' + (lang === 'fi' ? 'äö' : '')).split('');

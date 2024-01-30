@@ -6,6 +6,7 @@
 	import NewGameButton from '$lib/components/NewGameButton.svelte';
 	import QuitGameButton from '$lib/components/QuitGameButton.svelte';
 	import WordBoard from '$lib/components/WordBoard.svelte';
+	import { languageStore } from '$lib/languageStore.js';
 	import type { GameoverDto } from '$lib/models';
 	import { getToastStore } from '@skeletonlabs/skeleton';
 	import { submitGuess as requestCreateGuess } from './api.js';
@@ -22,7 +23,6 @@
 	$: gameId = Number($page.params.gameId);
 	$: guesses = data.game?.guesses ?? [];
 	$: gameover = data.game?.gameover ?? undefined;
-	$: lang = data.game?.language ?? 'en';
 	$: currentGuessIndex = guesses.length;
 	$: word = currentGuess.join('');
 	$: wordLength = data.game?.wordLength ?? 0;
@@ -30,6 +30,8 @@
 	$: emptyGuess = Array.from(Array(wordLength).keys()).map(() => '');
 	$: console.log('loaded game:', data.game);
 	$: console.log('currentGuess:', currentGuess);
+
+	$: $languageStore = data.game?.language ?? 'en';
 
 	$: {
 		const isGameover = gameover?.isGameover ?? false;
@@ -68,7 +70,7 @@
 	};
 </script>
 
-<KeyboardObserver bind:currentGuess bind:currentIndex {submitGuess} {lang} />
+<KeyboardObserver bind:currentGuess bind:currentIndex {submitGuess} />
 
 <div class="flex w-full flex-col items-center gap-y-3">
 	{#if gameover}
@@ -84,7 +86,7 @@
 		{isGameStopped}
 		{letterClicked}
 	/>
-	<Keyboard {guesses} {submitting} {lang} />
+	<Keyboard {guesses} {submitting} />
 
 	<div class="flex flex-col gap-y-3">
 		{#if isGameStopped}

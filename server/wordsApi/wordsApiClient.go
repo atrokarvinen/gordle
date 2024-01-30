@@ -67,10 +67,8 @@ func (w WordsApiClient) WordExists(word string) bool {
 
 func GetDefaultWordDetails(word string) WordDetails {
 	var defaultWord WordDetails = WordDetails{
-		Word: word,
-		Results: []WordResults{
-			{Definition: "No definition found"},
-		},
+		Word:    word,
+		Results: []WordResults{{Definition: ""}},
 	}
 	return defaultWord
 }

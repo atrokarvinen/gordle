@@ -166,7 +166,7 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.Wor
 
 func parseDefinition(results []wordsApi.WordResults) string {
 	if len(results) == 0 {
-		return "Definition not found"
+		return ""
 	}
 	definitions := []string{}
 	for _, result := range results {
