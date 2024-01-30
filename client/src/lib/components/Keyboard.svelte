@@ -6,9 +6,9 @@
 	export let submitting: boolean;
 	export let lang: string;
 
-	const alphabets = ('abcdefghijklmnopqrstuvwxyz' + (lang === 'fi' ? 'åäö' : '')).split('');
-	const qwertyLine1 = ('qwertyuiop' + (lang === 'fi' ? 'å' : '')).split('');
-	const qwertyLine2 = ('asdfghjkl' + (lang === 'fi' ? 'äö' : '')).split('');
+	$: alphabets = ('abcdefghijklmnopqrstuvwxyz' + (lang === 'fi' ? 'åäö' : '')).split('');
+	$: qwertyLine1 = ('qwertyuiop' + (lang === 'fi' ? 'å' : '')).split('');
+	$: qwertyLine2 = ('asdfghjkl' + (lang === 'fi' ? 'äö' : '')).split('');
 	const qwertyLine3 = 'zxcvbnm'.split('');
 
 	let guessLetterMap: Record<string, LetterState> = {};
