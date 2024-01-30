@@ -1,6 +1,6 @@
-package game
+package answers
 
-var Answers = []string{
+var AnswersLetters6 = []string{
 	"abroad",
 	"absent",
 	"accent",

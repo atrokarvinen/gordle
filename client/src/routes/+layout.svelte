@@ -1,12 +1,23 @@
 <script lang="ts">
-	import { AppShell, Modal, Toast, initializeStores } from '@skeletonlabs/skeleton';
+	import NewGameModal from '$lib/components/NewGameModal.svelte';
+	import {
+		AppShell,
+		Modal,
+		Toast,
+		initializeStores,
+		type ModalComponent
+	} from '@skeletonlabs/skeleton';
 	import '../app.pcss';
 	import Navigation from './Navigation.svelte';
 
 	initializeStores();
+
+	const modalRegistry: Record<string, ModalComponent> = {
+		NewGameModal: { ref: NewGameModal }
+	};
 </script>
 
-<Modal />
+<Modal components={modalRegistry} />
 <Toast position="t" />
 <AppShell regionPage="" slotPageContent="md:p-4 p-1 items-center justify-center flex flex-col">
 	<svelte:fragment slot="header">

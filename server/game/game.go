@@ -2,8 +2,10 @@ package game
 
 import (
 	"fmt"
+	"go-test/game/answers"
 	"go-test/models"
 	"go-test/models/dbModels"
+	"go-test/models/dto"
 	"go-test/wordsApi"
 	"math/rand"
 	"strings"
@@ -14,14 +16,15 @@ type Game struct {
 	WordsApi     wordsApi.IWordsApiClient
 }
 
-func (g Game) CreateGame(userId int) models.Game {
-	answer := g.GenerateRandomAnswer()
-	fmt.Println("answer", answer)
+func (g Game) CreateGame(userId int, gameOptions dto.CreateGameRequest) models.Game {
+	answer := g.GenerateRandomAnswer(gameOptions.WordLength)
+	fmt.Printf("Creating game: Answer=%s, MaxAttempts=%d, WordLength=%d...\n",
+		answer, gameOptions.MaxAttempts, gameOptions.WordLength)
 
 	game := dbModels.Game{
 		Answer:      answer,
-		MaxAttempts: 6,
-		WordLength:  6,
+		MaxAttempts: gameOptions.MaxAttempts,
+		WordLength:  gameOptions.WordLength,
 		UserID:      userId,
 		State:       int(dbModels.Active),
 	}
@@ -48,8 +51,8 @@ func (g Game) GetGame(gameId int) (models.Game, error) {
 	return g.MapDbGameToGame(game), nil
 }
 
-func (g Game) GenerateRandomAnswer() string {
-	var allAnswers = Answers
+func (g Game) GenerateRandomAnswer(wordLength int) string {
+	allAnswers := answers.GetAnswers(wordLength)
 	randomIndex := rand.Intn(len(allAnswers))
 	answer := allAnswers[randomIndex]
 	return strings.ToLower(answer)

@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	"go-test/game"
+	"go-test/game/answers"
 	"go-test/models"
 	"go-test/wordsApi"
 	"net/http"
@@ -32,9 +32,10 @@ func (a Api) ValidateGuess(word string, gameId int, userId int) error {
 	return nil
 }
 
-func (a Api) ValidateWordExists(word string) (wordsApi.WordDetails, error) {
+func (a Api) ValidateWordExists(word string, wordLength int) (wordsApi.WordDetails, error) {
 	// Check if word is in the list of answers
-	for _, answer := range game.Answers {
+	allAnswers := answers.GetAnswers(wordLength)
+	for _, answer := range allAnswers {
 		if strings.ToLower(word) == strings.ToLower(answer) {
 			fmt.Printf("Word %q is in the list of answers\n", word)
 			return wordsApi.WordDetails{}, nil

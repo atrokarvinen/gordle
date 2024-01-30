@@ -6,7 +6,6 @@
 	import NewGameButton from '$lib/components/NewGameButton.svelte';
 	import QuitGameButton from '$lib/components/QuitGameButton.svelte';
 	import WordBoard from '$lib/components/WordBoard.svelte';
-	import { LETTERS_COUNT } from '$lib/constants.js';
 	import type { GameoverDto } from '$lib/models';
 	import { getToastStore } from '@skeletonlabs/skeleton';
 	import { submitGuess as requestCreateGuess } from './api.js';
@@ -14,19 +13,20 @@
 	export let data;
 
 	const toastStore = getToastStore();
-	const emptyGuess = Array.from(Array(LETTERS_COUNT).keys()).map(() => '');
 
 	let currentIndex = 0;
-	let currentGuess = emptyGuess;
 	let isGameStopped = false;
 	let submitting = false;
+	let currentGuess: string[] = [''];
 
 	$: gameId = Number($page.params.gameId);
 	$: guesses = data.game?.guesses ?? [];
 	$: gameover = data.game?.gameover ?? undefined;
 	$: currentGuessIndex = guesses.length;
 	$: word = currentGuess.join('');
-
+	$: wordLength = data.game?.wordLength ?? 0;
+	$: maxAttempts = data.game?.maxAttempts ?? 0;
+	$: emptyGuess = Array.from(Array(wordLength).keys()).map(() => '');
 	$: console.log('loaded game:', data.game);
 	$: console.log('currentGuess:', currentGuess);
 
@@ -42,7 +42,7 @@
 		if (isGameStopped) return;
 		submitting = true;
 		try {
-			const result = await requestCreateGuess(gameId, word);
+			const result = await requestCreateGuess(gameId, word, wordLength);
 			if (typeof result.errorMessage === 'string') {
 				toastStore.trigger({
 					background: 'variant-filled-error',
@@ -74,10 +74,12 @@
 		<Gameover {gameover} />
 	{/if}
 	<WordBoard
-		bind:currentGuess
+		{currentGuess}
 		words={guesses}
-		{currentGuessIndex}
 		currentLetterIndex={currentIndex}
+		{maxAttempts}
+		{wordLength}
+		{currentGuessIndex}
 		{isGameStopped}
 		{letterClicked}
 	/>

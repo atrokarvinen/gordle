@@ -18,7 +18,6 @@
 	export let letterState: LetterState;
 	export let letter: string;
 	export let font: string = 'Verdana';
-	export let readonly = true;
 	export let cursor = 'default';
 
 	const getBackgroundColor = (letterState: LetterState) => {
@@ -52,12 +51,5 @@
 		{/if}
 	</button>
 {:else if as === 'input'}
-	<input
-		{...$$restProps}
-		class={classNames}
-		style={`font-family: ${font};`}
-		value={letter}
-		{readonly}
-		on:click
-	/>
+	<button class={classNames} style={`font-family: ${font};`} on:click>{letter}</button>
 {/if}

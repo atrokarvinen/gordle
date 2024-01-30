@@ -44,5 +44,4 @@ const getGame = async () => {
 	} catch (error) {
 		return { gameId: '-1' };
 	}
-	return { gameId: '-1' };
 };

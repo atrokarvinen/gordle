@@ -1,5 +1,4 @@
 import { axios, getApiErrorMessage } from '$lib/axios';
-import { LETTERS_COUNT } from '$lib/constants';
 import type { GameoverDto, Guess, GuessDto, GuessResultDto, GuessedLetter } from '$lib/models';
 import { convertLetterState } from '$lib/utils';
 
@@ -11,8 +10,12 @@ export type SubmitGuessResponse =
 	  }
 	| { errorMessage?: undefined; gameover: GameoverDto; guess: Guess };
 
-export const submitGuess = async (gameId: number, word: string): Promise<SubmitGuessResponse> => {
-	if (word.length !== LETTERS_COUNT) {
+export const submitGuess = async (
+	gameId: number,
+	word: string,
+	wordLength: number
+): Promise<SubmitGuessResponse> => {
+	if (word.length !== wordLength) {
 		return { errorMessage: 'Word length is not correct' };
 	}
 	const payload: GuessDto = { gameId, word };

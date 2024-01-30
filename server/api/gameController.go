@@ -53,7 +53,15 @@ func (a Api) CreateGame(c *gin.Context) {
 		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
 		return
 	}
-	createdGame := a.Game.CreateGame(userId)
+	request := dto.CreateGameRequest{}
+	fmt.Println("Binding...")
+	err = c.Bind(&request)
+	if err != nil || reflect.DeepEqual(request, dto.CreateGameRequest{}) {
+		fmt.Println("Error binding request, using default request")
+		request = dto.DefaultCreateGameRequest
+	}
+	fmt.Println("Bound:", request)
+	createdGame := a.Game.CreateGame(userId, request)
 	fmt.Println("Created game:", createdGame)
 	c.JSON(http.StatusOK, createdGame)
 }
@@ -108,7 +116,8 @@ func (a Api) GuessWord(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	wordDetails, getWordErr := a.ValidateWordExists(guess.Word)
+	game, _ := a.Game.GetGame(gameId)
+	wordDetails, getWordErr := a.ValidateWordExists(guess.Word, game.WordLength)
 	if getWordErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": getWordErr.Error()})
 		return
@@ -118,7 +127,6 @@ func (a Api) GuessWord(c *gin.Context) {
 	gameover := a.Game.CheckGameOver(gameId)
 	gameover.AnswerDescription = a.getAnswerDetails(gameover, wordDetails)
 	if gameover.IsGameover {
-		game, _ := a.Game.GetGame(gameId)
 		game.AnswerDescription = gameover.AnswerDescription
 		if gameover.Win {
 			game.State = int(dbModels.Win)

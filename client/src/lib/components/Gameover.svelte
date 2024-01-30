@@ -4,12 +4,16 @@
 	export let gameover: GameoverDto;
 
 	let descriptionIndex = 0;
+	let descriptions: string[];
 
 	$: isGameover = gameover.isGameover;
 	$: isGameWon = gameover.win;
 	$: answer = gameover.answer;
-	$: descriptions = gameover.answerDescription.split(';;');
 	$: displayedDescription = descriptions[descriptionIndex];
+	$: {
+		descriptions = gameover.answerDescription.split(';;');
+		descriptionIndex = 0;
+	}
 </script>
 
 {#if isGameover}
@@ -29,14 +33,14 @@
 				<div class="flex items-center justify-end gap-x-2">
 					<span>{`${descriptionIndex + 1} / ${descriptions.length}`}</span>
 					<button
-						class="btn-icon-sm variant-ghost-surface"
+						class="btn-icon variant-ghost-surface"
 						disabled={descriptionIndex === 0}
 						on:click={() => (descriptionIndex = Math.max(descriptionIndex - 1, 0))}
 					>
 						<i class="fas fa-arrow-left" />
 					</button>
 					<button
-						class="btn-icon-sm variant-ghost-surface"
+						class="btn-icon variant-ghost-surface"
 						disabled={descriptionIndex === descriptions.length - 1}
 						on:click={() =>
 							(descriptionIndex = Math.min(descriptionIndex + 1, descriptions.length - 1))}
