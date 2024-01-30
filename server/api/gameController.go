@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -145,7 +146,7 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.Wor
 	haveDetailsAlready := isWon && !detailsUndefined
 	if haveDetailsAlready {
 		fmt.Println("Already have details for answer.")
-		return wordDetails.Results[0].Definition
+		return parseDefinition(wordDetails.Results)
 	}
 
 	answerDetails, err := a.WordsApi.GetWord(answer)
@@ -153,7 +154,18 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.Wor
 		fmt.Println("Error getting word:", err.Error(), ", using default word details")
 		answerDetails = wordsApi.GetDefaultWordDetails(answer)
 	}
-	return answerDetails.Results[0].Definition
+	return parseDefinition(answerDetails.Results)
+}
+
+func parseDefinition(results []wordsApi.WordResults) string {
+	if len(results) == 0 {
+		return "Definition not found"
+	}
+	definitions := []string{}
+	for _, result := range results {
+		definitions = append(definitions, result.Definition)
+	}
+	return strings.Join(definitions, ";;")
 }
 
 func getIdsFromContext(c *gin.Context) (int, int, error) {

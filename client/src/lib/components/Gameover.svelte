@@ -3,14 +3,17 @@
 
 	export let gameover: GameoverDto;
 
+	let descriptionIndex = 0;
+
 	$: isGameover = gameover.isGameover;
 	$: isGameWon = gameover.win;
 	$: answer = gameover.answer;
-	$: description = gameover.answerDescription;
+	$: descriptions = gameover.answerDescription.split(';;');
+	$: displayedDescription = descriptions[descriptionIndex];
 </script>
 
 {#if isGameover}
-	<div class="p-4">
+	<div class="w-full px-2 md:w-96">
 		<p>Game over!</p>
 		{#if isGameWon}
 			<p>Victory!</p>
@@ -18,8 +21,30 @@
 		<p>
 			Answer was: <span class="font-bold capitalize">{answer}</span>
 		</p>
-		<p class="italic first-letter:capitalize">
-			"{description}"
-		</p>
+		<div class="my-2 flex flex-col justify-between">
+			<div class="h-16 overflow-y-auto">
+				<p class="italic first-letter:capitalize">"{displayedDescription}."</p>
+			</div>
+			{#if descriptions.length > 1}
+				<div class="flex items-center justify-end gap-x-2">
+					<span>{`${descriptionIndex + 1} / ${descriptions.length}`}</span>
+					<button
+						class="btn-icon-sm variant-ghost-surface"
+						disabled={descriptionIndex === 0}
+						on:click={() => (descriptionIndex = Math.max(descriptionIndex - 1, 0))}
+					>
+						<i class="fas fa-arrow-left" />
+					</button>
+					<button
+						class="btn-icon-sm variant-ghost-surface"
+						disabled={descriptionIndex === descriptions.length - 1}
+						on:click={() =>
+							(descriptionIndex = Math.min(descriptionIndex + 1, descriptions.length - 1))}
+					>
+						<i class="fas fa-arrow-right" />
+					</button>
+				</div>
+			{/if}
+		</div>
 	</div>
 {/if}
