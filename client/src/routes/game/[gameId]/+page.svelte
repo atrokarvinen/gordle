@@ -84,7 +84,10 @@
 	<Keyboard {guesses} {submitting} />
 
 	<div class="flex flex-col gap-y-3">
-		<NewGameButton {isGameStopped} />
-		<QuitGameButton {gameId} {onGameover} />
+		{#if isGameStopped}
+			<NewGameButton />
+		{:else}
+			<QuitGameButton {gameId} {onGameover} />
+		{/if}
 	</div>
 </div>

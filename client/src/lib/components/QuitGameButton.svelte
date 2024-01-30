@@ -1,23 +1,32 @@
 <script lang="ts">
-	import { axios } from '$lib/axios';
+	import { axios, getApiErrorMessage } from '$lib/axios';
 	import type { GameDto, GameoverDto } from '$lib/models';
-	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 
 	export let gameId: number;
 	export let onGameover: (gameover: GameoverDto) => void;
 
+	const toastStore = getToastStore();
 	const quit = async () => {
-		const response = await axios.delete<GameDto>(`/games/${gameId}`);
-		const gameover = response.data.gameover;
-		onGameover(gameover);
+		try {
+			const response = await axios.delete<GameDto>(`/games/${gameId}`);
+			const gameover = response.data.gameover;
+			onGameover(gameover);
+		} catch (error) {
+			toastStore.trigger({
+				background: 'variant-filled-error',
+				message: getApiErrorMessage(error),
+				autohide: true
+			});
+		}
 	};
 
 	const modalStore = getModalStore();
 	const confirmQuit = () => {
 		modalStore.trigger({
 			type: 'confirm',
-			title: 'Confirm',
-			body: 'Are you sure you want to quit?',
+			title: 'Quit game',
+			body: 'Are you sure you want to give up current game?',
 			response: (response) => {
 				if (response) {
 					quit();
@@ -27,4 +36,4 @@
 	};
 </script>
 
-<button class="btn variant-filled-secondary" on:click={confirmQuit}>Quit</button>
+<button class="btn variant-filled-secondary" on:click={confirmQuit}>Give up</button>
