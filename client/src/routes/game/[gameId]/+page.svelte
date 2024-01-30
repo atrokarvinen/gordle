@@ -22,6 +22,7 @@
 	$: gameId = Number($page.params.gameId);
 	$: guesses = data.game?.guesses ?? [];
 	$: gameover = data.game?.gameover ?? undefined;
+	$: lang = data.game?.language ?? 'en';
 	$: currentGuessIndex = guesses.length;
 	$: word = currentGuess.join('');
 	$: wordLength = data.game?.wordLength ?? 0;
@@ -67,7 +68,7 @@
 	};
 </script>
 
-<KeyboardObserver bind:currentGuess bind:currentIndex {submitGuess} />
+<KeyboardObserver bind:currentGuess bind:currentIndex {submitGuess} {lang} />
 
 <div class="flex w-full flex-col items-center gap-y-3">
 	{#if gameover}
@@ -83,7 +84,7 @@
 		{isGameStopped}
 		{letterClicked}
 	/>
-	<Keyboard {guesses} {submitting} />
+	<Keyboard {guesses} {submitting} {lang} />
 
 	<div class="flex flex-col gap-y-3">
 		{#if isGameStopped}

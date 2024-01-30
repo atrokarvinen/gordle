@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"unicode/utf8"
 )
 
 // https://www.kotus.fi/aineistot/sana-aineistot/nykysuomen_sanalista
 
 func ParseAnswers() {
-	return
 	records, err := ReadRecords("nykysuomensanalista2022.csv")
 	if err != nil {
 		fmt.Println("Error reading records: " + err.Error())
@@ -42,7 +42,7 @@ func ReadRecords(fileName string) ([][]string, error) {
 }
 
 func SaveAnswers(records [][]string, length int) {
-	fileName := fmt.Sprintf("suomi-answers-%d.txt", length)
+	fileName := fmt.Sprintf("answers_fi_%d.go", length)
 	f, err := os.Create(fileName)
 	if err != nil {
 		fmt.Println("Error creating file: " + err.Error())
@@ -53,22 +53,25 @@ func SaveAnswers(records [][]string, length int) {
 
 	words := GetWordsOfLength(records, length)
 
+	f.WriteString(fmt.Sprintln("package answers"))
+	f.WriteString(fmt.Sprintf("var AnswersFi%d = []string{\n", length))
 	for _, word := range words {
 		text := fmt.Sprintf("\"%s\",\n", word)
 		fmt.Print(text)
 		f.WriteString(text)
 	}
+	f.WriteString("}")
 }
 
 func GetWordsOfLength(records [][]string, length int) []string {
 	words := []string{}
 	for _, record := range records {
 		word := record[0]
-		correctLength := len(word) == length
+		correctLength := utf8.RuneCountInString(word) == length
 		if !correctLength {
 			continue
 		}
-		alphabets := "abcdefghijklmnopqrstuvwxyz" // + "åäö"
+		alphabets := "abcdefghijklmnopqrstuvwxyzåäö"
 		wordChars := strings.Split(word, "")
 		validCharacters := true
 		for _, char := range wordChars {

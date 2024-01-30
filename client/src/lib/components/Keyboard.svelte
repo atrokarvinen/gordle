@@ -4,10 +4,11 @@
 
 	export let guesses: Guess[];
 	export let submitting: boolean;
+	export let lang: string;
 
-	const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
-	const qwertyLine1 = 'qwertyuiop'.split('');
-	const qwertyLine2 = 'asdfghjkl'.split('');
+	const alphabets = ('abcdefghijklmnopqrstuvwxyz' + (lang === 'fi' ? 'åäö' : '')).split('');
+	const qwertyLine1 = ('qwertyuiop' + (lang === 'fi' ? 'å' : '')).split('');
+	const qwertyLine2 = ('asdfghjkl' + (lang === 'fi' ? 'äö' : '')).split('');
 	const qwertyLine3 = 'zxcvbnm'.split('');
 
 	let guessLetterMap: Record<string, LetterState> = {};
@@ -36,7 +37,7 @@
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
 	</div>
-	<div class="ml-4 flex gap-x-1">
+	<div class={`flex gap-x-1 ${lang === 'en' ? 'ml-4' : ''}`}>
 		{#each qwertyLine2 as letter}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}

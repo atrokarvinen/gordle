@@ -8,6 +8,7 @@ import (
 	"go-test/wordsApi"
 	"net/http"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,7 +24,7 @@ func (a Api) ValidateGuess(word string, gameId int, userId int) error {
 	if game.UserId != userId {
 		return fmt.Errorf("User '%d' has no access to this game", userId)
 	}
-	if len(word) != game.WordLength {
+	if utf8.RuneCountInString(word) != game.WordLength {
 		return fmt.Errorf("Guess length (%d) does not match word length (%d)", len(word), game.WordLength)
 	}
 	gameover := a.Game.CheckGameOver(gameId)

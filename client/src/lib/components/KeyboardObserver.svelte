@@ -2,6 +2,7 @@
 	export let currentIndex: number;
 	export let currentGuess: string[];
 	export let submitGuess: () => void;
+	export let lang: string;
 
 	const onKeyDown = (e: KeyboardEvent) => {
 		const index = currentIndex;
@@ -32,7 +33,7 @@
 		if (key === 'Enter') {
 			submitGuess();
 		}
-		const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
+		const alphabets = ('abcdefghijklmnopqrstuvwxyz' + (lang === 'fi' ? 'åäö' : '')).split('');
 		if (alphabets.includes(key.toLocaleLowerCase())) {
 			currentGuess = currentGuess.map((l, i) => (i === index ? key.toUpperCase() : l));
 			currentIndex = Math.min(index + 1, currentGuess.length - 1);
