@@ -52,8 +52,9 @@ func (g Game) MapDbGuessToGuess(dbGuess dbModels.Guess, answer string) models.Gu
 	results := g.CheckWord(dbGuess.Word, answer)
 	letters := []models.Letter{}
 	for i, result := range results {
+		wordRune := []rune(dbGuess.Word)
 		letters = append(letters, models.Letter{
-			Letter: string(dbGuess.Word[i]),
+			Letter: string(wordRune[i]),
 			State:  convertLetterState(result),
 		})
 	}
