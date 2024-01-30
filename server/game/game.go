@@ -9,6 +9,7 @@ import (
 	"go-test/wordsApi"
 	"math/rand"
 	"strings"
+	"unicode/utf8"
 )
 
 type Game struct {
@@ -90,8 +91,10 @@ func (g Game) UpdateGame(game models.Game) error {
 }
 
 func (g Game) CheckWord(guess string, answer string) []string {
-	length := len(answer)
+	length := utf8.RuneCountInString(answer)
 	results := make([]string, length)
+
+	fmt.Println("Checking word", guess, "against", answer)
 
 	// Find correct letters
 	var containedMap = make(map[string]int)

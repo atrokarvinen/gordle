@@ -25,7 +25,7 @@ func (a Api) ValidateGuess(word string, gameId int, userId int) error {
 		return fmt.Errorf("User '%d' has no access to this game", userId)
 	}
 	if utf8.RuneCountInString(word) != game.WordLength {
-		return fmt.Errorf("Guess length (%d) does not match word length (%d)", len(word), game.WordLength)
+		return fmt.Errorf("Guess length (%d) does not match word length (%d)", utf8.RuneCountInString(word), game.WordLength)
 	}
 	gameover := a.Game.CheckGameOver(gameId)
 	if gameover.IsGameover {
