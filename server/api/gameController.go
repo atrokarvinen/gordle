@@ -54,13 +54,11 @@ func (a Api) CreateGame(c *gin.Context) {
 		return
 	}
 	request := dto.CreateGameRequest{}
-	fmt.Println("Binding...")
 	err = c.Bind(&request)
 	if err != nil || reflect.DeepEqual(request, dto.CreateGameRequest{}) {
 		fmt.Println("Error binding request, using default request")
 		request = dto.DefaultCreateGameRequest
 	}
-	fmt.Println("Bound:", request)
 	createdGame := a.Game.CreateGame(userId, request)
 	fmt.Println("Created game:", createdGame)
 	c.JSON(http.StatusOK, createdGame)
