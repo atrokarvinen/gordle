@@ -121,7 +121,6 @@ func (g Game) CheckWord(guessStr string, answerStr string) []string {
 			answerChar := answer[j]
 			if guessChar == answerChar {
 				count++
-				break
 			}
 		}
 		if count > 0 {
