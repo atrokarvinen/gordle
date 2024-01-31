@@ -72,7 +72,7 @@
 
 <KeyboardObserver bind:currentGuess bind:currentIndex {submitGuess} />
 
-<div class="flex w-full flex-col items-center gap-y-3">
+<div class="flex h-full w-full flex-col items-center justify-center gap-y-3">
 	{#if gameover}
 		<Gameover {gameover} />
 	{/if}
