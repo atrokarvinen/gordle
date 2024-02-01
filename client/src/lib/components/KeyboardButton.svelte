@@ -15,7 +15,7 @@
 	};
 </script>
 
-<button on:click={dispatchKeyboardEvent}>
+<button data-testid="keyboard-button" on:click={dispatchKeyboardEvent}>
 	{#if submitting}
 		<div class="bg-surface-400 flex h-7 w-12 items-center justify-center md:h-12 md:w-20">
 			<ProgressRadial width="md:w-10 w-6" />

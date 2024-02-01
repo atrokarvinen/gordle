@@ -21,14 +21,15 @@
 
 <div class="flex flex-col gap-y-1">
 	{#each mappedData as word, index}
-		{#if index === currentGuessIndex && !isGameStopped}
-			<WordGuess inputLetters={currentGuess} currentIndex={currentLetterIndex} {letterClicked} />
-		{:else}
-			<div class="flex gap-x-1">
+		<div data-testid="guess-row" class="flex gap-x-1">
+			{#if index === currentGuessIndex && !isGameStopped}
+				<WordGuess inputLetters={currentGuess} currentIndex={currentLetterIndex} {letterClicked} />
+			{:else}
 				{#each word.letters as letter}
 					<LetterBox letter={letter.letter} letterState={letter.state} />
 				{/each}
-			</div>
-		{/if}
+				<span data-testid="guessed-word" hidden>{word.word}</span>
+			{/if}
+		</div>
 	{/each}
 </div>

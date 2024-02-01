@@ -5,9 +5,13 @@
 
 <AppBar>
 	<svelte:fragment slot="lead">
-		<a class="btn-icon variant-filled-surface" href="{base}/"><i class="fa-solid fa-house" /></a>
+		<a data-testid="home-link" class="btn-icon variant-filled-surface" href="{base}/"
+			><i class="fa-solid fa-house" /></a
+		>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
-		<a class="btn-icon variant-filled-surface" href="{base}/info"><i class="fa-solid fa-info" /></a>
+		<a data-testid="info-link" class="btn-icon variant-filled-surface" href="{base}/info"
+			><i class="fa-solid fa-info" /></a
+		>
 	</svelte:fragment>
 </AppBar>

@@ -65,17 +65,17 @@
 				{/each}
 			</div>
 			<label class="label">
-				Max guesses
-				<select class="select" bind:value={maxAttempts}>
-					{#each attemptsOptions as option}
+				Word length
+				<select class="select" bind:value={wordLength}>
+					{#each wordLengthOptions as option}
 						<option value={option}>{option}</option>
 					{/each}
 				</select>
 			</label>
 			<label class="label">
-				Word length
-				<select class="select" bind:value={wordLength}>
-					{#each wordLengthOptions as option}
+				Max guesses
+				<select class="select" bind:value={maxAttempts}>
+					{#each attemptsOptions as option}
 						<option value={option}>{option}</option>
 					{/each}
 				</select>

@@ -43,7 +43,7 @@
 </script>
 
 {#if as === 'button'}
-	<button class={classNames} style={`font-family: ${font};`}>
+	<button data-testid="guess-letter" class={classNames} style={`font-family: ${font};`}>
 		{#if icon}
 			<i class={icon} />
 		{:else}
@@ -51,5 +51,7 @@
 		{/if}
 	</button>
 {:else if as === 'input'}
-	<button class={classNames} style={`font-family: ${font};`} on:click>{letter}</button>
+	<button data-testid="guess-letter" class={classNames} style={`font-family: ${font};`} on:click
+		>{letter}</button
+	>
 {/if}
