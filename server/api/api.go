@@ -38,7 +38,6 @@ func (a Api) Run() {
 	r.GET("/games/latest", a.GetLatestGame)
 	r.GET("/games/:id", a.GetGame)
 	r.POST("/games", a.CreateGame)
-	r.PUT("/games/:id", a.UpdateGame)
 	r.DELETE("/games/:id", a.DeleteGame)
 
 	r.POST("/games/:id/guesses", a.GuessWord)
