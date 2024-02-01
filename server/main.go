@@ -18,22 +18,22 @@ func main() {
 	db := database.Init()
 	database.Migrate(db)
 
+	// clientFi2 := wordsApi.DictClientFi{}
+	// details, _ := clientFi2.GetWord("toiste")
+	// fmt.Println("definitions:", details.Definitions)
+
 	// database.Reset(db)
 	// database.PrintDb(db)
 
 	dataProvider := database.DatabaseDataProvider{Db: db}
 	userService := user.User{Db: dataProvider}
 	gameEngine := game.Game{DataProvider: dataProvider}
-	wordsClient := wordsApi.WordsApiClient{DataProvider: dataProvider}
+	clientFi := wordsApi.DictClientFi{}
+	clientEn := wordsApi.WordsApiClient{DataProvider: dataProvider}
+	clientFactory := wordsApi.DictionaryClientFactory{DictionaryClientEn: clientEn, DictionaryClientFi: clientFi}
 
-	if false {
-		// cli := cli.Cli{DataProvider: dataProvider, Game: gameEngine}
-		// cli.Run()
-	} else {
-		api := api.Api{DataProvider: dataProvider, Game: gameEngine, WordsApi: wordsClient, User: userService}
-		api.Run()
-	}
-
+	api := api.Api{DataProvider: dataProvider, Game: gameEngine, DictionaryFactory: clientFactory, User: userService}
+	api.Run()
 }
 
 func InitEnv() {

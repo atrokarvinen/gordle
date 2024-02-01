@@ -34,7 +34,7 @@ func (a Api) ValidateGuess(word string, gameId int, userId int) error {
 	return nil
 }
 
-func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) (wordsApi.WordDetails, error) {
+func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) (wordsApi.DictionaryDetails, error) {
 	// Check if word is in the list of answers
 	wordLength := gameOptions.WordLength
 	lang := gameOptions.Language
@@ -42,22 +42,22 @@ func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) 
 	for _, answer := range allAnswers {
 		if strings.ToLower(word) == strings.ToLower(answer) {
 			fmt.Printf("Word %q is in the list of answers\n", word)
-			return wordsApi.WordDetails{}, nil
+			return wordsApi.DictionaryDetails{}, nil
 		}
 	}
 
 	if gameOptions.Language != "en" {
 		fmt.Printf("Selected language is '%s' != 'en', cannot verify from API, returning error...\n", gameOptions.Language)
-		return wordsApi.WordDetails{}, fmt.Errorf("Word '%s' not found", word)
+		return wordsApi.DictionaryDetails{}, fmt.Errorf("Word '%s' not found", word)
 	}
 
 	// Check word from the Words API
-	wordDetails, err := a.WordsApi.GetWord(word)
+	wordDetails, err := a.DictionaryFactory.GetDictionaryClient(lang).GetWord(word)
 	if err != nil {
 		fmt.Println("Error getting word:", err)
 	}
 	if err != nil && err.Error() == fmt.Sprintf("Word '%s' not found", word) {
-		return wordsApi.WordDetails{}, err
+		return wordsApi.DictionaryDetails{}, err
 	}
 
 	return wordDetails, nil

@@ -12,10 +12,10 @@ import (
 )
 
 type Api struct {
-	DataProvider game.DataProvider
-	Game         game.Game
-	User         user.User
-	WordsApi     wordsApi.IWordsApiClient
+	DataProvider      game.DataProvider
+	Game              game.Game
+	User              user.User
+	DictionaryFactory wordsApi.DictionaryClientFactory
 }
 
 func (a Api) Run() {

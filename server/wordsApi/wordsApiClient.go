@@ -15,7 +15,42 @@ type WordsApiClient struct {
 	DataProvider database.DatabaseDataProvider
 }
 
-func (w WordsApiClient) GetWord(word string) (WordDetails, error) {
+func (w WordsApiClient) GetWord(word string) (DictionaryDetails, error) {
+	details, err := w.getWord(word)
+	if err != nil {
+		return DictionaryDetails{}, err
+	}
+	dictionaryDetails := mapWordDetails(details)
+	return dictionaryDetails, nil
+}
+
+func mapWordDetails(details WordDetails) DictionaryDetails {
+	return DictionaryDetails{
+		Word:        details.Word,
+		Definitions: mapDefinitions(details.Results),
+		Examples:    mapExamples(details.Results),
+	}
+}
+
+func mapDefinitions(definitions []WordResults) []string {
+	var result []string
+	for _, definition := range definitions {
+		result = append(result, definition.Definition)
+	}
+	return result
+}
+
+func mapExamples(examples []WordResults) []string {
+	var result []string
+	for _, example := range examples {
+		for _, example := range example.Examples {
+			result = append(result, example)
+		}
+	}
+	return result
+}
+
+func (w WordsApiClient) getWord(word string) (WordDetails, error) {
 	fmt.Println("Getting word from Words API:", word)
 	err := w.getApiCallsCount()
 	if err != nil {
@@ -63,14 +98,6 @@ func (w WordsApiClient) GetWord(word string) (WordDetails, error) {
 func (w WordsApiClient) WordExists(word string) bool {
 	_, err := w.GetWord(word)
 	return err == nil
-}
-
-func GetDefaultWordDetails(word string) WordDetails {
-	var defaultWord WordDetails = WordDetails{
-		Word:    word,
-		Results: []WordResults{{Definition: ""}},
-	}
-	return defaultWord
 }
 
 func (w WordsApiClient) getApiCallsCount() error {

@@ -10,7 +10,7 @@
 	$: isGameover = gameover.isGameover;
 	$: isGameWon = gameover.win;
 	$: answer = gameover.answer;
-	$: displayedDescription = descriptions[descriptionIndex];
+	$: displayedDescription = descriptions[descriptionIndex]?.trim();
 	$: {
 		descriptions = gameover.answerDescription !== '' ? gameover.answerDescription.split(';;') : [];
 		descriptionIndex = 0;
@@ -29,7 +29,9 @@
 		{#if descriptions.length > 0}
 			<div class="my-2 flex flex-col justify-between">
 				<div class="h-16 overflow-y-auto">
-					<p class="italic first-letter:capitalize">"{displayedDescription}."</p>
+					<p class="italic first-letter:capitalize">
+						"{`${displayedDescription}${displayedDescription.endsWith('.') ? '' : '.'}`}"
+					</p>
 				</div>
 				{#if descriptions.length > 1}
 					<div class="flex items-center justify-end gap-x-2">

@@ -76,7 +76,7 @@ func (a Api) DeleteGame(c *gin.Context) {
 	fmt.Printf("Deleting game '%d'...\n", gameId)
 
 	gameover := models.Gameover{IsGameover: true, Win: false, Answer: game.Answer}
-	answerDescription := a.getAnswerDetails(gameover, wordsApi.WordDetails{}, game.Language)
+	answerDescription := a.getAnswerDetails(gameover, wordsApi.DictionaryDetails{}, game.Language)
 	fmt.Println("Answer description:", answerDescription)
 	game.Gameover.IsGameover = true
 	game.Gameover.AnswerDescription = answerDescription
@@ -92,7 +92,7 @@ func (a Api) DeleteGame(c *gin.Context) {
 	c.JSON(http.StatusOK, game)
 }
 
-func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.WordDetails, lang string) string {
+func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.DictionaryDetails, lang string) string {
 	isGameover := gameover.IsGameover
 	answer := gameover.Answer
 	isWon := gameover.Win
@@ -101,33 +101,20 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.Wor
 		fmt.Println("Game is not over, not getting answer details")
 		return ""
 	}
-	if lang == "fi" {
-		fmt.Println("Language is 'fi', not getting answer details")
-		return ""
-	}
 
 	detailsUndefined := reflect.DeepEqual(wordDetails, wordsApi.WordDetails{})
 	haveDetailsAlready := isWon && !detailsUndefined
 	if haveDetailsAlready {
 		fmt.Println("Already have details for answer.")
-		return parseDefinition(wordDetails.Results)
+		return strings.Join(wordDetails.Definitions, ";;")
 	}
 
-	answerDetails, err := a.WordsApi.GetWord(answer)
+	answerDetails, err := a.DictionaryFactory.GetDictionaryClient(lang).GetWord(answer)
 	if err != nil {
 		fmt.Println("Error getting word:", err.Error(), ", using default word details")
 		answerDetails = wordsApi.GetDefaultWordDetails(answer)
 	}
-	return parseDefinition(answerDetails.Results)
+	return strings.Join(answerDetails.Definitions, ";;")
 }
 
-func parseDefinition(results []wordsApi.WordResults) string {
-	if len(results) == 0 {
-		return ""
-	}
-	definitions := []string{}
-	for _, result := range results {
-		definitions = append(definitions, result.Definition)
-	}
-	return strings.Join(definitions, ";;")
-}
+// <span class="kt-scope">halv.</span> laiha, huono hevonen, koni, luuska, kopukka.
