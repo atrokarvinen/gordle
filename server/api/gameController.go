@@ -102,7 +102,7 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.Dic
 		return ""
 	}
 
-	detailsUndefined := reflect.DeepEqual(wordDetails, wordsApi.WordDetails{})
+	detailsUndefined := reflect.DeepEqual(wordDetails, wordsApi.DictionaryDetails{})
 	haveDetailsAlready := isWon && !detailsUndefined
 	if haveDetailsAlready {
 		fmt.Println("Already have details for answer.")
