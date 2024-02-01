@@ -100,6 +100,8 @@ func sanitizeDefinition(definition string) string {
 			openingTagEnd = true
 		} else if openingTagEnd && !closingTagStart {
 			sanitized = append(sanitized, r)
+		} else if !openingTagBegin && !openingTagEnd {
+			sanitized = append(sanitized, r)
 		} else if closingTagStart && closingTagEnd {
 			sanitized = append(sanitized, r)
 		}
