@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { getApiErrorMessage } from '$lib/axios.js';
 	import Gameover from '$lib/components/Gameover.svelte';
 	import Keyboard from '$lib/components/Keyboard.svelte';
 	import KeyboardObserver from '$lib/components/KeyboardObserver.svelte';
@@ -8,6 +9,7 @@
 	import WordBoard from '$lib/components/WordBoard.svelte';
 	import { languageStore } from '$lib/languageStore.js';
 	import type { GameoverDto } from '$lib/models';
+	import { i18n } from '$lib/translations/i18n.js';
 	import { getToastStore } from '@skeletonlabs/skeleton';
 	import { submitGuess as requestCreateGuess } from './api.js';
 
@@ -45,18 +47,16 @@
 		if (isGameStopped) return;
 		submitting = true;
 		try {
-			const result = await requestCreateGuess(gameId, word, wordLength);
-			if (typeof result.errorMessage === 'string') {
-				toastStore.trigger({
-					background: 'variant-filled-error',
-					message: result.errorMessage,
-					autohide: true
-				});
-				return;
-			}
-			const { gameover: go, guess } = result;
-			gameover = go;
-			guesses = [...guesses, guess];
+			if (word.length !== wordLength) throw $i18n.t('word_length_wrong');
+			const result = await requestCreateGuess(gameId, word);
+			gameover = result.gameover;
+			guesses = [...guesses, result.guess];
+		} catch (error) {
+			toastStore.trigger({
+				background: 'variant-filled-error',
+				message: getApiErrorMessage(error),
+				autohide: true
+			});
 		} finally {
 			submitting = false;
 		}

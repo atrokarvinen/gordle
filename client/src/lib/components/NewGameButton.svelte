@@ -1,16 +1,17 @@
 <script lang="ts">
+	import { i18n } from '$lib/translations/i18n';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 
 	const modalStore = getModalStore();
 
 	const openModal = () => {
 		modalStore.trigger({
-			title: 'New game',
-			body: 'Select the options for the new game.',
+			title: $i18n.t('new_game'),
+			body: $i18n.t('new_game_info'),
 			type: 'component',
 			component: 'NewGameModal'
 		});
 	};
 </script>
 
-<button class="btn variant-filled-primary" on:click={openModal}>New game</button>
+<button class="btn variant-filled-primary" on:click={openModal}>{$i18n.t('new_game')}</button>

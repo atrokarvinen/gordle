@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { GameoverDto } from '$lib/models';
+	import { i18n } from '$lib/translations/i18n';
 
 	export let gameover: GameoverDto;
 
@@ -18,12 +19,12 @@
 
 {#if isGameover}
 	<div class="w-full px-2 md:w-96">
-		<p>Game over!</p>
+		<p>{$i18n.t('gameover')}!</p>
 		{#if isGameWon}
-			<p>Victory!</p>
+			<p>{$i18n.t('victory')}!</p>
 		{/if}
 		<p>
-			Answer was: <span class="font-bold capitalize">{answer}</span>
+			{$i18n.t('answer_was')}: <span class="font-bold capitalize">{answer}</span>
 		</p>
 		{#if descriptions.length > 0}
 			<div class="my-2 flex flex-col justify-between">

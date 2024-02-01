@@ -1,3 +1,5 @@
+import type { Language } from './translations/language';
+
 export enum LetterState {
 	CORRECT,
 	CONTAINED,
@@ -38,7 +40,7 @@ export type GameDto = {
 	name: string;
 	maxAttempts: number;
 	wordLength: number;
-	language: string;
+	language: Language;
 	gameover: GameoverDto;
 	guesses: Guess[];
 };

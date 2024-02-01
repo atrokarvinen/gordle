@@ -4,8 +4,10 @@
 	import { axios, getApiErrorMessage } from '$lib/axios';
 	import { languageStore } from '$lib/languageStore';
 	import type { GameDto } from '$lib/models';
+	import { i18n } from '$lib/translations/i18n';
 	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	import type { SvelteComponent } from 'svelte';
+	import LanguageSelect from './LanguageSelect.svelte';
 
 	export let parent: SvelteComponent;
 
@@ -17,7 +19,6 @@
 
 	const attemptsOptions = [4, 5, 6, 7, 8];
 	const wordLengthOptions = [5, 6, 7, 8];
-	const languageOptions = ['en', 'fi'];
 
 	const toastStore = getToastStore();
 	const createGame = async () => {
@@ -30,7 +31,7 @@
 
 			toastStore.trigger({
 				background: 'variant-filled-success',
-				message: 'New game started',
+				message: $i18n.t('new_game_started'),
 				autohide: true
 			});
 			goto(`${base}/game/${game.id}`);
@@ -43,9 +44,6 @@
 			});
 		}
 	};
-
-	const selectedLangBorder = 'border-success-500 ';
-	const unselectedLangBorder = 'border-transparent ';
 </script>
 
 {#if $modalStore[0]}
@@ -53,19 +51,9 @@
 		<header class="h2">{$modalStore[0].title}</header>
 		<article>{$modalStore[0].body}</article>
 		<form class="form space-y-2">
-			<div class="flex gap-x-3">
-				{#each languageOptions as lang}
-					<button
-						on:click={() => (language = lang)}
-						class={`rounded border-2 border-solid p-2 ${lang === language ? selectedLangBorder : unselectedLangBorder}`}
-						style="outline: none;"
-					>
-						<img alt={lang} src="{base}/{lang}.png" class="w-16" />
-					</button>
-				{/each}
-			</div>
+			<LanguageSelect value={language} onChange={(lang) => (language = lang)} />
 			<label class="label">
-				Word length
+				{$i18n.t('word_length')}
 				<select class="select" bind:value={wordLength}>
 					{#each wordLengthOptions as option}
 						<option value={option}>{option}</option>
@@ -73,7 +61,7 @@
 				</select>
 			</label>
 			<label class="label">
-				Max guesses
+				{$i18n.t('max_guesses')}
 				<select class="select" bind:value={maxAttempts}>
 					{#each attemptsOptions as option}
 						<option value={option}>{option}</option>
@@ -82,8 +70,10 @@
 			</label>
 		</form>
 		<footer class="modal-footer {parent.regionFooter}">
-			<button class="btn variant-filled-secondary" on:click={modalStore.close}>Close</button>
-			<button class="btn variant-filled-primary" on:click={createGame}>Create</button>
+			<button class="btn variant-filled-secondary" on:click={modalStore.close}
+				>{$i18n.t('close')}</button
+			>
+			<button class="btn variant-filled-primary" on:click={createGame}>{$i18n.t('create')}</button>
 		</footer>
 	</div>
 {/if}
