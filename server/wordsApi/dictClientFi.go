@@ -105,6 +105,12 @@ func sanitizeDefinition(definition string) string {
 		} else if closingTagStart && closingTagEnd {
 			sanitized = append(sanitized, r)
 		}
+		if openingTagBegin && openingTagEnd && closingTagStart && closingTagEnd {
+			openingTagBegin = false
+			openingTagEnd = false
+			closingTagStart = false
+			closingTagEnd = false
+		}
 	}
 	return string(sanitized)
 }

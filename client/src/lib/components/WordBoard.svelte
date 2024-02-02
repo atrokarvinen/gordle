@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { LetterState, type Guess } from '$lib/models';
-	import LetterBox from './LetterBox.svelte';
-	import WordGuess from './WordGuess.svelte';
+	import WordRow from './WordRow.svelte';
+	import WordRowInput from './WordRowInput.svelte';
 
 	export let currentGuess: string[];
 	export let words: Guess[];
@@ -13,22 +13,20 @@
 	export let wordLength: number;
 
 	const emptyLetter = { letter: '', state: LetterState.UNKNOWN };
-	$: mappedData = Array.from(Array(maxAttempts).keys()).map((i) => {
-		if (words.length > i) return words[i];
-		else return { word: '', letters: Array.from(Array(wordLength).keys()).map(() => emptyLetter) };
+	$: emptyLetters = Array.from(Array(wordLength).keys()).map(() => emptyLetter);
+	$: emptyWords = Array.from(Array(maxAttempts - words.length).keys()).map(() => {
+		return { word: '', letters: emptyLetters };
 	});
+	$: allWords = [...words, ...emptyWords];
 </script>
 
 <div class="flex flex-col gap-y-1">
-	{#each mappedData as word, index}
+	{#each allWords as word, index}
 		<div data-testid="guess-row" class="flex gap-x-1">
 			{#if index === currentGuessIndex && !isGameStopped}
-				<WordGuess inputLetters={currentGuess} currentIndex={currentLetterIndex} {letterClicked} />
+				<WordRowInput {currentGuess} currentIndex={currentLetterIndex} {letterClicked} />
 			{:else}
-				{#each word.letters as letter}
-					<LetterBox letter={letter.letter} letterState={letter.state} />
-				{/each}
-				<span data-testid="guessed-word" hidden>{word.word}</span>
+				<WordRow {word} />
 			{/if}
 		</div>
 	{/each}
