@@ -19,11 +19,7 @@ func main() {
 	database.Migrate(db)
 
 	// clientFi2 := wordsApi.DictClientFi{}
-	// details, _ := clientFi2.GetWord("turku")
-	// fmt.Println("definitions:", details.Definitions)
-
-	// database.Reset(db)
-	// database.PrintDb(db)
+	// clientFi2.GetWord("anioni")
 
 	dataProvider := database.DatabaseDataProvider{Db: db}
 	userService := user.User{Db: dataProvider}

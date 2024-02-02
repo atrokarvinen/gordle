@@ -61,6 +61,10 @@ func (w DictClientFi) GetWord(word string) (DictionaryDetails, error) {
 	}
 
 	details := mapWordDetailsFi(responses[0])
+
+	fmt.Println("definitions:", details.Definitions)
+	fmt.Println("examples:", details.Examples)
+
 	return details, nil
 }
 
@@ -73,12 +77,24 @@ func mapWordDetailsFi(details ResponseFi) DictionaryDetails {
 }
 
 func mapDefinitionsFi(sense []SenseFi) []string {
-	var result []string
+	result := []string{}
 	for _, sense := range sense {
 		for _, definition := range sense.Definitions {
 			sanitized := sanitizeDefinition(definition.Definition)
 			fmt.Println("definition", definition, "=> sanitized:", sanitized)
-			result = append(result, sanitized)
+			if len(sense.Senses) == 0 {
+				result = append(result, sanitized)
+				continue
+			}
+			prefix := sanitized
+			for _, innerSense := range sense.Senses {
+				for _, innerDefinition := range innerSense.Definitions {
+					sanitized := sanitizeDefinition(innerDefinition.Definition)
+					fmt.Println("inner definition", innerDefinition, "=> sanitized:", sanitized)
+					sanitized = prefix + " " + sanitized
+					result = append(result, sanitized)
+				}
+			}
 		}
 	}
 	return result
@@ -116,10 +132,15 @@ func sanitizeDefinition(definition string) string {
 }
 
 func mapExamplesFi(senses []SenseFi) []string {
-	var result []string
+	result := []string{}
 	for _, sense := range senses {
 		for _, example := range sense.Examples {
 			result = append(result, example.Text)
+		}
+		for _, innerSense := range sense.Senses {
+			for _, innerExample := range innerSense.Examples {
+				result = append(result, innerExample.Text)
+			}
 		}
 	}
 	return result
@@ -142,6 +163,7 @@ type ResponseFi struct {
 type SenseFi struct {
 	Examples    []ExampleFi    `json:"examples"`
 	Definitions []DefinitionFi `json:"definitions"`
+	Senses      []SenseFi      `json:"senses"`
 }
 
 type ExampleFi struct {
