@@ -81,7 +81,7 @@ func (g Game) CheckGameOver(gameId int) models.Gameover {
 	if isGameOver {
 		answer = game.Answer
 	}
-	return models.Gameover{IsGameover: isGameOver, Win: isGameWon, Answer: answer, AnswerDescription: ""}
+	return models.Gameover{IsGameover: isGameOver, Win: isGameWon, Answer: answer}
 }
 
 func (g Game) UpdateGame(game models.Game) error {

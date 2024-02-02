@@ -3,6 +3,7 @@ package game
 import (
 	"go-test/models"
 	"go-test/models/dbModels"
+	"strings"
 
 	"gorm.io/gorm"
 )
@@ -24,7 +25,8 @@ func (g Game) MapDbGameToGame(dbGame dbModels.Game) models.Game {
 		Language:          dbGame.Language,
 		UserId:            dbGame.UserID,
 		Answer:            dbGame.Answer,
-		AnswerDescription: dbGame.AnswerDescription,
+		AnswerDescription: strings.Split(dbGame.AnswerDescription, ";;"),
+		AnswerExamples:    strings.Split(dbGame.AnswerExamples, ";;"),
 		State:             dbGame.State,
 		Gameover:          MapDbGameToGameover(dbGame),
 	}
@@ -33,10 +35,11 @@ func (g Game) MapDbGameToGame(dbGame dbModels.Game) models.Game {
 func MapDbGameToGameover(game dbModels.Game) models.Gameover {
 
 	return models.Gameover{
-		IsGameover:        game.State != int(dbModels.Active),
-		Win:               game.State == int(dbModels.Win),
-		Answer:            game.Answer,
-		AnswerDescription: game.AnswerDescription,
+		IsGameover:  game.State != int(dbModels.Active),
+		Win:         game.State == int(dbModels.Win),
+		Answer:      game.Answer,
+		Definitions: strings.Split(game.AnswerDescription, ";;"),
+		Examples:    strings.Split(game.AnswerExamples, ";;"),
 	}
 }
 
@@ -84,6 +87,7 @@ func (g Game) MapGameToDbGame(game models.Game) dbModels.Game {
 		Language:          game.Language,
 		UserID:            game.UserId,
 		State:             game.State,
-		AnswerDescription: game.AnswerDescription,
+		AnswerDescription: strings.Join(game.AnswerDescription, ";;"),
+		AnswerExamples:    strings.Join(game.AnswerExamples, ";;"),
 	}
 }

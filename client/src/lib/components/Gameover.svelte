@@ -1,24 +1,17 @@
 <script lang="ts">
 	import type { GameoverDto } from '$lib/models';
 	import { i18n } from '$lib/translations/i18n';
+	import GameoverDescription from './GameoverDescription.svelte';
 
 	export let gameover: GameoverDto;
-
-	let descriptionIndex = 0;
-	let descriptions: string[];
 
 	$: isGameover = gameover.isGameover;
 	$: isGameWon = gameover.win;
 	$: answer = gameover.answer;
-	$: displayedDescription = descriptions[descriptionIndex]?.trim();
-	$: {
-		descriptions = gameover.answerDescription !== '' ? gameover.answerDescription.split(';;') : [];
-		descriptionIndex = 0;
-	}
 </script>
 
 {#if isGameover}
-	<div class="w-full px-2 md:w-96">
+	<div class="w-full space-y-2 px-2 sm:w-96">
 		<p>{$i18n.t('gameover')}!</p>
 		{#if isGameWon}
 			<p>{$i18n.t('victory')}!</p>
@@ -26,34 +19,6 @@
 		<p>
 			{$i18n.t('answer_was')}: <span class="font-bold capitalize">{answer}</span>
 		</p>
-		{#if descriptions.length > 0}
-			<div class="my-2 flex flex-col justify-between">
-				<div class="h-16 overflow-y-auto">
-					<p class="italic first-letter:capitalize">
-						"{`${displayedDescription}${displayedDescription.endsWith('.') ? '' : '.'}`}"
-					</p>
-				</div>
-				{#if descriptions.length > 1}
-					<div class="flex items-center justify-end gap-x-2">
-						<span>{`${descriptionIndex + 1} / ${descriptions.length}`}</span>
-						<button
-							class="btn-icon variant-ghost-surface"
-							disabled={descriptionIndex === 0}
-							on:click={() => (descriptionIndex = Math.max(descriptionIndex - 1, 0))}
-						>
-							<i class="fas fa-arrow-left" />
-						</button>
-						<button
-							class="btn-icon variant-ghost-surface"
-							disabled={descriptionIndex === descriptions.length - 1}
-							on:click={() =>
-								(descriptionIndex = Math.min(descriptionIndex + 1, descriptions.length - 1))}
-						>
-							<i class="fas fa-arrow-right" />
-						</button>
-					</div>
-				{/if}
-			</div>
-		{/if}
+		<GameoverDescription definitions={gameover.definitions} examples={gameover.examples} />
 	</div>
 {/if}

@@ -32,7 +32,8 @@ export type GameoverDto = {
 	isGameover: boolean;
 	win: boolean;
 	answer: string;
-	answerDescription: string;
+	definitions: string[];
+	examples: string[];
 };
 
 export type GameDto = {

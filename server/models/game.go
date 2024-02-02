@@ -3,7 +3,8 @@ package models
 type Game struct {
 	Id                int      `json:"id"`
 	Answer            string   `json:"-"`
-	AnswerDescription string   `json:"-"`
+	AnswerDescription []string `json:"-"`
+	AnswerExamples    []string `json:"-"`
 	MaxAttempts       int      `json:"maxAttempts"`
 	WordLength        int      `json:"wordLength"`
 	Language          string   `json:"language"`

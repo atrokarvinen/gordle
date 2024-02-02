@@ -6,6 +6,8 @@ export const finnishKeys = {
 			close: 'Sulje',
 			confirm: 'Kyllä',
 			create: 'Luo',
+			definition: 'Määritelmä',
+			example: 'Esimerkki',
 			gameover: 'Peli ohi',
 			give_up: 'Luovuta',
 			give_up_confirm: 'Oletko varma että haluat luovuttaa',

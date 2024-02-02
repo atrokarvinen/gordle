@@ -8,7 +8,6 @@ import (
 	"go-test/wordsApi"
 	"net/http"
 	"reflect"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -76,12 +75,14 @@ func (a Api) DeleteGame(c *gin.Context) {
 	fmt.Printf("Deleting game '%d'...\n", gameId)
 
 	gameover := models.Gameover{IsGameover: true, Win: false, Answer: game.Answer}
-	answerDescription := a.getAnswerDetails(gameover, wordsApi.DictionaryDetails{}, game.Language)
-	fmt.Println("Answer description:", answerDescription)
+	answerDetails := a.getAnswerDetails(gameover, wordsApi.DictionaryDetails{}, game.Language)
+	fmt.Println("Answer description:", answerDetails)
 	game.Gameover.IsGameover = true
-	game.Gameover.AnswerDescription = answerDescription
+	game.Gameover.Definitions = answerDetails.Definitions
+	game.Gameover.Examples = answerDetails.Examples
 
-	game.AnswerDescription = answerDescription
+	game.AnswerDescription = answerDetails.Definitions
+	game.AnswerExamples = answerDetails.Examples
 	game.State = int(dbModels.Lose)
 	err = a.Game.UpdateGame(game)
 	if err != nil {
@@ -92,21 +93,21 @@ func (a Api) DeleteGame(c *gin.Context) {
 	c.JSON(http.StatusOK, game)
 }
 
-func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.DictionaryDetails, lang string) string {
+func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.DictionaryDetails, lang string) wordsApi.DictionaryDetails {
 	isGameover := gameover.IsGameover
 	answer := gameover.Answer
 	isWon := gameover.Win
 
 	if !isGameover {
 		fmt.Println("Game is not over, not getting answer details")
-		return ""
+		return wordsApi.DictionaryDetails{}
 	}
 
 	detailsUndefined := reflect.DeepEqual(wordDetails, wordsApi.DictionaryDetails{})
 	haveDetailsAlready := isWon && !detailsUndefined
 	if haveDetailsAlready {
 		fmt.Println("Already have details for answer.")
-		return strings.Join(wordDetails.Definitions, ";;")
+		return wordDetails
 	}
 
 	answerDetails, err := a.DictionaryFactory.GetDictionaryClient(lang).GetWord(answer)
@@ -114,7 +115,5 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.Dic
 		fmt.Println("Error getting word:", err.Error(), ", using default word details")
 		answerDetails = wordsApi.GetDefaultWordDetails(answer)
 	}
-	return strings.Join(answerDetails.Definitions, ";;")
+	return answerDetails
 }
-
-// <span class="kt-scope">halv.</span> laiha, huono hevonen, koni, luuska, kopukka.

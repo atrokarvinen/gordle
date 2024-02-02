@@ -6,6 +6,7 @@ type Game struct {
 	gorm.Model
 	Answer            string
 	AnswerDescription string
+	AnswerExamples    string
 	MaxAttempts       int
 	WordLength        int
 	Language          string
