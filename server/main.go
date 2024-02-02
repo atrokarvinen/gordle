@@ -20,8 +20,10 @@ func main() {
 	db := database.Init()
 	database.Migrate(db)
 
-	// clientFi2 := wordsApi.DictClientFi{}
-	// clientFi2.GetWord("anioni")
+	// clientFi2 := kielitoimistoApi.KielitoimistoApiClient{}
+	// clientFi2.GetWord("älykkö")
+
+	// return
 
 	dataProvider := database.DatabaseDataProvider{Db: db}
 	userService := user.User{Db: dataProvider}

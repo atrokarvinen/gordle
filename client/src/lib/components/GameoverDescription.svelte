@@ -7,10 +7,16 @@
 	export let examples: string[];
 
 	let definitionsIndex = 0;
-	$: displayedDefinition = definitions[definitionsIndex]?.trim();
+	$: displayedDefinition = getElement(definitions, definitionsIndex);
 
 	let examplesIndex = 0;
-	$: displayedExample = examples[examplesIndex]?.trim();
+	$: displayedExample = getElement(examples, examplesIndex);
+
+	const getElement = (items: string[], index: number) => {
+		if (items.length === 0 || index >= items.length) return '';
+		const element = items[index];
+		return element.trim();
+	};
 </script>
 
 <Accordion padding="p-2" regionControl="variant-ringed-surface">
