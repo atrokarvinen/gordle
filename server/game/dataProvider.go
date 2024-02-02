@@ -1,7 +1,7 @@
 package game
 
 import (
-	"go-test/models/dbModels"
+	"gordle/models/dbModels"
 )
 
 type DataProvider interface {

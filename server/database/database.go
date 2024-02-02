@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"go-test/models/dbModels"
+	"gordle/models/dbModels"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -32,8 +32,8 @@ func Init() *gorm.DB {
 
 func Migrate(db *gorm.DB) {
 	fmt.Println("Migrating...")
-	
-        db.AutoMigrate(&dbModels.User{})
+
+	db.AutoMigrate(&dbModels.User{})
 	db.AutoMigrate(&dbModels.Game{})
 	db.AutoMigrate(&dbModels.Guess{})
 	db.AutoMigrate(&dbModels.WordsApiCall{})

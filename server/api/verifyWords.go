@@ -2,8 +2,8 @@ package api
 
 import (
 	"fmt"
-	"go-test/dictionaryClient"
-	"go-test/game"
+	"gordle/dictionaryClient"
+	"gordle/game"
 	"os"
 	"time"
 )

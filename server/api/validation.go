@@ -2,10 +2,10 @@ package api
 
 import (
 	"fmt"
-	m "go-test/dictionaryClient/models"
-	"go-test/game/answers"
-	"go-test/models"
-	"go-test/models/dto"
+	m "gordle/dictionaryClient/models"
+	"gordle/game/answers"
+	"gordle/models"
+	"gordle/models/dto"
 	"net/http"
 	"strings"
 	"unicode/utf8"

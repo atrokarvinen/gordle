@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"go-test/models/dbModels"
+	"gordle/models/dbModels"
 )
 
 func (d DatabaseDataProvider) CreateUser() dbModels.User {

@@ -2,9 +2,9 @@ package api
 
 import (
 	"fmt"
-	"go-test/models"
-	"go-test/models/dbModels"
-	"go-test/models/dto"
+	"gordle/models"
+	"gordle/models/dbModels"
+	"gordle/models/dto"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

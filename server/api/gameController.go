@@ -2,10 +2,10 @@ package api
 
 import (
 	"fmt"
-	m "go-test/dictionaryClient/models"
-	"go-test/models"
-	"go-test/models/dbModels"
-	"go-test/models/dto"
+	m "gordle/dictionaryClient/models"
+	"gordle/models"
+	"gordle/models/dbModels"
+	"gordle/models/dto"
 	"net/http"
 	"reflect"
 

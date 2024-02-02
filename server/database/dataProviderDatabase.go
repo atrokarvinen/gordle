@@ -2,7 +2,7 @@ package database
 
 import (
 	"errors"
-	"go-test/models/dbModels"
+	"gordle/models/dbModels"
 
 	"gorm.io/gorm"
 )

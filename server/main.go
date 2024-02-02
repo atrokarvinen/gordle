@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"go-test/api"
-	"go-test/database"
-	"go-test/dictionaryClient"
-	"go-test/dictionaryClient/kielitoimistoApi"
-	"go-test/dictionaryClient/wordsApi"
-	"go-test/game"
-	"go-test/user"
+	"gordle/api"
+	"gordle/database"
+	"gordle/dictionaryClient"
+	"gordle/dictionaryClient/kielitoimistoApi"
+	"gordle/dictionaryClient/wordsApi"
+	"gordle/game"
+	"gordle/user"
 	"os"
 
 	"github.com/joho/godotenv"

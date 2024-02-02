@@ -2,8 +2,8 @@ package user
 
 import (
 	"fmt"
-	"go-test/database"
-	"go-test/models/dbModels"
+	"gordle/database"
+	"gordle/models/dbModels"
 )
 
 type User struct {

@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	"go-test/models/dbModels"
+	"gordle/models/dbModels"
 	"net/http"
 	"strconv"
 

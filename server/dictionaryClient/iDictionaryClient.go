@@ -1,6 +1,6 @@
 package dictionaryClient
 
-import "go-test/dictionaryClient/models"
+import "gordle/dictionaryClient/models"
 
 type IDictionaryClient interface {
 	GetWord(string) (models.DictionaryDetails, error)

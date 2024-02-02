@@ -1,4 +1,4 @@
-module go-test
+module gordle
 
 go 1.21.6
 

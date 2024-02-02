@@ -1,9 +1,9 @@
 package api
 
 import (
-	"go-test/dictionaryClient"
-	"go-test/game"
-	"go-test/user"
+	"gordle/dictionaryClient"
+	"gordle/game"
+	"gordle/user"
 	"os"
 	"time"
 

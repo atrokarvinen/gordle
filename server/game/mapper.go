@@ -1,8 +1,8 @@
 package game
 
 import (
-	"go-test/models"
-	"go-test/models/dbModels"
+	"gordle/models"
+	"gordle/models/dbModels"
 	"strings"
 
 	"gorm.io/gorm"

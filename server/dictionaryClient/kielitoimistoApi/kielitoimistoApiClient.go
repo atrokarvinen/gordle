@@ -3,7 +3,7 @@ package kielitoimistoApi
 import (
 	"encoding/json"
 	"fmt"
-	"go-test/dictionaryClient/models"
+	"gordle/dictionaryClient/models"
 	"net/http"
 	"net/url"
 )

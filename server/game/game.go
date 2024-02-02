@@ -2,11 +2,11 @@ package game
 
 import (
 	"fmt"
-	"go-test/dictionaryClient"
-	"go-test/game/answers"
-	"go-test/models"
-	"go-test/models/dbModels"
-	"go-test/models/dto"
+	"gordle/dictionaryClient"
+	"gordle/game/answers"
+	"gordle/models"
+	"gordle/models/dbModels"
+	"gordle/models/dto"
 	"math/rand"
 	"strings"
 	"unicode/utf8"

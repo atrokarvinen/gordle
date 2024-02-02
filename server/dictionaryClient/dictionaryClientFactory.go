@@ -1,8 +1,8 @@
 package dictionaryClient
 
 import (
-	"go-test/dictionaryClient/kielitoimistoApi"
-	"go-test/dictionaryClient/wordsApi"
+	"gordle/dictionaryClient/kielitoimistoApi"
+	"gordle/dictionaryClient/wordsApi"
 )
 
 type DictionaryClientFactory struct {

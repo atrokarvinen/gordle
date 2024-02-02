@@ -1,6 +1,6 @@
 package dto
 
-import "go-test/models"
+import "gordle/models"
 
 type GuessResponse struct {
 	Word     string          `json:"word"`
