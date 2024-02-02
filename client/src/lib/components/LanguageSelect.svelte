@@ -6,8 +6,8 @@
 	export let onChange: (language: Language) => void;
 	export let languageOptions: Language[] = ['en', 'fi'];
 
-	const selectedLangBorder = 'border-success-500 ';
-	const unselectedLangBorder = 'border-transparent ';
+	const selectedLangBorder = 'border-success-500';
+	const unselectedLangBorder = 'border-transparent';
 </script>
 
 <div class="flex gap-x-3">

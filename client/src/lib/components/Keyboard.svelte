@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { alphabetStore } from '$lib/alphabetStore';
 	import { languageStore } from '$lib/languageStore';
 	import { LetterState, type Guess } from '$lib/models';
 	import KeyboardButton from './KeyboardButton.svelte';
@@ -6,10 +7,10 @@
 	export let guesses: Guess[];
 	export let submitting: boolean;
 	$: lang = $languageStore;
-	$: alphabets = ('abcdefghijklmnopqrstuvwxyz' + (lang === 'fi' ? 'åäö' : '')).split('');
-	$: qwertyLine1 = ('qwertyuiop' + (lang === 'fi' ? 'å' : '')).split('');
-	$: qwertyLine2 = ('asdfghjkl' + (lang === 'fi' ? 'äö' : '')).split('');
-	const qwertyLine3 = 'zxcvbnm'.split('');
+	$: alphabets = $alphabetStore.alphabets;
+	$: qwertyLine1 = $alphabetStore.qwerty1;
+	$: qwertyLine2 = $alphabetStore.qwerty2;
+	$: qwertyLine3 = $alphabetStore.qwerty3;
 
 	let guessLetterMap: Record<string, LetterState> = {};
 	$: {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { alphabetStore } from '$lib/alphabetStore';
 	import { languageStore } from '$lib/languageStore';
 
 	export let currentIndex: number;
@@ -35,8 +36,7 @@
 		if (key === 'Enter') {
 			submitGuess();
 		}
-		const alphabets = ('abcdefghijklmnopqrstuvwxyz' + (lang === 'fi' ? 'åäö' : '')).split('');
-		if (alphabets.includes(key.toLocaleLowerCase())) {
+		if ($alphabetStore.alphabets.includes(key.toLocaleLowerCase())) {
 			currentGuess = currentGuess.map((l, i) => (i === index ? key.toUpperCase() : l));
 			currentIndex = Math.min(index + 1, currentGuess.length - 1);
 		}
