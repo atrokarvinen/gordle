@@ -33,14 +33,20 @@ func (g Game) MapDbGameToGame(dbGame dbModels.Game) models.Game {
 }
 
 func MapDbGameToGameover(game dbModels.Game) models.Gameover {
-
 	return models.Gameover{
 		IsGameover:  game.State != int(dbModels.Active),
 		Win:         game.State == int(dbModels.Win),
 		Answer:      game.Answer,
-		Definitions: strings.Split(game.AnswerDescription, ";;"),
-		Examples:    strings.Split(game.AnswerExamples, ";;"),
+		Definitions: mapStringToArray(game.AnswerDescription),
+		Examples:    mapStringToArray(game.AnswerExamples),
 	}
+}
+
+func mapStringToArray(str string) []string {
+	if len(str) == 0 {
+		return []string{}
+	}
+	return strings.Split(str, ";;")
 }
 
 func (g Game) MapDbGuessesToGuesses(dbGuesses []dbModels.Guess, answer string) []models.Guess {
