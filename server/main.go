@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"go-test/api"
 	"go-test/database"
+	"go-test/dictionaryClient"
+	"go-test/dictionaryClient/kielitoimistoApi"
+	"go-test/dictionaryClient/wordsApi"
 	"go-test/game"
 	"go-test/user"
-	"go-test/wordsApi"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -24,9 +26,9 @@ func main() {
 	dataProvider := database.DatabaseDataProvider{Db: db}
 	userService := user.User{Db: dataProvider}
 	gameEngine := game.Game{DataProvider: dataProvider}
-	clientFi := wordsApi.DictClientFi{}
+	clientFi := kielitoimistoApi.KielitoimistoApiClient{}
 	clientEn := wordsApi.WordsApiClient{DataProvider: dataProvider}
-	clientFactory := wordsApi.DictionaryClientFactory{DictionaryClientEn: clientEn, DictionaryClientFi: clientFi}
+	clientFactory := dictionaryClient.DictionaryClientFactory{DictionaryClientEn: clientEn, DictionaryClientFi: clientFi}
 
 	api := api.Api{DataProvider: dataProvider, Game: gameEngine, DictionaryFactory: clientFactory, User: userService}
 	api.Run()

@@ -1,4 +1,4 @@
-package wordsApi
+package models
 
 type DictionaryDetails struct {
 	Word        string   `json:"word"`

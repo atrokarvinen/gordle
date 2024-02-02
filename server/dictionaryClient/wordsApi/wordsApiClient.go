@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"go-test/database"
+	"go-test/dictionaryClient/models"
 	"go-test/models/dbModels"
 	"net/http"
 	"os"
@@ -15,17 +16,17 @@ type WordsApiClient struct {
 	DataProvider database.DatabaseDataProvider
 }
 
-func (w WordsApiClient) GetWord(word string) (DictionaryDetails, error) {
+func (w WordsApiClient) GetWord(word string) (models.DictionaryDetails, error) {
 	details, err := w.getWord(word)
 	if err != nil {
-		return DictionaryDetails{}, err
+		return models.DictionaryDetails{}, err
 	}
 	dictionaryDetails := mapWordDetails(details)
 	return dictionaryDetails, nil
 }
 
-func mapWordDetails(details WordDetails) DictionaryDetails {
-	return DictionaryDetails{
+func mapWordDetails(details WordDetails) models.DictionaryDetails {
+	return models.DictionaryDetails{
 		Word:        details.Word,
 		Definitions: mapDefinitions(details.Results),
 		Examples:    mapExamples(details.Results),
@@ -93,11 +94,6 @@ func (w WordsApiClient) getWord(word string) (WordDetails, error) {
 	// fmt.Println("word details:", details)
 	fmt.Printf("Word %q is valid\n", word)
 	return details, nil
-}
-
-func (w WordsApiClient) WordExists(word string) bool {
-	_, err := w.GetWord(word)
-	return err == nil
 }
 
 func (w WordsApiClient) getApiCallsCount() error {

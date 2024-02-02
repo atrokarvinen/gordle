@@ -2,10 +2,10 @@ package api
 
 import (
 	"fmt"
+	m "go-test/dictionaryClient/models"
 	"go-test/models"
 	"go-test/models/dbModels"
 	"go-test/models/dto"
-	"go-test/wordsApi"
 	"net/http"
 	"reflect"
 
@@ -75,7 +75,7 @@ func (a Api) DeleteGame(c *gin.Context) {
 	fmt.Printf("Deleting game '%d'...\n", gameId)
 
 	gameover := models.Gameover{IsGameover: true, Win: false, Answer: game.Answer}
-	answerDetails := a.getAnswerDetails(gameover, wordsApi.DictionaryDetails{}, game.Language)
+	answerDetails := a.getAnswerDetails(gameover, m.DictionaryDetails{}, game.Language)
 	fmt.Println("Answer description:", answerDetails)
 	game.Gameover.IsGameover = true
 	game.Gameover.Definitions = answerDetails.Definitions
@@ -93,17 +93,17 @@ func (a Api) DeleteGame(c *gin.Context) {
 	c.JSON(http.StatusOK, game)
 }
 
-func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.DictionaryDetails, lang string) wordsApi.DictionaryDetails {
+func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails m.DictionaryDetails, lang string) m.DictionaryDetails {
 	isGameover := gameover.IsGameover
 	answer := gameover.Answer
 	isWon := gameover.Win
 
 	if !isGameover {
 		fmt.Println("Game is not over, not getting answer details")
-		return wordsApi.DictionaryDetails{}
+		return m.DictionaryDetails{}
 	}
 
-	detailsUndefined := reflect.DeepEqual(wordDetails, wordsApi.DictionaryDetails{})
+	detailsUndefined := reflect.DeepEqual(wordDetails, m.DictionaryDetails{})
 	haveDetailsAlready := isWon && !detailsUndefined
 	if haveDetailsAlready {
 		fmt.Println("Already have details for answer.")
@@ -113,7 +113,7 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails wordsApi.Dic
 	answerDetails, err := a.DictionaryFactory.GetDictionaryClient(lang).GetWord(answer)
 	if err != nil {
 		fmt.Println("Error getting word:", err.Error(), ", using default word details")
-		answerDetails = wordsApi.GetDefaultWordDetails(answer)
+		answerDetails = m.GetDefaultWordDetails(answer)
 	}
 	return answerDetails
 }

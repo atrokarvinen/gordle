@@ -1,25 +1,26 @@
-package wordsApi
+package kielitoimistoApi
 
 import (
 	"encoding/json"
 	"fmt"
+	"go-test/dictionaryClient/models"
 	"net/http"
 	"net/url"
 )
 
-type DictClientFi struct{}
+type KielitoimistoApiClient struct{}
 
-func (w DictClientFi) GetWord(word string) (DictionaryDetails, error) {
+func (w KielitoimistoApiClient) GetWord(word string) (models.DictionaryDetails, error) {
 	loginUrl := "https://www.kielitoimistonsanakirja.fi/api/auth/anon-login"
 	loginRequest, err := http.NewRequest("GET", loginUrl, nil)
 	if err != nil {
 		fmt.Println("Error creating login request:", err.Error())
-		return DictionaryDetails{}, err
+		return models.DictionaryDetails{}, err
 	}
 	loginRes, err := http.DefaultClient.Do(loginRequest)
 	if err != nil {
 		fmt.Println("Error logging in:", err.Error())
-		return DictionaryDetails{}, err
+		return models.DictionaryDetails{}, err
 	}
 	defer loginRes.Body.Close()
 
@@ -27,7 +28,7 @@ func (w DictClientFi) GetWord(word string) (DictionaryDetails, error) {
 	err = json.NewDecoder(loginRes.Body).Decode(&message)
 	if err != nil {
 		fmt.Println("Error decoding login response:", err.Error())
-		return DictionaryDetails{}, err
+		return models.DictionaryDetails{}, err
 	}
 	fmt.Println("access token status:", loginRes.StatusCode)
 
@@ -38,13 +39,13 @@ func (w DictClientFi) GetWord(word string) (DictionaryDetails, error) {
 	wordRequest.Header.Set("Authorization", "Bearer "+message.AccessToken)
 	if err != nil {
 		fmt.Println("Error creating word request:", err.Error())
-		return DictionaryDetails{}, err
+		return models.DictionaryDetails{}, err
 	}
 
 	wordRes, err := http.DefaultClient.Do(wordRequest)
 	if err != nil {
 		fmt.Println("Error getting word:", err.Error())
-		return DictionaryDetails{}, err
+		return models.DictionaryDetails{}, err
 	}
 	defer wordRes.Body.Close()
 
@@ -52,12 +53,12 @@ func (w DictClientFi) GetWord(word string) (DictionaryDetails, error) {
 	err = json.NewDecoder(wordRes.Body).Decode(&responses)
 	if err != nil {
 		fmt.Println("Error decoding word response:", err.Error())
-		return DictionaryDetails{}, err
+		return models.DictionaryDetails{}, err
 	}
 	fmt.Println("word details:", responses)
 
 	if len(responses) == 0 {
-		return DictionaryDetails{}, nil
+		return models.DictionaryDetails{}, nil
 	}
 
 	details := mapWordDetailsFi(responses[0])
@@ -68,8 +69,8 @@ func (w DictClientFi) GetWord(word string) (DictionaryDetails, error) {
 	return details, nil
 }
 
-func mapWordDetailsFi(details ResponseFi) DictionaryDetails {
-	return DictionaryDetails{
+func mapWordDetailsFi(details ResponseFi) models.DictionaryDetails {
+	return models.DictionaryDetails{
 		Word:        details.Word,
 		Definitions: mapDefinitionsFi(details.Senses),
 		Examples:    mapExamplesFi(details.Senses),
@@ -144,11 +145,6 @@ func mapExamplesFi(senses []SenseFi) []string {
 		}
 	}
 	return result
-}
-
-func (w DictClientFi) WordExists(word string) bool {
-	_, err := w.GetWord(word)
-	return err == nil
 }
 
 type LoginResponse struct {

@@ -2,10 +2,10 @@ package api
 
 import (
 	"fmt"
+	m "go-test/dictionaryClient/models"
 	"go-test/game/answers"
 	"go-test/models"
 	"go-test/models/dto"
-	"go-test/wordsApi"
 	"net/http"
 	"strings"
 	"unicode/utf8"
@@ -34,7 +34,7 @@ func (a Api) ValidateGuess(word string, gameId int, userId int) error {
 	return nil
 }
 
-func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) (wordsApi.DictionaryDetails, error) {
+func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) (m.DictionaryDetails, error) {
 	// Check if word is in the list of answers
 	wordLength := gameOptions.WordLength
 	lang := gameOptions.Language
@@ -42,13 +42,13 @@ func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) 
 	for _, answer := range allAnswers {
 		if strings.ToLower(word) == strings.ToLower(answer) {
 			fmt.Printf("Word %q is in the list of answers\n", word)
-			return wordsApi.DictionaryDetails{}, nil
+			return m.DictionaryDetails{}, nil
 		}
 	}
 
 	if gameOptions.Language != "en" {
 		fmt.Printf("Selected language is '%s' != 'en', cannot verify from API, returning error...\n", gameOptions.Language)
-		return wordsApi.DictionaryDetails{}, fmt.Errorf("Word '%s' not found", word)
+		return m.DictionaryDetails{}, fmt.Errorf("Word '%s' not found", word)
 	}
 
 	// Check word from the Words API
@@ -57,7 +57,7 @@ func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) 
 		fmt.Println("Error getting word:", err)
 	}
 	if err != nil && err.Error() == fmt.Sprintf("Word '%s' not found", word) {
-		return wordsApi.DictionaryDetails{}, err
+		return m.DictionaryDetails{}, err
 	}
 
 	return wordDetails, nil

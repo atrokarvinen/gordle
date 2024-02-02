@@ -1,9 +1,9 @@
 package api
 
 import (
+	"go-test/dictionaryClient"
 	"go-test/game"
 	"go-test/user"
-	"go-test/wordsApi"
 	"os"
 	"time"
 
@@ -15,7 +15,7 @@ type Api struct {
 	DataProvider      game.DataProvider
 	Game              game.Game
 	User              user.User
-	DictionaryFactory wordsApi.DictionaryClientFactory
+	DictionaryFactory dictionaryClient.DictionaryClientFactory
 }
 
 func (a Api) Run() {

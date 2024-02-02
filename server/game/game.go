@@ -2,19 +2,19 @@ package game
 
 import (
 	"fmt"
+	"go-test/dictionaryClient"
 	"go-test/game/answers"
 	"go-test/models"
 	"go-test/models/dbModels"
 	"go-test/models/dto"
-	"go-test/wordsApi"
 	"math/rand"
 	"strings"
 	"unicode/utf8"
 )
 
 type Game struct {
-	DataProvider DataProvider
-	WordsApi     wordsApi.IWordsApiClient
+	DataProvider     DataProvider
+	DictionaryClient dictionaryClient.IDictionaryClient
 }
 
 func (g Game) CreateGame(userId int, gameOptions dto.CreateGameRequest) models.Game {

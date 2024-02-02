@@ -2,13 +2,13 @@ package api
 
 import (
 	"fmt"
+	"go-test/dictionaryClient"
 	"go-test/game"
-	"go-test/wordsApi"
 	"os"
 	"time"
 )
 
-func VerifyWords(apiClient wordsApi.IWordsApiClient) {
+func VerifyWords(apiClient dictionaryClient.IDictionaryClient) {
 	words := game.RandomWords
 	// words := []string{}
 	// for i, word := range game.RandomWords {
