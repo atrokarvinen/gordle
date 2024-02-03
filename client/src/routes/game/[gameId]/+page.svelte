@@ -47,14 +47,15 @@
 		if (isGameStopped) return;
 		submitting = true;
 		try {
-			if (word.length !== wordLength) throw $i18n.t('word_length_wrong');
+			if (word.length !== wordLength) throw 'word_length_wrong';
 			const result = await requestCreateGuess(gameId, word);
 			gameover = result.gameover;
 			guesses = [...guesses, result.guess];
 		} catch (error) {
+			const err = getApiErrorMessage(error);
 			toastStore.trigger({
 				background: 'variant-filled-error',
-				message: getApiErrorMessage(error),
+				message: $i18n.t(err.message, { data: err.data }),
 				autohide: true
 			});
 		} finally {

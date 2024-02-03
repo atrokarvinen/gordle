@@ -37,9 +37,10 @@
 			goto(`${base}/game/${game.id}`);
 			modalStore.close();
 		} catch (error) {
+			const err = getApiErrorMessage(error);
 			toastStore.trigger({
 				background: 'variant-filled-error',
-				message: getApiErrorMessage(error),
+				message: $i18n.t(err.message, { data: err.data }),
 				autohide: true
 			});
 		}

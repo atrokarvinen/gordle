@@ -16,7 +16,7 @@
 		} catch (error) {
 			toastStore.trigger({
 				background: 'variant-filled-error',
-				message: getApiErrorMessage(error),
+				message: $i18n.t(getApiErrorMessage(error).data, { data: getApiErrorMessage(error).data }),
 				autohide: true
 			});
 		}

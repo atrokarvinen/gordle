@@ -1,3 +1,4 @@
+import { expect } from "@playwright/test";
 import { BACKEND_URL } from "./config";
 import { test } from "./game-fixture";
 
@@ -48,4 +49,12 @@ test("wins game and loads won game correctly", async ({ game }) => {
   await game.page.reload();
 
   await game.verifyVictory("please");
+});
+
+test("does not allow guessing non-existing word", async ({ game }) => {
+  await game.guessWord("asdasd", true);
+
+  const err = 'word "ASDASD" not found in language "en"';
+  await expect(game.page.getByText(err)).toBeVisible();
+  await game.verifyLetterActive(5);
 });

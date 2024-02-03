@@ -29,7 +29,10 @@ func (a Api) GuessWord(c *gin.Context) {
 	options := dto.CreateGameRequest{Language: game.Language, WordLength: game.WordLength}
 	wordDetails, getWordErr := a.ValidateWordExists(guess.Word, options)
 	if getWordErr != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": getWordErr.Error()})
+		errorDto := ApiError{
+			Message: getWordErr.Error(),
+			Data:    map[string]string{"word": guess.Word, "language": game.Language}}
+		c.JSON(http.StatusBadRequest, errorDto)
 		return
 	}
 

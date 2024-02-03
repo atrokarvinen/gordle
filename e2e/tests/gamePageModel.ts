@@ -38,10 +38,10 @@ export class GamePageModel {
     }
   }
 
-  async guessWord(word: string, isLast = false) {
+  async guessWord(word: string, rowShouldStayActive = false) {
     await this.typeLetters(word);
     await this.page.keyboard.press("Enter");
-    if (isLast) return;
+    if (rowShouldStayActive) return;
     await this.verifyLetterActive(0);
   }
 

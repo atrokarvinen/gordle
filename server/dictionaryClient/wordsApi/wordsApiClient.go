@@ -49,7 +49,7 @@ func (w WordsApiClient) getWord(word string) (WordDetails, error) {
 
 	if statusCode == http.StatusNotFound {
 		fmt.Printf("Word %q not found\n", word)
-		return WordDetails{}, errors.New("Word '" + word + "' not found")
+		return WordDetails{}, errors.New("Word not found")
 	} else if statusCode == http.StatusForbidden {
 		return WordDetails{}, errors.New("Invalid Api Key")
 	} else if statusCode == http.StatusTooManyRequests {

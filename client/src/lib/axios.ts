@@ -1,23 +1,31 @@
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
 import base, { AxiosError, isAxiosError } from 'axios';
+import { englishKeys } from './translations/en';
 
 export const axios = base.create({
 	baseURL: PUBLIC_BACKEND_URL,
 	withCredentials: true
 });
 
-export const getApiErrorMessage = (error: any) => {
+export const getApiErrorMessage = (error: any): { message: string; data: any } => {
 	if (isAxiosError(error)) {
 		const axiosError: AxiosError = error;
-		const data: any = axiosError.response?.data;
-		const message = data.message;
+		const responseData: any = axiosError.response?.data;
+		const message = responseData.message;
 		if (typeof message === 'string') {
-			return message;
+			const translationKey = messageToTranslationKey(message);
+			return { message: translationKey, data: responseData.data };
 		}
-		return axiosError.message;
+		return { message: axiosError.message, data: undefined };
 	}
 	if (typeof error?.messsage === 'string') {
-		return error.message;
+		return { message: error.message, data: undefined };
 	}
-	return error;
+	return { message: error, data: undefined };
+};
+
+const messageToTranslationKey = (message: string): string => {
+	const key = message.toLowerCase().replace(/[^a-z]/g, '_');
+	if (Object.keys(englishKeys.en.translation).includes(key)) return key;
+	return message;
 };

@@ -8,8 +8,8 @@
 	<p>{$i18n.t('language_select_info')}</p>
 	<LanguageSelect
 		onChange={(lang) => {
-			$i18n.changeLanguage(lang);
 			$uiLanguageStore = lang;
+			localStorage.setItem('uiLanguage', lang);
 		}}
 		value={$uiLanguageStore}
 	/>

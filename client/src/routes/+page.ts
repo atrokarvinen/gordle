@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import { axios } from '$lib/axios';
 import type { GameDto } from '$lib/models';
+import { detectLanguage } from '$lib/translations/uiLanguageStore';
 
 export const load = async () => {
 	if (!browser) {
@@ -38,7 +39,8 @@ const getGame = async () => {
 	}
 	try {
 		console.log('Creating new game...');
-		const response = await axios.post<GameDto>(`/games`);
+		const payload = { maxAttempts: 6, wordLength: 6, language: detectLanguage() };
+		const response = await axios.post<GameDto>(`/games`, payload);
 		const game = response.data;
 		return { gameId: game.id };
 	} catch (error) {

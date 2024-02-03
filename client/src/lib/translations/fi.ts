@@ -27,7 +27,8 @@ export const finnishKeys = {
 			quit_game: 'Pelin luovutus',
 			victory: 'Voitto',
 			word_length: 'Sanan pituus',
-			word_length_wrong: 'Syötetyn sanan pituus on väärä.'
+			word_length_wrong: 'Syötetyn sanan pituus on väärä.',
+			word_not_found: 'Sanaa "{{data.word}}" ei löytynyt kielellä "{{data.language}}".'
 		}
 	}
 };

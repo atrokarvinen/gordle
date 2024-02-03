@@ -27,7 +27,8 @@ export const englishKeys = {
 			quit_game: 'Quit game',
 			victory: 'Victory',
 			word_length: 'Word length',
-			word_length_wrong: 'Word length is not correct.'
+			word_length_wrong: 'Word length is not correct.',
+			word_not_found: 'Word "{{data.word}}" not found in language "{{data.language}}".'
 		}
 	}
 };
