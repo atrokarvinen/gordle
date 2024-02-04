@@ -2,6 +2,7 @@ export const finnishKeys = {
 	fi: {
 		translation: {
 			answer_was: 'Vastaus oli',
+			auth_error: 'Jotain meni pieleen tunnistautumisessa.',
 			cancel: 'Peruuta',
 			close: 'Sulje',
 			confirm: 'Kyllä',

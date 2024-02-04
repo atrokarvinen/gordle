@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { getApiErrorMessage } from '$lib/axios.js';
 	import Gameover from '$lib/components/Gameover.svelte';
@@ -14,6 +16,12 @@
 	import { submitGuess as requestCreateGuess } from './api.js';
 
 	export let data;
+
+	$: {
+		if (data.unauthorized) {
+			goto(`${base}/`, { state: { redirected: true } });
+		}
+	}
 
 	const toastStore = getToastStore();
 

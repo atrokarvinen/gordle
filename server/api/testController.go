@@ -21,7 +21,7 @@ func (a Api) SetAnswer(c *gin.Context) {
 	answer := SetAnswerRequest{}
 	c.Bind(&answer)
 	fmt.Println("Setting answer to '" + answer.Answer + "'...")
-	userId, _ := getUserIdFromCookie(c)
+	userId, _ := getUserIdFromContext(c)
 	game, _ := a.Game.GetLatestGame(userId)
 	game.Answer = answer.Answer
 	a.Game.UpdateGame(game)

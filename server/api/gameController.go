@@ -27,7 +27,7 @@ func (a Api) GetGame(c *gin.Context) {
 }
 
 func (a Api) GetLatestGame(c *gin.Context) {
-	userId, err := getUserIdFromCookie(c)
+	userId, err := getUserIdFromContext(c)
 	fmt.Println("Getting latest game for user '", userId, "'...")
 	if err != nil {
 		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
@@ -45,7 +45,7 @@ func (a Api) GetLatestGame(c *gin.Context) {
 }
 
 func (a Api) CreateGame(c *gin.Context) {
-	userId, err := getUserIdFromCookie(c)
+	userId, err := getUserIdFromContext(c)
 	fmt.Printf("Creating game for userId '%d'...\n", userId)
 	if err != nil {
 		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})

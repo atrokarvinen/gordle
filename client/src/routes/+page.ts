@@ -23,9 +23,12 @@ const login = async () => {
 	const response = await axios.post('/users/login', { userId: Number(userId) });
 	const user = response.data;
 	const loginId = user.ID;
-
-	localStorage.setItem('userId', loginId);
 	console.log('received loginId:', loginId);
+	if (loginId > 0) {
+		localStorage.setItem('userId', loginId);
+		axios.defaults.headers.common['Authorization'] = `Bearer ${loginId}`;
+		return;
+	}
 };
 
 const getGame = async () => {

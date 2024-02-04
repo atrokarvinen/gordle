@@ -2,6 +2,7 @@ export const englishKeys = {
 	en: {
 		translation: {
 			answer_was: 'Answer was',
+			auth_error: 'Something went wrong in authentication.',
 			cancel: 'Cancel',
 			close: 'Close',
 			confirm: 'Confirm',
