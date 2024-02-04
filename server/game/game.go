@@ -3,11 +3,9 @@ package game
 import (
 	"fmt"
 	"gordle/dictionaryClient"
-	"gordle/game/answers"
 	"gordle/models"
 	"gordle/models/dbModels"
 	"gordle/models/dto"
-	"math/rand"
 	"strings"
 	"unicode/utf8"
 )
@@ -18,7 +16,8 @@ type Game struct {
 }
 
 func (g Game) CreateGame(userId int, gameOptions dto.CreateGameRequest) models.Game {
-	answer := g.GenerateRandomAnswer(gameOptions.Language, gameOptions.WordLength)
+	playedAnswers := g.DataProvider.GetPlayedAnswers(userId)
+	answer := GenerateRandomAnswer(gameOptions.Language, gameOptions.WordLength, playedAnswers)
 	fmt.Printf("Creating game: Answer=%s, MaxAttempts=%d, WordLength=%d, Language=%s...\n",
 		answer, gameOptions.MaxAttempts, gameOptions.WordLength, gameOptions.Language)
 
@@ -51,13 +50,6 @@ func (g Game) GetGame(gameId int) (models.Game, error) {
 		return models.Game{}, err
 	}
 	return g.MapDbGameToGame(game), nil
-}
-
-func (g Game) GenerateRandomAnswer(lang string, wordLength int) string {
-	allAnswers := answers.GetAnswers(lang, wordLength)
-	randomIndex := rand.Intn(len(allAnswers))
-	answer := allAnswers[randomIndex]
-	return strings.ToLower(answer)
 }
 
 func (g Game) GuessWord(gameId int, guess string) []string {

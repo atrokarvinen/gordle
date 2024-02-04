@@ -36,6 +36,16 @@ func (d DatabaseDataProvider) UpdateGame(game dbModels.Game) error {
 	return nil
 }
 
+func (d DatabaseDataProvider) GetPlayedAnswers(userId int) []string {
+	var games []dbModels.Game
+	d.Db.Where(&dbModels.Game{UserID: userId}).Find(&games)
+	playedAnswers := []string{}
+	for _, game := range games {
+		playedAnswers = append(playedAnswers, game.Answer)
+	}
+	return playedAnswers
+}
+
 func (d DatabaseDataProvider) GetPreviousGuesses(gameId int) []dbModels.Guess {
 	var guesses []dbModels.Guess
 	d.Db.Where(&dbModels.Guess{GameID: gameId}).Find(&guesses)
