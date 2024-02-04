@@ -46,12 +46,6 @@ func (d DatabaseDataProvider) GetPlayedAnswers(userId int) []string {
 	return playedAnswers
 }
 
-func (d DatabaseDataProvider) GetPreviousGuesses(gameId int) []dbModels.Guess {
-	var guesses []dbModels.Guess
-	d.Db.Where(&dbModels.Guess{GameID: gameId}).Find(&guesses)
-	return guesses
-}
-
 func (d DatabaseDataProvider) AddGuess(guess dbModels.Guess) dbModels.Guess {
 	d.Db.Create(&guess)
 	return guess

@@ -62,7 +62,7 @@ func (g Game) GuessWord(gameId int, guess string) []string {
 
 func (g Game) CheckGameOver(gameId int) models.Gameover {
 	game, _ := g.DataProvider.GetGame(gameId)
-	guesses := g.DataProvider.GetPreviousGuesses(gameId)
+	guesses := game.Guesses
 	isGameWon := false
 	if len(guesses) > 0 {
 		isGameWon = IsCorrectResult(g.CheckWord(guesses[len(guesses)-1].Word, game.Answer))
@@ -145,7 +145,7 @@ func IsCorrectResult(results []string) bool {
 }
 
 func (g Game) IsGameOver(gameId int) bool {
-	guesses := g.DataProvider.GetPreviousGuesses(gameId)
 	game, _ := g.DataProvider.GetGame(gameId)
+	guesses := game.Guesses
 	return len(guesses) >= game.MaxAttempts
 }
