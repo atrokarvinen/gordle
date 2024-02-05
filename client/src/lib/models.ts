@@ -38,7 +38,6 @@ export type GameoverDto = {
 
 export type GameDto = {
 	id: number;
-	name: string;
 	maxAttempts: number;
 	wordLength: number;
 	language: Language;

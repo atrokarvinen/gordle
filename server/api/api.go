@@ -46,6 +46,8 @@ func (a Api) Run() {
 	r.POST("users/login", a.Login)
 	r.DELETE("users/logout", a.Logout)
 
+	r.GET("/statistics", a.GetStatistics)
+
 	r.PUT("/test/answer", a.SetAnswer)
 
 	r.Run(host_address)

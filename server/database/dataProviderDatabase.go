@@ -17,6 +17,12 @@ func (d DatabaseDataProvider) GetGame(gameId int) (dbModels.Game, error) {
 	return game, result.Error
 }
 
+func (d DatabaseDataProvider) GetGames(userId int) []dbModels.Game {
+	var games []dbModels.Game
+	d.Db.Where(&dbModels.Game{UserID: userId}).Find(&games)
+	return games
+}
+
 func (d DatabaseDataProvider) GetLatestGame(userId int) (dbModels.Game, error) {
 	var game dbModels.Game
 	result := d.Db.Where(&dbModels.Game{UserID: userId}).Preload("Guesses").Last(&game)

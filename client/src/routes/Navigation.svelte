@@ -10,6 +10,11 @@
 		>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
+		<a
+			data-testid="statistics-link"
+			class="btn-icon variant-filled-surface"
+			href="{base}/statistics"><i class="fa-solid fa-history" /></a
+		>
 		<a data-testid="settings-link" class="btn-icon variant-filled-surface" href="{base}/settings"
 			><i class="fa-solid fa-cog" /></a
 		>
