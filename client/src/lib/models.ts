@@ -43,4 +43,18 @@ export type GameDto = {
 	language: Language;
 	gameover: GameoverDto;
 	guesses: Guess[];
+	state: GameState;
+	createdAt: string;
+};
+
+export enum GameState {
+	UNKNOWN,
+	ACTIVE,
+	WIN,
+	LOSE
+}
+
+export type StatisticsDto = {
+	totalCount: number;
+	games: GameDto[];
 };

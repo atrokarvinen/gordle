@@ -52,13 +52,13 @@ func (g Game) GetGame(gameId int) (models.Game, error) {
 	return g.MapDbGameToGame(game), nil
 }
 
-func (g Game) GetGames(userId int) []models.Game {
-	games := g.DataProvider.GetGames(userId)
+func (g Game) GetGames(userId int, page int, limit int) ([]models.Game, int64) {
+	games, totalCount := g.DataProvider.GetGames(userId, page, limit)
 	var dtos []models.Game
 	for _, game := range games {
 		dtos = append(dtos, g.MapDbGameToGame(game))
 	}
-	return dtos
+	return dtos, totalCount
 }
 
 func (g Game) GuessWord(gameId int, guess string) []string {

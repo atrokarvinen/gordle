@@ -9,7 +9,7 @@ import (
 )
 
 func (g Game) MapDbGamesToGames(dbGames []dbModels.Game) []models.Game {
-	var games []models.Game
+	games := []models.Game{}
 	for _, dbGame := range dbGames {
 		games = append(games, g.MapDbGameToGame(dbGame))
 	}
@@ -29,6 +29,7 @@ func (g Game) MapDbGameToGame(dbGame dbModels.Game) models.Game {
 		AnswerExamples:    strings.Split(dbGame.AnswerExamples, ";;"),
 		State:             dbGame.State,
 		Gameover:          MapDbGameToGameover(dbGame),
+		CreatedAt:         dbGame.CreatedAt,
 	}
 }
 

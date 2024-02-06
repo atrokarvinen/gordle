@@ -17,10 +17,14 @@ func (d DatabaseDataProvider) GetGame(gameId int) (dbModels.Game, error) {
 	return game, result.Error
 }
 
-func (d DatabaseDataProvider) GetGames(userId int) []dbModels.Game {
-	var games []dbModels.Game
-	d.Db.Where(&dbModels.Game{UserID: userId}).Find(&games)
-	return games
+func (d DatabaseDataProvider) GetGames(userId int, page int, limit int) ([]dbModels.Game, int64) {
+	games := []dbModels.Game{}
+	offset := page * limit
+	d.Db.Where(dbModels.Game{UserID: userId}).Not(dbModels.Game{State: 1}).Order("created_at desc").Offset(offset).Limit(limit).Find(&games)
+
+	var totalCount int64
+	d.Db.Model(&dbModels.Game{}).Where(&dbModels.Game{UserID: userId}).Not(dbModels.Game{State: 1}).Count(&totalCount)
+	return games, totalCount
 }
 
 func (d DatabaseDataProvider) GetLatestGame(userId int) (dbModels.Game, error) {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { AppBar } from '@skeletonlabs/skeleton';
+	import { DEFAULT_LIMIT, DEFAULT_PAGE } from './statistics/game-history/defaults';
 </script>
 
 <AppBar>
@@ -13,7 +14,8 @@
 		<a
 			data-testid="statistics-link"
 			class="btn-icon variant-filled-surface"
-			href="{base}/statistics"><i class="fa-solid fa-history" /></a
+			href="{base}/statistics/game-history?page={DEFAULT_PAGE}&limit={DEFAULT_LIMIT}"
+			><i class="fa-solid fa-history" /></a
 		>
 		<a data-testid="settings-link" class="btn-icon variant-filled-surface" href="{base}/settings"
 			><i class="fa-solid fa-cog" /></a
