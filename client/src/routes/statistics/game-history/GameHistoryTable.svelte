@@ -3,6 +3,7 @@
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import type { GameDto } from '$lib/models';
+	import { i18n } from '$lib/translations/i18n';
 	import { uiLanguageStore } from '$lib/translations/uiLanguageStore';
 	import { Paginator } from '@skeletonlabs/skeleton';
 
@@ -46,8 +47,9 @@
 
 <div class="space-y-2">
 	<Paginator
+		regionControl="btn-group variant-filled-surface"
 		select="select w-36 flex m-auto"
-		amountText="Games"
+		amountText={$i18n.t('games')}
 		showNumerals
 		maxNumerals={1}
 		bind:settings={paginationSettings}
@@ -63,7 +65,8 @@
 						<td class="capitalize">{game.gameover.answer}</td>
 						<td class="w-16">{new Date(game.createdAt).toLocaleDateString($uiLanguageStore)}</td>
 						<td class="w-8"
-							><a href="{base}/game/{game.id}" class="btn btn-sm variant-filled-primary">View</a
+							><a href="{base}/game/{game.id}" class="btn btn-sm variant-filled-primary"
+								>{$i18n.t('view')}</a
 							></td
 						>
 					</tr>
@@ -76,5 +79,8 @@
 <style>
 	.table tbody td {
 		vertical-align: middle;
+	}
+	:global(.paginator-controls.variant-filled-surface) {
+		background-color: rgb(var(--color-surface-700));
 	}
 </style>
