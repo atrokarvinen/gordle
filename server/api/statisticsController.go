@@ -27,12 +27,10 @@ func (a Api) GetGameHistory(c *gin.Context) {
 
 func (a Api) GetStatistics(c *gin.Context) {
 	userId, err := getUserIdFromContext(c)
-	lang := c.DefaultQuery("lang", "en")
-	wordLength, _ := strconv.Atoi(c.DefaultQuery("word-len", "6"))
 	if err != nil {
 		return
 	}
-	games := a.Game.GetStatistics(userId, lang, wordLength)
+	games := a.Game.GetStatistics(userId)
 	totalStats := getStatisticsFromGames(games)
 
 	gamesByLanguage := groupGamesByLanguage(games)

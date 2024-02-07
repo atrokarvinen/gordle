@@ -13,30 +13,38 @@
 	$: totalWinRate = +data.total.winRate.toFixed(2) * 100;
 
 	let selectedLanguage: Language = 'en';
+	let selectedWordLength = 6;
 	const languageChanged = (language: Language) => {
 		selectedLanguage = language;
 	};
 	$: languageData = data.byLanguage[selectedLanguage];
+	$: wordMap = languageData[selectedWordLength];
 
 	const wordLengths = [5, 6, 7, 8];
+	const maxGuesses = 8;
+	const guessArray = Array.from({ length: maxGuesses }, (_, i) => i + 1);
+	const yLabels = [...guessArray, 'Lose'];
+	let winData = Array.from({ length: maxGuesses + 1 }, () => 0);
+	let lossData = Array.from({ length: maxGuesses + 1 }, () => 0);
+	console.log('guessArray', guessArray);
 	$: {
-		const byGuesses = wordLengths.map((x) => {
-			// console.log(`languageData[${x}]`, languageData[x]);
-
-			if (!languageData[x]) return;
-			const totals = languageData[x].total;
-			const wordLenInfo = languageData[x].byGuessCount;
-			const guesses = [4, 5, 6, 7, 8];
-			const winRates = guesses.map((guess) => {
-				const winCount = wordLenInfo[guess] ?? 0;
-				const totalCount = totals.totalCount;
-				return totalCount === 0 ? 0 : +((winCount / totalCount) * 100).toFixed(2);
+		if (wordMap) {
+			winData = guessArray.map((guess) => {
+				const count = wordMap.byGuessCount[guess] || 0;
+				return (count / wordMap.total.totalCount) * 100;
 			});
-			return winRates;
-		});
-		// console.log(byGuesses);
+			lossData = lossData.map((_, i) => {
+				if (i < lossData.length - 1) return 0;
+				return (1 - wordMap.total.winRate) * 100;
+			});
+		} else {
+			winData = Array.from({ length: maxGuesses + 1 }, () => 0);
+			lossData = Array.from({ length: maxGuesses + 1 }, () => 0);
+		}
 	}
-	// $: console.log('languageData: ', languageData);
+	$: console.log('languageData: ', languageData);
+	$: console.log('wordMap: ', wordMap);
+	$: console.log('chartData: ', winData);
 
 	const getColor = (cssVar: string) => {
 		const color = getComputedStyle(document.body).getPropertyValue(cssVar);
@@ -61,7 +69,7 @@
 
 	<label>
 		Select word length:
-		<select class="select">
+		<select class="select" bind:value={selectedWordLength}>
 			{#each wordLengths as wordLength}
 				<option value={wordLength}>{wordLength}</option>
 			{/each}
@@ -73,15 +81,17 @@
 			data={{
 				datasets: [
 					{
-						data: [52, 11, 32, 36, 0, 51, 87, 99, 0],
+						// data: [52, 11, 32, 36, 0, 51, 87, 99, 0],
+						data: winData,
 						backgroundColor: getColor('--color-primary-500')
 					},
 					{
-						data: [0, 0, 0, 0, 0, 0, 0, 0, 12],
+						// data: [0, 0, 0, 0, 0, 0, 0, 0, 12],
+						data: lossData,
 						backgroundColor: getColor('--color-error-500')
 					}
 				],
-				yLabels: [0, 1, 2, 3, 4, 5, 6, 7, 'Lose']
+				yLabels: yLabels
 			}}
 			options={{
 				plugins: {

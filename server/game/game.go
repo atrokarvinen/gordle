@@ -61,7 +61,7 @@ func (g Game) GetGames(userId int, page int, limit int) ([]models.Game, int64) {
 	return dtos, totalCount
 }
 
-func (g Game) GetStatistics(userId int, lang string, wordLength int) []models.Game {
+func (g Game) GetStatistics(userId int) []models.Game {
 	page := 0
 	limit := 9999
 	games, _ := g.DataProvider.GetGames(userId, page, limit)
