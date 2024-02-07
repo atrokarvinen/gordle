@@ -54,10 +54,7 @@ func (g Game) GetGame(gameId int) (models.Game, error) {
 
 func (g Game) GetGames(userId int, page int, limit int) ([]models.Game, int64) {
 	games, totalCount := g.DataProvider.GetGames(userId, page, limit)
-	dtos := []models.Game{}
-	for _, game := range games {
-		dtos = append(dtos, g.MapDbGameToGame(game))
-	}
+	dtos := g.MapDbGamesToGames(games)
 	return dtos, totalCount
 }
 
@@ -65,10 +62,7 @@ func (g Game) GetStatistics(userId int) []models.Game {
 	page := 0
 	limit := 9999
 	games, _ := g.DataProvider.GetGames(userId, page, limit)
-	dtos := []models.Game{}
-	for _, game := range games {
-		dtos = append(dtos, g.MapDbGameToGame(game))
-	}
+	dtos := g.MapDbGamesToGames(games)
 	return dtos
 }
 

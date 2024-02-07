@@ -51,7 +51,7 @@ func mapStringToArray(str string) []string {
 }
 
 func (g Game) MapDbGuessesToGuesses(dbGuesses []dbModels.Guess, answer string) []models.Guess {
-	var guesses []models.Guess
+	guesses := []models.Guess{}
 	for _, dbGuess := range dbGuesses {
 		guesses = append(guesses, g.MapDbGuessToGuess(dbGuess, answer))
 	}
