@@ -2,7 +2,7 @@
 	import { base } from '$app/paths';
 	import type { Language } from '$lib/translations/language';
 
-	export let value: Language;
+	export let value: Language | undefined;
 	export let onChange: (language: Language) => void;
 	export let languageOptions: Language[] = ['en', 'fi'];
 

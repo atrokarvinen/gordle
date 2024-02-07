@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LanguageSelect from '$lib/components/LanguageSelect.svelte';
-	import type { StatisticsDto } from '$lib/models';
+	import type { GameDto, StatisticsDto } from '$lib/models';
 	import type { Language } from '$lib/translations/language';
 	import { Bar } from 'svelte-chartjs';
 
@@ -10,17 +10,36 @@
 
 	export let data: StatisticsDto;
 
-	$: totalWinRate = +data.total.winRate.toFixed(2) * 100;
+	$: allGames = data.allGames;
+	let totalWinRate = 0;
+	let totalPlayed = 0;
 
-	let selectedLanguage: Language = 'en';
-	let selectedWordLength = 6;
+	let filteredGames: GameDto[] = [];
+	$: {
+		filteredGames = allGames.filter((game) => {
+			const languageMatches = game.language === selectedLanguage || selectedLanguage === undefined;
+			const wordLengthMatches = game.wordLength === selectedWordLength || selectedWordLength === -1;
+			return languageMatches && wordLengthMatches;
+		});
+	}
+
+	let selectedLanguage: Language | undefined;
+	let selectedWordLength: number = -1;
 	const languageChanged = (language: Language) => {
+		if (selectedLanguage === language) {
+			selectedLanguage = undefined;
+			return;
+		}
 		selectedLanguage = language;
 	};
-	$: languageData = data.byLanguage[selectedLanguage];
-	$: wordMap = languageData[selectedWordLength];
 
-	const wordLengths = [5, 6, 7, 8];
+	const wordLengthOptions = [
+		{ value: -1, label: 'All' },
+		{ value: 5, label: '5' },
+		{ value: 6, label: '6' },
+		{ value: 7, label: '7' },
+		{ value: 8, label: '8' }
+	];
 	const maxGuesses = 8;
 	const guessArray = Array.from({ length: maxGuesses }, (_, i) => i + 1);
 	const yLabels = [...guessArray, 'Lose'];
@@ -28,68 +47,73 @@
 	let lossData = Array.from({ length: maxGuesses + 1 }, () => 0);
 	console.log('guessArray', guessArray);
 	$: {
-		if (wordMap) {
-			winData = guessArray.map((guess) => {
-				const count = wordMap.byGuessCount[guess] || 0;
-				return (count / wordMap.total.totalCount) * 100;
-			});
-			lossData = lossData.map((_, i) => {
-				if (i < lossData.length - 1) return 0;
-				return (1 - wordMap.total.winRate) * 100;
-			});
-		} else {
-			winData = Array.from({ length: maxGuesses + 1 }, () => 0);
-			lossData = Array.from({ length: maxGuesses + 1 }, () => 0);
-		}
+		console.log('filteredGames: ', filteredGames);
+		winData = guessArray.map((guess) => {
+			const gamesWithGuess = filteredGames.filter((game) => game.guesses?.length === guess);
+			console.log('gamesWithGuess: ', gamesWithGuess);
+			const count = gamesWithGuess.length;
+			return (count / filteredGames.length) * 100;
+		});
+		const wins = filteredGames.filter((g) => g.state === 2).length;
+		totalPlayed = filteredGames.length;
+		totalWinRate = filteredGames.length === 0 ? 0 : (wins / filteredGames.length) * 100;
+		lossData = lossData.map((_, i) => {
+			if (i < lossData.length - 1) return 0;
+			if (totalPlayed === 0) return 0;
+			return 100 - totalWinRate;
+		});
 	}
-	$: console.log('languageData: ', languageData);
-	$: console.log('wordMap: ', wordMap);
 	$: console.log('chartData: ', winData);
 
 	const getColor = (cssVar: string) => {
 		const color = getComputedStyle(document.body).getPropertyValue(cssVar);
-		console.log(`color: ${cssVar} = ${color}`);
 		return `rgba(${color})`;
 	};
 </script>
 
 <div class="space-y-3">
-	<p>
-		All games winrate: {data.total.winCount} / {data.total.totalCount} = {totalWinRate}%
-	</p>
-
 	<div>
-		<p>Select by language:</p>
-		<LanguageSelect
-			languageOptions={['en', 'fi']}
-			onChange={languageChanged}
-			value={selectedLanguage}
-		/>
+		<p>Filter by language:</p>
+		<div class="flex items-center">
+			<LanguageSelect
+				languageOptions={['en', 'fi']}
+				onChange={languageChanged}
+				value={selectedLanguage}
+			/>
+			{#if selectedLanguage}
+				<div class="ml-5">
+					<button
+						class="btn variant-filled-secondary"
+						on:click={() => (selectedLanguage = undefined)}
+					>
+						<span>
+							<i class="fas fa-times" />
+						</span>
+						<span>Clear</span>
+					</button>
+				</div>
+			{/if}
+		</div>
 	</div>
 
 	<label>
-		Select word length:
+		Filter by word length:
 		<select class="select" bind:value={selectedWordLength}>
-			{#each wordLengths as wordLength}
-				<option value={wordLength}>{wordLength}</option>
+			{#each wordLengthOptions as wordLengthOption}
+				<option value={wordLengthOption.value}>{wordLengthOption.label}</option>
 			{/each}
 		</select>
 	</label>
+
+	<p>Games played: {totalPlayed}</p>
+	<p>Win: {totalWinRate.toFixed(1)}%</p>
 
 	<div class="h-96">
 		<Bar
 			data={{
 				datasets: [
-					{
-						// data: [52, 11, 32, 36, 0, 51, 87, 99, 0],
-						data: winData,
-						backgroundColor: getColor('--color-primary-500')
-					},
-					{
-						// data: [0, 0, 0, 0, 0, 0, 0, 0, 12],
-						data: lossData,
-						backgroundColor: getColor('--color-error-500')
-					}
+					{ data: winData, backgroundColor: getColor('--color-primary-500') },
+					{ data: lossData, backgroundColor: getColor('--color-error-500') }
 				],
 				yLabels: yLabels
 			}}
@@ -113,7 +137,6 @@
 					},
 					y: {
 						stacked: true,
-						// title: { display: true, text: 'Guess', color: 'white' },
 						border: { color: 'white' },
 						grid: { color: 'white' },
 						ticks: { color: 'white' }

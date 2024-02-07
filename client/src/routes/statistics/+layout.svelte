@@ -4,6 +4,6 @@
 
 <StatisticsTabs />
 
-<div class="mt-4 w-full px-2">
+<div class="mt-4 w-full px-2 md:w-96">
 	<slot />
 </div>

@@ -60,6 +60,7 @@ export type GameHistoryDto = {
 };
 
 export type StatisticsDto = {
+	allGames: GameDto[];
 	total: Statistics;
 	byLanguage: Record<string, Record<number, WordLengthMap>>;
 };

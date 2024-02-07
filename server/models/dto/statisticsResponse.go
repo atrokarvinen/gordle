@@ -1,6 +1,9 @@
 package dto
 
+import "gordle/models"
+
 type StatisticsResponse struct {
+	AllGames   []models.Game                    `json:"allGames"`
 	Total      Statistics                       `json:"total"`
 	ByLanguage map[string]map[int]WordLengthMap `json:"byLanguage"`
 }

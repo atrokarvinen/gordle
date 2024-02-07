@@ -54,6 +54,7 @@ func (a Api) GetStatistics(c *gin.Context) {
 	}
 
 	dto := dto.StatisticsResponse{
+		AllGames:   games,
 		Total:      totalStats,
 		ByLanguage: statsByLanguage,
 	}
