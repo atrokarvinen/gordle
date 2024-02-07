@@ -4,6 +4,7 @@
 	import type { Language } from '$lib/translations/language';
 	import { Bar } from 'svelte-chartjs';
 
+	import { i18n } from '$lib/translations/i18n';
 	import { BarElement, CategoryScale, Chart, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
@@ -34,7 +35,7 @@
 	};
 
 	const wordLengthOptions = [
-		{ value: -1, label: 'All' },
+		{ value: -1, label: $i18n.t('all') },
 		{ value: 5, label: '5' },
 		{ value: 6, label: '6' },
 		{ value: 7, label: '7' },
@@ -42,15 +43,12 @@
 	];
 	const maxGuesses = 8;
 	const guessArray = Array.from({ length: maxGuesses }, (_, i) => i + 1);
-	const yLabels = [...guessArray, 'Lose'];
+	const yLabels = [...guessArray, $i18n.t('lose')];
 	let winData = Array.from({ length: maxGuesses + 1 }, () => 0);
 	let lossData = Array.from({ length: maxGuesses + 1 }, () => 0);
-	console.log('guessArray', guessArray);
 	$: {
-		console.log('filteredGames: ', filteredGames);
 		winData = guessArray.map((guess) => {
 			const gamesWithGuess = filteredGames.filter((game) => game.guesses?.length === guess);
-			console.log('gamesWithGuess: ', gamesWithGuess);
 			const count = gamesWithGuess.length;
 			return (count / filteredGames.length) * 100;
 		});
@@ -63,7 +61,6 @@
 			return 100 - totalWinRate;
 		});
 	}
-	$: console.log('chartData: ', winData);
 
 	const getColor = (cssVar: string) => {
 		const color = getComputedStyle(document.body).getPropertyValue(cssVar);
@@ -73,7 +70,7 @@
 
 <div class="space-y-3">
 	<div>
-		<p>Filter by language:</p>
+		<p>{$i18n.t('filter_by_language')}:</p>
 		<div class="flex items-center">
 			<LanguageSelect
 				languageOptions={['en', 'fi']}
@@ -89,7 +86,7 @@
 						<span>
 							<i class="fas fa-times" />
 						</span>
-						<span>Clear</span>
+						<span>{$i18n.t('clear')}</span>
 					</button>
 				</div>
 			{/if}
@@ -97,7 +94,7 @@
 	</div>
 
 	<label>
-		Filter by word length:
+		{$i18n.t('filter_by_word_length')}:
 		<select class="select" bind:value={selectedWordLength}>
 			{#each wordLengthOptions as wordLengthOption}
 				<option value={wordLengthOption.value}>{wordLengthOption.label}</option>
@@ -105,8 +102,8 @@
 		</select>
 	</label>
 
-	<p>Games played: {totalPlayed}</p>
-	<p>Win: {totalWinRate.toFixed(1)}%</p>
+	<p>{$i18n.t('games_played')}: {totalPlayed}</p>
+	<p>{$i18n.t('win')}: {totalWinRate.toFixed(1)}%</p>
 
 	<div class="h-96">
 		<Bar
@@ -120,7 +117,7 @@
 			options={{
 				plugins: {
 					legend: { display: false },
-					title: { display: true, text: 'Games by guess count', color: 'white' }
+					title: { display: true, text: $i18n.t('games_by_guess_count'), color: 'white' }
 				},
 				maintainAspectRatio: false,
 				responsive: true,

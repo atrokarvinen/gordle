@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { i18n } from '$lib/translations/i18n';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import StatisticsView from './StatisticsView.svelte';
 
@@ -12,5 +13,5 @@
 		<StatisticsView data={value.data} />
 	{/if}
 {:catch error}
-	<p>Failed to load statistics.</p>
+	<p>{$i18n.t('failed_to_load_statistics')}</p>
 {/await}
