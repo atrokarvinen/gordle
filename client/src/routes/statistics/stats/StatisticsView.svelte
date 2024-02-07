@@ -12,9 +12,10 @@
 	let selectedWordLength: number = -1;
 
 	$: filteredGames = data.filter((game) => {
+		const isFinished = game.state === 2 || game.state === 3;
 		const languageMatches = game.language === selectedLanguage || selectedLanguage === undefined;
 		const wordLengthMatches = game.wordLength === selectedWordLength || selectedWordLength === -1;
-		return languageMatches && wordLengthMatches;
+		return isFinished && languageMatches && wordLengthMatches;
 	});
 </script>
 
