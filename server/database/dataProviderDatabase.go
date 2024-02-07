@@ -79,5 +79,5 @@ func (d DatabaseDataProvider) AddWordsApiCall(wordsApiCall dbModels.WordsApiCall
 }
 
 func (d DatabaseDataProvider) DeleteWordsApiCalls(calls []dbModels.WordsApiCall) {
-	d.Db.Delete(&calls)
+	d.Db.Unscoped().Delete(&calls)
 }
