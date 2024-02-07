@@ -1,5 +1,16 @@
 <script lang="ts">
-	const winRate = 64;
+	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import StatisticsView from './StatisticsView.svelte';
+
+	export let data;
 </script>
 
-<p>Win rate: {winRate} %</p>
+{#await data.loadPromise}
+	<ProgressRadial width="w-16" />
+{:then value}
+	{#if value}
+		<StatisticsView data={value.data} />
+	{/if}
+{:catch error}
+	<p>Failed to load statistics.</p>
+{/await}

@@ -1,13 +1,13 @@
 import { browser } from '$app/environment';
 import { axios } from '$lib/axios';
-import type { StatisticsDto } from '$lib/models';
+import type { GameHistoryDto } from '$lib/models';
 
 export const load = async ({ url }) => {
-	if (!browser) return { games: [], dataLoading: true };
+	if (!browser) return { games: [] };
 	const page = url.searchParams.get('page');
 	const limit = url.searchParams.get('limit');
 
-	const loadPromise = axios.get<StatisticsDto>(`/statistics?page=${page}&limit=${limit}`);
+	const loadPromise = axios.get<GameHistoryDto>(`/statistics?page=${page}&limit=${limit}`);
 
-	return { loadPromise, dataLoading: true };
+	return { loadPromise };
 };

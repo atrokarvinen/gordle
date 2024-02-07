@@ -7,7 +7,7 @@
 	const drawerStore = getDrawerStore();
 	const openDrawer = () => {
 		drawerStore.open({
-			regionDrawer: 'w-64',
+			width: 'w-48',
 			position: 'right',
 			id: 'mobile-nav'
 		});

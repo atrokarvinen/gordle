@@ -20,7 +20,7 @@ func (d DatabaseDataProvider) GetGame(gameId int) (dbModels.Game, error) {
 func (d DatabaseDataProvider) GetGames(userId int, page int, limit int) ([]dbModels.Game, int64) {
 	games := []dbModels.Game{}
 	offset := page * limit
-	d.Db.Where(dbModels.Game{UserID: userId}).Not(dbModels.Game{State: 1}).Order("created_at desc").Offset(offset).Limit(limit).Find(&games)
+	d.Db.Model(&dbModels.Game{}).Preload("Guesses").Where(dbModels.Game{UserID: userId}).Not(dbModels.Game{State: 1}).Order("created_at desc").Offset(offset).Limit(limit).Find(&games)
 
 	var totalCount int64
 	d.Db.Model(&dbModels.Game{}).Where(&dbModels.Game{UserID: userId}).Not(dbModels.Game{State: 1}).Count(&totalCount)
