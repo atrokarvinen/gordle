@@ -43,6 +43,7 @@ func (a Api) GuessWord(c *gin.Context) {
 	gameover.Examples = answerDetails.Examples
 	if gameover.IsGameover {
 		game.AnswerDescription = gameover.Definitions
+		game.AnswerExamples = gameover.Examples
 		if gameover.Win {
 			game.State = int(dbModels.Win)
 		} else {
