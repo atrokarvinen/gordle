@@ -21,6 +21,6 @@
 			<ProgressRadial width="md:w-10 w-6" />
 		</div>
 	{:else}
-		<LetterBox {letter} letterState={state} cursor="cursor-pointer" as="button" {icon} />
+		<LetterBox {letter} letterState={state} cursor="cursor-pointer" {icon} />
 	{/if}
 </button>

@@ -9,7 +9,7 @@ test("opens game page", async ({ page }) => {
 });
 
 test("navigation works", async ({ page }) => {
-  await page.getByTestId("info-link").click();
+  await page.getByTestId("info").click();
   await expect(page.getByText("How to play")).toBeVisible();
 
   await page.getByTestId("home-link").click();

@@ -9,12 +9,10 @@
 		readonly?: boolean;
 		cursor?: string;
 		focused?: boolean;
-		as?: 'input' | 'button';
 		icon?: string;
 	}
 
 	export let icon: string | undefined = undefined;
-	export let as: 'input' | 'button' = 'input';
 	export let letterState: LetterState;
 	export let letter: string;
 	export let font: string = 'Verdana';
@@ -42,16 +40,10 @@
 	$: classNames = `font-verdana text-center font-bold uppercase outline-none md:text-2xl  ${width} ${height} ${cursor} ${bgColor} ${border}`;
 </script>
 
-{#if as === 'button'}
-	<button data-testid="guess-letter" class={classNames} style={`font-family: ${font};`}>
-		{#if icon}
-			<i class={icon} />
-		{:else}
-			{letter}
-		{/if}
-	</button>
-{:else if as === 'input'}
-	<button data-testid="guess-letter" class={classNames} style={`font-family: ${font};`} on:click
-		>{letter}</button
-	>
-{/if}
+<button data-testid="guess-letter" class={classNames} style={`font-family: ${font};`} on:click>
+	{#if icon}
+		<i class={icon} />
+	{:else}
+		{letter}
+	{/if}
+</button>
