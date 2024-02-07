@@ -7,7 +7,7 @@ export const load = async ({ url }) => {
 	const page = url.searchParams.get('page');
 	const limit = url.searchParams.get('limit');
 
-	const loadPromise = axios.get<GameHistoryDto>(`/statistics?page=${page}&limit=${limit}`);
+	const loadPromise = axios.get<GameHistoryDto>(`/statistics/history?page=${page}&limit=${limit}`);
 
 	return { loadPromise };
 };

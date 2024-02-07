@@ -46,7 +46,7 @@ func (a Api) Run() {
 	r.POST("users/login", a.Login)
 	r.DELETE("users/logout", a.Logout)
 
-	r.GET("/statistics", a.GetGameHistory)
+	r.GET("/statistics/history", a.GetGameHistory)
 	r.GET("/statistics/stats", a.GetAllGames)
 
 	r.PUT("/test/answer", a.SetAnswer)
