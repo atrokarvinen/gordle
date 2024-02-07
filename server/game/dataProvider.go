@@ -6,7 +6,8 @@ import (
 
 type DataProvider interface {
 	GetGame(gameId int) (dbModels.Game, error)
-	GetGames(userId int, page int, limit int) ([]dbModels.Game, int64)
+	GetGames(userId int) []dbModels.Game
+	GetGamesPaginated(userId int, page int, limit int) ([]dbModels.Game, int64)
 	GetLatestGame(userId int) (dbModels.Game, error)
 	CreateGame(game dbModels.Game) dbModels.Game
 	UpdateGame(game dbModels.Game) error

@@ -58,21 +58,3 @@ export type GameHistoryDto = {
 	totalCount: number;
 	games: GameDto[];
 };
-
-export type StatisticsDto = {
-	allGames: GameDto[];
-	total: Statistics;
-	byLanguage: Record<string, Record<number, WordLengthMap>>;
-};
-
-export type WordLengthMap = {
-	total: Statistics;
-	byGuessCount: Record<number, number>;
-};
-
-export type Statistics = {
-	winCount: number;
-	lossCount: number;
-	totalCount: number;
-	winRate: number;
-};

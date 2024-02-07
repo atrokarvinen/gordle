@@ -17,7 +17,13 @@ func (d DatabaseDataProvider) GetGame(gameId int) (dbModels.Game, error) {
 	return game, result.Error
 }
 
-func (d DatabaseDataProvider) GetGames(userId int, page int, limit int) ([]dbModels.Game, int64) {
+func (d DatabaseDataProvider) GetGames(userId int) []dbModels.Game {
+	games := []dbModels.Game{}
+	d.Db.Model(&dbModels.Game{}).Preload("Guesses").Where(dbModels.Game{UserID: userId}).Find(&games)
+	return games
+}
+
+func (d DatabaseDataProvider) GetGamesPaginated(userId int, page int, limit int) ([]dbModels.Game, int64) {
 	games := []dbModels.Game{}
 	offset := page * limit
 	d.Db.Model(&dbModels.Game{}).Preload("Guesses").Where(dbModels.Game{UserID: userId}).Not(dbModels.Game{State: 1}).Order("created_at desc").Offset(offset).Limit(limit).Find(&games)

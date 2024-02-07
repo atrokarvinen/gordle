@@ -52,18 +52,16 @@ func (g Game) GetGame(gameId int) (models.Game, error) {
 	return g.MapDbGameToGame(game), nil
 }
 
-func (g Game) GetGames(userId int, page int, limit int) ([]models.Game, int64) {
-	games, totalCount := g.DataProvider.GetGames(userId, page, limit)
-	dtos := g.MapDbGamesToGames(games)
-	return dtos, totalCount
-}
-
-func (g Game) GetStatistics(userId int) []models.Game {
-	page := 0
-	limit := 9999
-	games, _ := g.DataProvider.GetGames(userId, page, limit)
+func (g Game) GetGames(userId int) []models.Game {
+	games := g.DataProvider.GetGames(userId)
 	dtos := g.MapDbGamesToGames(games)
 	return dtos
+}
+
+func (g Game) GetGamesPaginated(userId int, page int, limit int) ([]models.Game, int64) {
+	games, totalCount := g.DataProvider.GetGamesPaginated(userId, page, limit)
+	dtos := g.MapDbGamesToGames(games)
+	return dtos, totalCount
 }
 
 func (g Game) GuessWord(gameId int, guess string) []string {

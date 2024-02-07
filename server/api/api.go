@@ -47,7 +47,7 @@ func (a Api) Run() {
 	r.DELETE("users/logout", a.Logout)
 
 	r.GET("/statistics", a.GetGameHistory)
-	r.GET("/statistics/stats", a.GetStatistics)
+	r.GET("/statistics/stats", a.GetAllGames)
 
 	r.PUT("/test/answer", a.SetAnswer)
 

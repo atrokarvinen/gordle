@@ -15,7 +15,7 @@ func (a Api) GetGameHistory(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	games, totalCount := a.Game.GetGames(userId, page, limit)
+	games, totalCount := a.Game.GetGamesPaginated(userId, page, limit)
 	dto := dto.GameHistoryResponse{
 		TotalCount: totalCount,
 		Games:      games,
@@ -23,14 +23,11 @@ func (a Api) GetGameHistory(c *gin.Context) {
 	c.JSON(http.StatusOK, dto)
 }
 
-func (a Api) GetStatistics(c *gin.Context) {
+func (a Api) GetAllGames(c *gin.Context) {
 	userId, err := getUserIdFromContext(c)
 	if err != nil {
 		return
 	}
-	games := a.Game.GetStatistics(userId)
-	dto := dto.StatisticsResponse{
-		AllGames: games,
-	}
-	c.JSON(http.StatusOK, dto)
+	games := a.Game.GetGames(userId)
+	c.JSON(http.StatusOK, games)
 }
