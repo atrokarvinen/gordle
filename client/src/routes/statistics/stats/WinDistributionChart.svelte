@@ -15,7 +15,11 @@
 	let winData = Array.from({ length: maxGuesses + 1 }, () => 0);
 	let lossData = Array.from({ length: maxGuesses + 1 }, () => 0);
 	$: winData = guessArray.map((guess) => {
-		const gamesWithGuess = filteredGames.filter((game) => game.guesses?.length === guess);
+		const gamesWithGuess = filteredGames.filter((game) => {
+			const guessCountMatches = game.guesses?.length === guess;
+			const isWin = game.state === 2;
+			return guessCountMatches && isWin;
+		});
 		const count = gamesWithGuess.length;
 		return (count / filteredGames.length) * 100;
 	});

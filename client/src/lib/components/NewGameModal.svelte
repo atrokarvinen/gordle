@@ -13,8 +13,8 @@
 
 	const modalStore = getModalStore();
 
-	let maxAttempts = 6;
-	let wordLength = 6;
+	let maxAttempts = $modalStore[0]?.meta.maxAttempts ?? 6;
+	let wordLength = $modalStore[0]?.meta.wordLength ?? 6;
 	let language = $languageStore;
 
 	const attemptsOptions = [4, 5, 6, 7, 8];
