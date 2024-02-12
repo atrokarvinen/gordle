@@ -1,13 +1,8 @@
 package dictionaryClient
 
-import (
-	"gordle/dictionaryClient/kielitoimistoApi"
-	"gordle/dictionaryClient/wordsApi"
-)
-
 type DictionaryClientFactory struct {
-	DictionaryClientEn wordsApi.WordsApiClient
-	DictionaryClientFi kielitoimistoApi.KielitoimistoApiClient
+	DictionaryClientEn IDictionaryClient
+	DictionaryClientFi IDictionaryClient
 }
 
 func (d DictionaryClientFactory) GetDictionaryClient(language string) IDictionaryClient {

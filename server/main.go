@@ -5,8 +5,8 @@ import (
 	"gordle/api"
 	"gordle/database"
 	"gordle/dictionaryClient"
+	"gordle/dictionaryClient/dictionaryApi"
 	"gordle/dictionaryClient/kielitoimistoApi"
-	"gordle/dictionaryClient/wordsApi"
 	"gordle/game"
 	"gordle/user"
 	"os"
@@ -20,16 +20,11 @@ func main() {
 	db := database.Init()
 	database.Migrate(db)
 
-	// clientFi2 := kielitoimistoApi.KielitoimistoApiClient{}
-	// clientFi2.GetWord("älykkö")
-
-	// return
-
 	dataProvider := database.DatabaseDataProvider{Db: db}
 	userService := user.User{Db: dataProvider}
 	gameEngine := game.Game{DataProvider: dataProvider}
 	clientFi := kielitoimistoApi.KielitoimistoApiClient{}
-	clientEn := wordsApi.WordsApiClient{DataProvider: dataProvider}
+	clientEn := dictionaryApi.DictionaryApiClient{}
 	clientFactory := dictionaryClient.DictionaryClientFactory{DictionaryClientEn: clientEn, DictionaryClientFi: clientFi}
 
 	api := api.Api{DataProvider: dataProvider, Game: gameEngine, DictionaryFactory: clientFactory, User: userService}
