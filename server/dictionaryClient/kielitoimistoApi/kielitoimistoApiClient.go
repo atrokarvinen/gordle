@@ -60,6 +60,9 @@ func (w KielitoimistoApiClient) getDetails(word string, accessToken string) (mod
 	if wordRes.StatusCode == http.StatusUnauthorized {
 		return models.DictionaryDetails{}, errors.New("Unauthorized")
 	}
+	if wordRes.StatusCode == http.StatusNotFound {
+		return models.DictionaryDetails{}, errors.New("Not found")
+	}
 
 	var responses []Response
 	err = json.NewDecoder(wordRes.Body).Decode(&responses)

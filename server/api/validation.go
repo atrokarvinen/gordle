@@ -1,7 +1,6 @@
 package api
 
 import (
-	"errors"
 	"fmt"
 	m "gordle/dictionaryClient/models"
 	"gordle/game/answers"
@@ -47,18 +46,11 @@ func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) 
 		}
 	}
 
-	if gameOptions.Language != "en" {
-		fmt.Printf("Selected language is '%s' != 'en', cannot verify from API, returning error...\n", gameOptions.Language)
-		return m.DictionaryDetails{}, errors.New("Word not found")
-	}
-
-	// Check word from the Words API
+	// Check word from the dictionary API
 	wordDetails, err := a.DictionaryFactory.GetDictionaryClient(lang).GetWord(word)
 	if err != nil {
 		fmt.Println("Error getting word:", err)
-	}
-	if err != nil && err.Error() == "Word not found" {
-		return m.DictionaryDetails{}, err
+		return m.DictionaryDetails{}, fmt.Errorf("Word %q not found in language %q", word, lang)
 	}
 
 	return wordDetails, nil
