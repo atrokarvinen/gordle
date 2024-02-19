@@ -44,7 +44,7 @@
 		{/each}
 	</div>
 	<div class="ml-0 flex gap-x-1">
-		<div class="mr-3">
+		<div class="mr-3 h-7 md:h-12">
 			<KeyboardButton
 				letter="Enter"
 				state={LetterState.UNKNOWN}

@@ -26,7 +26,7 @@
 			<svelte:fragment slot="summary">{$i18n.t('definition')}</svelte:fragment>
 			<svelte:fragment slot="content">
 				<div class="my-2 flex flex-col justify-between">
-					<div class="h-16 overflow-y-auto">
+					<div class="h-20 overflow-y-auto">
 						<p class="italic first-letter:capitalize">
 							"{`${displayedDefinition}${displayedDefinition.endsWith('.') ? '' : '.'}`}"
 						</p>
