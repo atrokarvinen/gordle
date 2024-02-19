@@ -59,6 +59,7 @@
 			const result = await requestCreateGuess(gameId, word);
 			gameover = result.gameover;
 			guesses = [...guesses, result.guess];
+			resetGuess();
 		} catch (error) {
 			const err = getApiErrorMessage(error);
 			toastStore.trigger({
