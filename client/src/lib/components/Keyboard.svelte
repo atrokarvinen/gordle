@@ -32,7 +32,7 @@
 	}
 </script>
 
-<div class="mt-4 flex flex-col items-center gap-y-3">
+<div class="mt-4 flex flex-col items-center gap-y-4">
 	<div class="ml-0 flex gap-x-1">
 		{#each qwertyLine1 as letter}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />
@@ -44,7 +44,7 @@
 		{/each}
 	</div>
 	<div class="ml-0 flex gap-x-1">
-		<div class="mr-1">
+		<div class="mr-3">
 			<KeyboardButton
 				letter="Enter"
 				state={LetterState.UNKNOWN}
@@ -55,7 +55,7 @@
 		{#each qwertyLine3 as letter}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
-		<div class="ml-1">
+		<div class="ml-3">
 			<KeyboardButton
 				letter="Backspace"
 				state={LetterState.UNKNOWN}
