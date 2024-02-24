@@ -65,6 +65,14 @@ func sanitizeDescription(description string) string {
 			closingTagEnd = false
 		}
 	}
+	stringToRemove := "&lt;"
+	sanitizedString := string(sanitized)
+	sanitized = []rune(sanitizedString)
+	for i := 0; i < len(sanitized); i++ {
+		if i+len(stringToRemove) < len(sanitized) && string(sanitized[i:i+len(stringToRemove)]) == stringToRemove {
+			sanitized = append(sanitized[:i], sanitized[i+len(stringToRemove):]...)
+		}
+	}
 	return string(sanitized)
 }
 

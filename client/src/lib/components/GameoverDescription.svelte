@@ -17,6 +17,13 @@
 		const element = items[index];
 		return element.trim();
 	};
+
+	const padSentence = (sentence: string) => {
+		if (sentence.endsWith('.')) return sentence;
+		if (sentence.endsWith('?')) return sentence;
+		if (sentence.endsWith('!')) return sentence;
+		return `${sentence}.`;
+	};
 </script>
 
 <Accordion padding="p-2" regionControl="variant-ringed-surface">
@@ -28,7 +35,7 @@
 				<div class="my-2 flex flex-col justify-between">
 					<div class="h-20 overflow-y-auto">
 						<p class="italic first-letter:capitalize">
-							"{`${displayedDefinition}${displayedDefinition.endsWith('.') ? '' : '.'}`}"
+							"{padSentence(displayedDefinition)}"
 						</p>
 					</div>
 					{#if definitions.length > 1}
@@ -46,7 +53,7 @@
 				<div class="my-2 flex flex-col justify-between">
 					<div class="h-16 overflow-y-auto">
 						<p class="italic first-letter:capitalize">
-							"{`${displayedExample}${displayedExample.endsWith('.') ? '' : '.'}`}"
+							"{padSentence(displayedExample)}"
 						</p>
 					</div>
 					{#if examples.length > 1}
