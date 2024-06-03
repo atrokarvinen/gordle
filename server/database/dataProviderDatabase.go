@@ -19,7 +19,7 @@ func (d DatabaseDataProvider) GetGame(gameId int) (dbModels.Game, error) {
 
 func (d DatabaseDataProvider) GetGames(userId int) []dbModels.Game {
 	games := []dbModels.Game{}
-	d.Db.Model(&dbModels.Game{}).Preload("Guesses").Where(dbModels.Game{UserID: userId}).Find(&games)
+	d.Db.Model(&dbModels.Game{}).Preload("Guesses").Where(dbModels.Game{UserID: userId}).Order("created_at desc").Find(&games)
 	return games
 }
 

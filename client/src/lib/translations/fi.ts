@@ -42,6 +42,8 @@ export const finnishKeys = {
 			quit_game: 'Pelin luovutus',
 			settings: 'Asetukset',
 			statistics: 'Tilastot',
+			streak_current: 'Nykyinen voittoputki',
+			streak_longest: 'Pisin voittoputki',
 			victory: 'Voitto',
 			view: 'Katso',
 			win: 'Voitto',

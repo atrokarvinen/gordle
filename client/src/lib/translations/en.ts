@@ -42,6 +42,8 @@ export const englishKeys = {
 			quit_game: 'Quit game',
 			settings: 'Settings',
 			statistics: 'Statistics',
+			streak_current: 'Current win streak',
+			streak_longest: 'Longest win streak',
 			victory: 'Victory',
 			view: 'View',
 			win: 'Win',

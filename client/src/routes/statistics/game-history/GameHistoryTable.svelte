@@ -60,7 +60,10 @@
 		<table class="table-hover table">
 			<tbody>
 				{#each games as game}
-					<tr class={`${rowClass(game)} ${rowClassEven(game)}`}>
+					<tr
+						id="table-row"
+						class={`${rowClass(game)} ${rowClassEven(game)} ${game.gameover.win ? 'success' : 'error'}`}
+					>
 						<td class="w-16"><img class="w-8" src="{base}/{game.language}.png" alt="en" /></td>
 						<td class="capitalize">{game.gameover.answer}</td>
 						<td class="w-16">{new Date(game.createdAt).toLocaleDateString($uiLanguageStore)}</td>
@@ -82,5 +85,11 @@
 	}
 	:global(.paginator-controls.variant-filled-surface) {
 		background-color: rgb(var(--color-surface-700));
+	}
+	#table-row.success:hover {
+		background-color: rgb(var(--color-success-700));
+	}
+	#table-row.error:hover {
+		background-color: rgb(var(--color-error-700));
 	}
 </style>
