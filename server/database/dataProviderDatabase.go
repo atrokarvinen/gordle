@@ -13,20 +13,20 @@ type DatabaseDataProvider struct {
 
 func (d DatabaseDataProvider) GetGame(gameId int) (dbModels.Game, error) {
 	var game dbModels.Game
-	result := d.Db.Model(&dbModels.Game{}).Preload("Guesses").First(&game, gameId)
+	result := d.Db.Model(&dbModels.Game{}).Preload("Guesses", orderByGuessId).First(&game, gameId)
 	return game, result.Error
 }
 
 func (d DatabaseDataProvider) GetGames(userId int) []dbModels.Game {
 	games := []dbModels.Game{}
-	d.Db.Model(&dbModels.Game{}).Preload("Guesses").Where(dbModels.Game{UserID: userId}).Order("created_at desc").Find(&games)
+	d.Db.Model(&dbModels.Game{}).Preload("Guesses", orderByGuessId).Where(dbModels.Game{UserID: userId}).Order("created_at desc").Find(&games)
 	return games
 }
 
 func (d DatabaseDataProvider) GetGamesPaginated(userId int, page int, limit int) ([]dbModels.Game, int64) {
 	games := []dbModels.Game{}
 	offset := page * limit
-	d.Db.Model(&dbModels.Game{}).Preload("Guesses").Where(dbModels.Game{UserID: userId}).Not(dbModels.Game{State: 1}).Order("created_at desc").Offset(offset).Limit(limit).Find(&games)
+	d.Db.Model(&dbModels.Game{}).Preload("Guesses", orderByGuessId).Where(dbModels.Game{UserID: userId}).Not(dbModels.Game{State: 1}).Order("created_at desc").Offset(offset).Limit(limit).Find(&games)
 
 	var totalCount int64
 	d.Db.Model(&dbModels.Game{}).Where(&dbModels.Game{UserID: userId}).Not(dbModels.Game{State: 1}).Count(&totalCount)
@@ -35,7 +35,7 @@ func (d DatabaseDataProvider) GetGamesPaginated(userId int, page int, limit int)
 
 func (d DatabaseDataProvider) GetLatestGame(userId int) (dbModels.Game, error) {
 	var game dbModels.Game
-	result := d.Db.Where(&dbModels.Game{UserID: userId}).Preload("Guesses").Last(&game)
+	result := d.Db.Where(&dbModels.Game{UserID: userId}).Preload("Guesses", orderByGuessId).Last(&game)
 	if result.Error != nil {
 		return dbModels.Game{}, errors.New("No latest game found")
 	}
@@ -80,4 +80,8 @@ func (d DatabaseDataProvider) AddWordsApiCall(wordsApiCall dbModels.WordsApiCall
 
 func (d DatabaseDataProvider) DeleteWordsApiCalls(calls []dbModels.WordsApiCall) {
 	d.Db.Unscoped().Delete(&calls)
+}
+
+func orderByGuessId(db *gorm.DB) *gorm.DB {
+	return db.Order("guesses.id")
 }
