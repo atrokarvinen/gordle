@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.css';
 	import Navigation from './Navigation.svelte';
 </script>
 
@@ -13,4 +14,6 @@
 <!-- <Toast position="t" /> -->
 
 <Navigation />
-<slot />
+<div class="align-center flex justify-center">
+	<slot />
+</div>

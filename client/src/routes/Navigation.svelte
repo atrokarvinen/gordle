@@ -27,7 +27,7 @@
 		>
 	{/snippet}
 	{#snippet trail()}
-		{#if isSmallDevice}
+		{#if isSmallDevice.current}
 			<button
 				aria-label="Open navigation menu"
 				data-testid="hamburger"
