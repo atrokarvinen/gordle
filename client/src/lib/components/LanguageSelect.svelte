@@ -13,6 +13,7 @@
 <div class="flex gap-x-3">
 	{#each languageOptions as language}
 		<button
+			aria-label="Select {language}"
 			on:click={() => onChange(language)}
 			class={`rounded border-2 border-solid p-2 ${value === language ? selectedLangBorder : unselectedLangBorder}`}
 			style="outline: none;"

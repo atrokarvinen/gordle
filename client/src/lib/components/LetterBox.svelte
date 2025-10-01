@@ -40,9 +40,15 @@
 	$: classNames = `font-verdana text-center font-bold uppercase outline-none md:text-2xl  ${width} ${height} ${cursor} ${bgColor} ${border}`;
 </script>
 
-<button data-testid="guess-letter" class={classNames} style={`font-family: ${font};`} on:click>
+<button
+	aria-label="Letter {letter}"
+	data-testid="guess-letter"
+	class={classNames}
+	style={`font-family: ${font};`}
+	on:click
+>
 	{#if icon}
-		<i class={icon} />
+		<i class={icon}></i>
 	{:else}
 		{letter}
 	{/if}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
-	import { page } from '$app/stores';
+	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import { getApiErrorMessage } from '$lib/axios.js';
 	import Gameover from '$lib/components/Gameover.svelte';
 	import Keyboard from '$lib/components/Keyboard.svelte';
@@ -11,26 +11,24 @@
 	import WordBoard from '$lib/components/WordBoard.svelte';
 	import { languageStore } from '$lib/languageStore.js';
 	import type { GameoverDto } from '$lib/models';
+	import { toaster } from '$lib/toaster.js';
 	import { i18n } from '$lib/translations/i18n.js';
-	import { getToastStore } from '@skeletonlabs/skeleton';
 	import { submitGuess as requestCreateGuess } from './api.js';
 
 	export let data;
 
 	$: {
 		if (data.unauthorized) {
-			goto(`${base}/`, { state: { redirected: true } });
+			goto(resolve('/'), { state: { redirected: true } });
 		}
 	}
-
-	const toastStore = getToastStore();
 
 	let currentIndex = 0;
 	let isGameStopped = false;
 	let submitting = false;
 	let currentGuess: string[] = [''];
 
-	$: gameId = Number($page.params.gameId);
+	$: gameId = Number(page.params.gameId);
 	$: guesses = data.game?.guesses ?? [];
 	$: gameover = data.game?.gameover ?? undefined;
 	$: currentGuessIndex = guesses.length;
@@ -62,10 +60,9 @@
 			resetGuess();
 		} catch (error) {
 			const err = getApiErrorMessage(error);
-			toastStore.trigger({
-				background: 'variant-filled-error',
-				message: $i18n.t(err.message, { data: err.data }),
-				autohide: true
+			toaster.error({
+				//
+				title: $i18n.t(err.message, { data: err.data })
 			});
 		} finally {
 			submitting = false;

@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+
+@import '@skeletonlabs/skeleton-svelte';
+@import '@skeletonlabs/skeleton-svelte/optional/presets';
+@import '@skeletonlabs/skeleton-svelte/themes/crimson';
+
+@source '../node_modules/@skeletonlabs/skeleton-svelte-svelte/dist';

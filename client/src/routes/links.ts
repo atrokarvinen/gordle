@@ -3,6 +3,7 @@ import { DEFAULT_LIMIT, DEFAULT_PAGE } from './statistics/game-history/defaults'
 
 export type LinkType = {
 	href: string;
+	ariaLabel?: string;
 	iconClass: string;
 	datatestid: string;
 	name: string;

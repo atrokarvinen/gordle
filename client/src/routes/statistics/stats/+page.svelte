@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { i18n } from '$lib/translations/i18n';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { ProgressRing } from '@skeletonlabs/skeleton-svelte';
 	import StatisticsView from './StatisticsView.svelte';
 
 	export let data;
 </script>
 
 {#await data.loadPromise}
-	<ProgressRadial width="w-16" />
+	<ProgressRing width="w-16" />
 {:then value}
 	{#if value}
 		<StatisticsView data={value.data} />

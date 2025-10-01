@@ -1,39 +1,52 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-	import { AppBar, getDrawerStore } from '@skeletonlabs/skeleton';
-	import MediaQuery from 'svelte-media-queries';
+	import { resolve } from '$app/paths';
+	import { AppBar } from '@skeletonlabs/skeleton-svelte';
+	// import MediaQuery from 'svelte-media-queries';
+	import { MediaQuery } from 'svelte/reactivity';
 	import { links } from './links';
 
-	const drawerStore = getDrawerStore();
-	const openDrawer = () => {
-		drawerStore.open({
-			width: 'w-48',
-			position: 'right',
-			id: 'mobile-nav'
-		});
-	};
+	// const drawerStore = getDrawerStore();
+	// const openDrawer = () => {
+	// 	drawerStore.open({
+	// 		width: 'w-48',
+	// 		position: 'right',
+	// 		id: 'mobile-nav'
+	// 	});
+	// };
 
-	let isSmallDevice: boolean;
+	let isSmallDevice = new MediaQuery('(max-width: 480px)');
 </script>
 
-<MediaQuery query="(max-width: 480px)" bind:matches={isSmallDevice} />
 <AppBar>
-	<svelte:fragment slot="lead">
-		<a data-testid="home-link" class="btn-icon variant-filled-surface" href="{base}/"
-			><i class="fa-solid fa-house" /></a
+	{#snippet lead()}
+		<a
+			aria-label="Go to home page"
+			data-testid="home-link"
+			class="btn-icon variant-filled-surface"
+			href={resolve('/')}><i class="fa-solid fa-house"></i></a
 		>
-	</svelte:fragment>
-	<svelte:fragment slot="trail">
+	{/snippet}
+	{#snippet trail()}
 		{#if isSmallDevice}
-			<button data-testid="hamburger" class="btn-icon variant-filled-surface" on:click={openDrawer}>
-				<i class="fas fa-bars" />
+			<button
+				aria-label="Open navigation menu"
+				data-testid="hamburger"
+				class="btn-icon variant-filled-surface"
+				on:click={() => {
+					// openDrawer();
+				}}
+			>
+				<i class="fas fa-bars"></i>
 			</button>
 		{:else}
 			{#each links as link}
-				<a data-testid={link.datatestid} class="btn-icon variant-filled-surface" href={link.href}
-					><i class={link.iconClass} /></a
+				<a
+					aria-label={link.ariaLabel}
+					data-testid={link.datatestid}
+					class="btn-icon variant-filled-surface"
+					href={link.href}><i class={link.iconClass}></i></a
 				>
 			{/each}
 		{/if}
-	</svelte:fragment>
+	{/snippet}
 </AppBar>

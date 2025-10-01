@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { GameDto } from '$lib/models';
-	import { Bar } from 'svelte-chartjs';
+	// import { Bar } from 'svelte-chartjs';
 
 	import { i18n } from '$lib/translations/i18n';
-	import { BarElement, CategoryScale, Chart, Legend, LinearScale, Title, Tooltip } from 'chart.js';
+	// import { BarElement, CategoryScale, Chart, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 
-	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+	// Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 	export let filteredGames: GameDto[];
 
@@ -39,7 +39,7 @@
 </script>
 
 <div class="h-96">
-	<Bar
+	<!-- <Bar
 		data={{
 			datasets: [
 				{ data: winData, backgroundColor: getColor('--color-primary-500') },
@@ -73,5 +73,5 @@
 				}
 			}
 		}}
-	/>
+	/> -->
 </div>

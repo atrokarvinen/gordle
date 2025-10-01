@@ -31,9 +31,13 @@
 	/>
 	{#if selectedLanguage}
 		<div class="ml-5">
-			<button class="btn variant-filled-secondary" on:click={() => (selectedLanguage = undefined)}>
+			<button
+				aria-label="Clear language filter"
+				class="btn variant-filled-secondary"
+				on:click={() => (selectedLanguage = undefined)}
+			>
 				<span>
-					<i class="fas fa-times" />
+					<i class="fas fa-times"></i>
 				</span>
 				<span>{$i18n.t('clear')}</span>
 			</button>

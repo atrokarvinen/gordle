@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { i18n } from '$lib/translations/i18n';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { ProgressRing } from '@skeletonlabs/skeleton-svelte';
 	import GameHistoryTable from './GameHistoryTable.svelte';
 
 	export let data;
@@ -8,7 +8,7 @@
 
 {#await data.loadPromise}
 	<div class="flex justify-center">
-		<ProgressRadial width="w-16" />
+		<ProgressRing width="w-16" />
 	</div>
 {:then dto}
 	{#if dto?.data.games.length === 0}

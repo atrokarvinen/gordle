@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LetterState } from '$lib/models';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { ProgressRing } from '@skeletonlabs/skeleton-svelte';
 
 	import LetterBox from './LetterBox.svelte';
 
@@ -18,7 +18,7 @@
 <button data-testid="keyboard-button" on:click={dispatchKeyboardEvent}>
 	{#if submitting}
 		<div class="bg-surface-400 flex h-7 w-14 items-center justify-center md:h-12 md:w-24">
-			<ProgressRadial width="md:w-10 w-6" />
+			<ProgressRing width="md:w-10 w-6" />
 		</div>
 	{:else}
 		<LetterBox {letter} letterState={state} cursor="cursor-pointer" {icon} />
