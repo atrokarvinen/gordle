@@ -1,4 +1,3 @@
-version: "3.9"
 name: gordle
 services:
   gordle-backend:
@@ -12,3 +11,26 @@ services:
     ports:
       - 8080:8080
     user: 1001:1001
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    container_name: gordle-postgres
+    environment:
+      POSTGRES_USER: gordle
+      POSTGRES_PASSWORD: gordlepassword
+      POSTGRES_DB: gordle
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  pgAdmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    ports:
+      - 8081:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=catsarecool
+volumes:
+  pgdata:

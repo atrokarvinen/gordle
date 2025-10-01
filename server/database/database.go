@@ -17,6 +17,8 @@ func Init() *gorm.DB {
 	provider := os.Getenv("DATABASE_PROVIDER")
 	var db *gorm.DB
 	var err error
+	fmt.Println("Using database provider: " + provider)
+
 	if provider == "sqlite" {
 		db, err = gorm.Open(sqlite.Open(connectionString), &gorm.Config{})
 	} else if provider == "postgres" {

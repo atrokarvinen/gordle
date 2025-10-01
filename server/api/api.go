@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"gordle/dictionaryClient"
 	"gordle/game"
 	"gordle/user"
@@ -21,6 +22,9 @@ type Api struct {
 func (a Api) Run() {
 	host_address := os.Getenv("HOST_ADDRESS")
 	client_address := os.Getenv("CLIENT_ADDRESS")
+
+	fmt.Println("Using host address: '" + host_address + "'")
+	fmt.Println("Using client address: '" + client_address + "'")
 
 	mode := os.Getenv("GIN_MODE")
 	gin.SetMode(mode)
