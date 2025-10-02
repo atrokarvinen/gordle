@@ -21,7 +21,7 @@
 </script>
 
 <button
-	class="btn variant-filled-primary"
+	class="btn preset-filled-primary-500"
 	on:click={() => {
 		// openModal();
 	}}>{$i18n.t('new_game')}</button

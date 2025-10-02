@@ -67,12 +67,12 @@
 	</form>
 	<footer class="modal-footer {parent.regionFooter}">
 		<button
-			class="btn variant-filled-secondary"
+			class="btn preset-filled-secondary-500"
 			on:click={() => {
 				// modalStore.close
 			}}>{$i18n.t('close')}</button
 		>
-		<button class="btn variant-filled-primary" on:click={createGame}>{$i18n.t('create')}</button>
+		<button class="btn preset-filled-primary-500" on:click={createGame}>{$i18n.t('create')}</button>
 	</footer>
 </div>
 <!-- {/if} -->

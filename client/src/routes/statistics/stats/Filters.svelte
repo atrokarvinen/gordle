@@ -33,7 +33,7 @@
 		<div class="ml-5">
 			<button
 				aria-label="Clear language filter"
-				class="btn variant-filled-secondary"
+				class="btn preset-filled-secondary-500"
 				on:click={() => (selectedLanguage = undefined)}
 			>
 				<span>

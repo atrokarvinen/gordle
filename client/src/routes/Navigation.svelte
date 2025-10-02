@@ -22,7 +22,7 @@
 		<a
 			aria-label="Go to home page"
 			data-testid="home-link"
-			class="btn-icon variant-filled-surface"
+			class="btn-icon preset-filled-surface-500"
 			href={resolve('/')}><i class="fa-solid fa-house"></i></a
 		>
 	{/snippet}
@@ -31,7 +31,7 @@
 			<button
 				aria-label="Open navigation menu"
 				data-testid="hamburger"
-				class="btn-icon variant-filled-surface"
+				class="btn-icon preset-filled-surface-500"
 				on:click={() => {
 					// openDrawer();
 				}}
@@ -43,7 +43,7 @@
 				<a
 					aria-label={link.ariaLabel}
 					data-testid={link.datatestid}
-					class="btn-icon variant-filled-surface"
+					class="btn-icon preset-filled-surface-500"
 					href={link.href}><i class={link.iconClass}></i></a
 				>
 			{/each}

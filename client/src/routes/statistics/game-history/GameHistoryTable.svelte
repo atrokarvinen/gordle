@@ -11,10 +11,10 @@
 	export let totalCount: number;
 
 	const rowClass = (game: GameDto) => {
-		return game.gameover.win ? 'variant-filled-success' : 'variant-filled-error';
+		return game.gameover.win ? 'preset-filled-success-500' : 'preset-filled-error-500';
 	};
 	const rowClassEven = (game: GameDto) => {
-		return game.gameover.win ? 'even:variant-filled-success' : 'even:variant-filled-error';
+		return game.gameover.win ? 'even:preset-filled-success-500' : 'even:preset-filled-error-500';
 	};
 
 	let paginationSettings = {
@@ -48,7 +48,7 @@
 <div class="space-y-2">
 	<Pagination data={[]} />
 	<!-- <Pagination
-		regionControl="btn-group variant-filled-surface"
+		regionControl="btn-group preset-filled-surface-500"
 		select="select w-36 flex m-auto"
 		amountText={$i18n.t('games')}
 		showNumerals
@@ -69,7 +69,7 @@
 						<td class="capitalize">{game.gameover.answer}</td>
 						<td class="w-16">{new Date(game.createdAt).toLocaleDateString($uiLanguageStore)}</td>
 						<td class="w-8"
-							><a href={resolve(`/game/${game.id}`)} class="btn btn-sm variant-filled-primary"
+							><a href={resolve(`/game/${game.id}`)} class="btn btn-sm preset-filled-primary-500"
 								>{$i18n.t('view')}</a
 							></td
 						>
@@ -84,7 +84,7 @@
 	.table tbody td {
 		vertical-align: middle;
 	}
-	:global(.paginator-controls.variant-filled-surface) {
+	:global(.paginator-controls.preset-filled-surface-500) {
 		background-color: rgb(var(--color-surface-700));
 	}
 	#table-row.success:hover {

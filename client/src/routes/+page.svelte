@@ -30,7 +30,7 @@
 </script>
 
 {#if retryFailed}
-	<aside class="alert variant-filled-error mt-4 flex items-center">
+	<aside class="alert preset-filled-error-500 mt-4 flex items-center">
 		<h1 class="h3">Error</h1>
 		<div class=" flex flex-row items-center gap-x-2">
 			<i class="fas fa-exclamation-triangle fa-xl"></i>

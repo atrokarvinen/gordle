@@ -35,4 +35,4 @@
 	};
 </script>
 
-<button class="btn variant-filled-secondary" on:click={confirmQuit}>{$i18n.t('give_up')}</button>
+<button class="btn preset-filled-secondary-500" on:click={confirmQuit}>{$i18n.t('give_up')}</button>
