@@ -6,15 +6,11 @@
 	import type { GameDto } from '$lib/models';
 	import { toaster } from '$lib/toaster';
 	import { i18n } from '$lib/translations/i18n';
-	import type { SvelteComponent } from 'svelte';
 	import LanguageSelect from './LanguageSelect.svelte';
 
-	export let parent: SvelteComponent;
-
-	// let maxAttempts = $modalStore[0]?.meta.maxAttempts ?? 6;
-	// let wordLength = $modalStore[0]?.meta.wordLength ?? 6;
-	let maxAttempts = 6;
-	let wordLength = 6;
+	export let maxAttempts = 6;
+	export let wordLength = 6;
+	export let onClose: () => void;
 	let language = $languageStore;
 
 	const attemptsOptions = [4, 5, 6, 7, 8];
@@ -32,7 +28,6 @@
 				title: $i18n.t('new_game_started')
 			});
 			goto(resolve(`/game/${game.id}`));
-			// modalStore.close();
 		} catch (error) {
 			const err = getApiErrorMessage(error);
 			toaster.error({
@@ -42,10 +37,7 @@
 	};
 </script>
 
-<!-- {#if $modalStore[0]} -->
 <div class="card w-modal space-y-4 p-4">
-	<!-- <header class="h2">{$modalStore[0].title}</header>
-		<article>{$modalStore[0].body}</article> -->
 	<form class="form space-y-2">
 		<LanguageSelect value={language} onChange={(lang) => (language = lang)} />
 		<label class="label">
@@ -65,14 +57,8 @@
 			</select>
 		</label>
 	</form>
-	<footer class="modal-footer {parent.regionFooter}">
-		<button
-			class="btn preset-filled-secondary-500"
-			on:click={() => {
-				// modalStore.close
-			}}>{$i18n.t('close')}</button
-		>
+	<footer class="modal-footer">
+		<button class="btn preset-filled-secondary-500" on:click={onClose}>{$i18n.t('close')}</button>
 		<button class="btn preset-filled-primary-500" on:click={createGame}>{$i18n.t('create')}</button>
 	</footer>
 </div>
-<!-- {/if} -->
