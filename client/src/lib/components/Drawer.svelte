@@ -17,7 +17,7 @@
 		if (isOpen) {
 			drawer.style.width = '12rem';
 		} else {
-			// drawer.style.width = '0';
+			drawer.style.width = '0';
 		}
 	});
 
@@ -30,29 +30,26 @@
 	});
 </script>
 
-<Backdrop visible={isOpen} {onClose}>
-	<div id="mySidenav" class="sidenav surface-500" bind:this={drawer}>
-		<button class="closebtn" onclick={onClose} aria-label="Close navigation menu">&times;</button>
-		<MobileNavigation />
-	</div>
-</Backdrop>
+<Backdrop visible={isOpen} {onClose} />
+<div id="mySidenav" class="sidenav surface-500" bind:this={drawer}>
+	<button class="closebtn" onclick={onClose} aria-label="Close navigation menu">&times;</button>
+	<MobileNavigation />
+</div>
 
 <style>
-	/* The side navigation menu */
 	.sidenav {
-		height: 100%; /* 100% Full-height */
-		width: 0; /* 0 width - change this with JavaScript */
-		position: fixed; /* Stay in place */
-		z-index: 2000; /* Stay on top */
-		top: 0; /* Stay at the top */
+		height: 100%;
+		width: 0;
+		position: fixed;
+		z-index: 2000;
+		top: 0;
 		right: 0;
-		overflow-x: hidden; /* Disable horizontal scroll */
-		padding-top: 60px; /* Place content 60px from the top */
-		transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+		overflow-x: hidden;
+		padding-top: 60px;
+		transition: 0.5s;
 		background-color: var(--body-background-color-dark);
 	}
 
-	/* Position and style the close button (top right corner) */
 	.sidenav .closebtn {
 		position: absolute;
 		top: 0;
@@ -61,7 +58,6 @@
 		margin-left: 50px;
 	}
 
-	/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 	@media screen and (max-height: 450px) {
 		.sidenav {
 			padding-top: 15px;

@@ -8,11 +8,13 @@
 </script>
 
 {#if visible}
-	<div class="backdrop" aria-label="Close navigation menu" onclick={onClose}>
-		<slot />
-	</div>
-{:else}
-	<slot />
+	<div
+		class="backdrop"
+		tabindex="0"
+		role="button"
+		aria-label="Close navigation menu"
+		onclick={onClose}
+	></div>
 {/if}
 
 <style>
