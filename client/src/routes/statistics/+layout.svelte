@@ -4,7 +4,7 @@
 
 <div class="flex w-full flex-col items-center px-2 md:w-96">
 	<StatisticsTabs />
-	<div class="mt-4">
+	<div class="md:mt-4">
 		<slot />
 	</div>
 </div>

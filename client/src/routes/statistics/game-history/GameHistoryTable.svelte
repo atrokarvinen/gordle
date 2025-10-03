@@ -57,6 +57,7 @@
 <div class="space-y-2">
 	<div class="flex flex-col items-center justify-between gap-y-2 md:flex-row">
 		<select
+			id="page-size"
 			class="select max-w-[150px]"
 			bind:value={pageSize}
 			onchange={(e) => {
@@ -69,12 +70,16 @@
 			{/each}
 		</select>
 		<Pagination
-			data={games}
+			data={[]}
 			page={pageNumber}
 			onPageChange={(e) => onPageChange(e.page)}
 			{pageSize}
 			count={totalCount}
 			siblingCount={0}
+			showFirstLastButtons={false}
+			gap="gap-2"
+			padding="p-2"
+			buttonBase="btn btn-sm"
 		></Pagination>
 	</div>
 	<div class="table-container">

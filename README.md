@@ -20,6 +20,7 @@ The application has been built with Go in the backend and Svelte in the frontend
 - ChartJs for the statistics data visualization
 - i18next for the internationalization
 - Docker for containerization, Fly.io for hosting backend and Vercel for hosting frontend, Github Actions for CI/CD
+- Clever Cloud for hosting the PostgreSQL database
 
 ### Sources
 
