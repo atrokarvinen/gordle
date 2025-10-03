@@ -21,7 +21,7 @@
 					return;
 				}
 
-				goto(resolve(`/game/${gameId}`));
+				goto(resolve(`/game/[gameId]`, { gameId: gameId.toString() }));
 			});
 		}
 	}

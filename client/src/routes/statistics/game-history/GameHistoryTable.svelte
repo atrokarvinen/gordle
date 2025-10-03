@@ -88,8 +88,9 @@
 						<td class="capitalize">{game.gameover.answer}</td>
 						<td class="w-16">{new Date(game.createdAt).toLocaleDateString($uiLanguageStore)}</td>
 						<td class="w-8"
-							><a href={resolve(`/game/${game.id}`)} class="btn btn-sm preset-filled-primary-500"
-								>{$i18n.t('view')}</a
+							><a
+								href={resolve(`/game/[gameId]`, { gameId: game.id.toString() })}
+								class="btn btn-sm preset-filled-primary-500">{$i18n.t('view')}</a
 							></td
 						>
 					</tr>

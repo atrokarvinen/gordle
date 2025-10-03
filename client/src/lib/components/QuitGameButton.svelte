@@ -5,12 +5,16 @@
 	import { i18n } from '$lib/translations/i18n';
 	import Modal from './Modal.svelte';
 
-	export let gameId: number;
-	export let onGameover: (gameover: GameoverDto) => void;
+	interface Props {
+		gameId: number;
+		onGameover: (gameover: GameoverDto) => void;
+	}
 
-	let show = false;
+	const { gameId, onGameover }: Props = $props();
 
-	const quit = async () => {
+	let show = $state(false);
+
+	async function quit() {
 		try {
 			const response = await axios.delete<GameDto>(`/games/${gameId}`);
 			const gameover = response.data.gameover;
@@ -20,7 +24,7 @@
 				title: $i18n.t(getApiErrorMessage(error).data, { data: getApiErrorMessage(error).data })
 			});
 		}
-	};
+	}
 
 	const confirmQuit = () => {
 		show = true;
@@ -43,4 +47,4 @@
 		<p>{$i18n.t('give_up_confirm') + '?'}</p>
 	{/snippet}
 </Modal>
-<button class="btn preset-filled-secondary-500" on:click={confirmQuit}>{$i18n.t('give_up')}</button>
+<button class="btn preset-filled-secondary-500" onclick={confirmQuit}>{$i18n.t('give_up')}</button>

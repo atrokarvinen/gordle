@@ -27,7 +27,7 @@
 			toaster.success({
 				title: $i18n.t('new_game_started')
 			});
-			goto(resolve(`/game/${game.id}`));
+			goto(resolve(`/game/[gameId]`, { gameId: game.id.toString() }));
 		} catch (error) {
 			const err = getApiErrorMessage(error);
 			toaster.error({

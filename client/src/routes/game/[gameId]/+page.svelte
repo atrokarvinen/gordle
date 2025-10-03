@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { page } from '$app/state';
 	import { getApiErrorMessage } from '$lib/axios.js';
 	import Gameover from '$lib/components/Gameover.svelte';
 	import Keyboard from '$lib/components/Keyboard.svelte';
@@ -28,7 +27,7 @@
 	let submitting = false;
 	let currentGuess: string[] = [''];
 
-	$: gameId = Number(page.params.gameId);
+	$: gameId = data.game?.id ?? -1;
 	$: guesses = data.game?.guesses ?? [];
 	$: gameover = data.game?.gameover ?? undefined;
 	$: currentGuessIndex = guesses.length;
