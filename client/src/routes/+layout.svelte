@@ -3,9 +3,9 @@
 	import Navigation from './Navigation.svelte';
 </script>
 
-<!-- <Toast position="t" /> -->
-
-<Navigation />
-<div class="align-center flex justify-center">
-	<slot />
+<div class="flex min-h-screen flex-col">
+	<Navigation />
+	<div class="align-center flex grow justify-center">
+		<slot />
+	</div>
 </div>

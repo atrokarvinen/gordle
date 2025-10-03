@@ -78,29 +78,31 @@
 
 <KeyboardObserver bind:currentGuess bind:currentIndex {submitGuess} />
 
-<div class="flex h-full w-full flex-col items-center gap-y-3">
-	{#if gameover}
-		<Gameover {gameover} />
-	{/if}
-	<div class="flex flex-grow flex-col items-center justify-end gap-y-3 pb-6 sm:justify-start">
-		<WordBoard
-			{currentGuess}
-			words={guesses}
-			currentLetterIndex={currentIndex}
-			{maxAttempts}
-			{wordLength}
-			{currentGuessIndex}
-			{isGameStopped}
-			{letterClicked}
-		/>
-		<Keyboard {guesses} {submitting} />
+<div class="flex grow items-end md:pt-4">
+	<div class="flex h-full w-full flex-col items-center gap-y-3">
+		{#if gameover}
+			<Gameover {gameover} />
+		{/if}
+		<div class="flex flex-grow flex-col items-center justify-end gap-y-3 pb-6 sm:justify-start">
+			<WordBoard
+				{currentGuess}
+				words={guesses}
+				currentLetterIndex={currentIndex}
+				{maxAttempts}
+				{wordLength}
+				{currentGuessIndex}
+				{isGameStopped}
+				{letterClicked}
+			/>
+			<Keyboard {guesses} {submitting} />
 
-		<div class="flex flex-col gap-y-3">
-			{#if isGameStopped}
-				<NewGameButton {wordLength} {maxAttempts} />
-			{:else}
-				<QuitGameButton {gameId} {onGameover} />
-			{/if}
+			<div class="flex flex-col gap-y-3">
+				{#if isGameStopped}
+					<NewGameButton {wordLength} {maxAttempts} />
+				{:else}
+					<QuitGameButton {gameId} {onGameover} />
+				{/if}
+			</div>
 		</div>
 	</div>
 </div>

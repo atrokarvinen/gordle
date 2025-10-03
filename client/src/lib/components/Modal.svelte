@@ -22,6 +22,22 @@
 	}: Props = $props();
 
 	let htmlDialog: HTMLDialogElement | null = null;
+
+	$effect(() => {
+		htmlDialog?.addEventListener('click', (e) => {
+			var rect = htmlDialog!.getBoundingClientRect();
+			var isInDialog =
+				rect.top <= e.clientY &&
+				e.clientY <= rect.top + rect.height &&
+				rect.left <= e.clientX &&
+				e.clientX <= rect.left + rect.width;
+			if (!isInDialog) {
+				response(htmlDialog?.returnValue === 'confirm');
+				onClose();
+			}
+		});
+	});
+
 	$effect(() => {
 		if (show) {
 			htmlDialog?.showModal();
@@ -34,8 +50,7 @@
 <dialog
 	data-dialog
 	class="rounded-container bg-surface-100-900
-		-translate-1/2 backdrop:bg-surface-50/75
-		dark:backdrop:bg-surface-950/75 left-1/2
+		-translate-1/2 left-1/2
 		top-1/2 z-10 w-72 max-w-[640px] space-y-4 p-4 text-inherit"
 	bind:this={htmlDialog}
 >
