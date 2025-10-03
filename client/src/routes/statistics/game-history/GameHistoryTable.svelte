@@ -36,13 +36,6 @@
 	let pageNumber = $state(paginationSettings.page);
 	let pageSize = $state(paginationSettings.limit);
 
-	let sourceData: any[] = Array.from({ length: 20 }, (_, i) => ({
-		position: i + 1,
-		name: `Element ${i + 1}`,
-		weight: Math.round(Math.random() * 1000) / 100,
-		symbol: String.fromCharCode(65 + (i % 26))
-	}));
-
 	const onPageChange = (pageNumber: number) => {
 		let query = new URLSearchParams(page.url.searchParams.toString());
 		query.set('page', pageNumber.toString());
@@ -53,8 +46,6 @@
 		let query = new URLSearchParams(page.url.searchParams.toString());
 		const maxPage = Math.ceil(totalCount / amount);
 		const pageNumber = Math.min(paginationSettings.page, maxPage);
-
-		console.log('amount changed to:', amount, 'maxPage:', maxPage, 'new page:', pageNumber);
 
 		query.set('page', pageNumber.toString());
 		query.set('limit', amount.toString());
@@ -77,7 +68,7 @@
 			{/each}
 		</select>
 		<Pagination
-			data={sourceData}
+			data={games}
 			page={pageNumber}
 			onPageChange={(e) => onPageChange(e.page)}
 			{pageSize}
