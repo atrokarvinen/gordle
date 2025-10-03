@@ -26,7 +26,7 @@
 	};
 </script>
 
-<Accordion padding="p-2">
+<Accordion padding="p-2" collapsible defaultValue={['definitions']}>
 	{#if definitions.length > 0}
 		<Accordion.Item value="definitions">
 			{#snippet lead()}<i class="fas fa-book w-2"></i>{/snippet}
