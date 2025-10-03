@@ -6,9 +6,14 @@
 	import { i18n } from '$lib/translations/i18n';
 	import { uiLanguageStore } from '$lib/translations/uiLanguageStore';
 	import { Pagination } from '@skeletonlabs/skeleton-svelte';
+	import { DEFAULT_LIMIT, DEFAULT_PAGE } from './defaults';
 
-	export let games: GameDto[];
-	export let totalCount: number;
+	interface Props {
+		games: GameDto[];
+		totalCount: number;
+	}
+
+	const { games, totalCount }: Props = $props();
 
 	const rowClass = (game: GameDto) => {
 		return game.gameover.win ? 'preset-filled-success-500' : 'preset-filled-error-500';
@@ -18,26 +23,38 @@
 	};
 
 	let paginationSettings = {
-		page: +page.url.searchParams.get('page')! || 0,
-		limit: +page.url.searchParams.get('limit')! || 5,
+		page: +page.url.searchParams.get('page')! || DEFAULT_PAGE,
+		limit: +page.url.searchParams.get('limit')! || DEFAULT_LIMIT,
 		size: totalCount,
 		amounts: [5, 10, 20, 50]
 	};
 
-	$: paginationSettings.size = totalCount;
+	$effect(() => {
+		paginationSettings.size = totalCount;
+	});
 
-	const onPageChange = (e: CustomEvent<number>) => {
-		const pageNumber = e.detail;
+	let pageNumber = $state(paginationSettings.page);
+	let pageSize = $state(paginationSettings.limit);
+
+	let sourceData: any[] = Array.from({ length: 20 }, (_, i) => ({
+		position: i + 1,
+		name: `Element ${i + 1}`,
+		weight: Math.round(Math.random() * 1000) / 100,
+		symbol: String.fromCharCode(65 + (i % 26))
+	}));
+
+	const onPageChange = (pageNumber: number) => {
 		let query = new URLSearchParams(page.url.searchParams.toString());
 		query.set('page', pageNumber.toString());
 		goto(`?${query.toString()}`);
 	};
 
-	const onAmountChange = (e: CustomEvent<number>) => {
-		const amount = e.detail;
+	const onAmountChange = (amount: number) => {
 		let query = new URLSearchParams(page.url.searchParams.toString());
-		const maxPage = Math.ceil(totalCount / amount) - 1;
+		const maxPage = Math.ceil(totalCount / amount);
 		const pageNumber = Math.min(paginationSettings.page, maxPage);
+
+		console.log('amount changed to:', amount, 'maxPage:', maxPage, 'new page:', pageNumber);
 
 		query.set('page', pageNumber.toString());
 		query.set('limit', amount.toString());
@@ -46,17 +63,28 @@
 </script>
 
 <div class="space-y-2">
-	<Pagination data={[]} />
-	<!-- <Pagination
-		regionControl="btn-group preset-filled-surface-500"
-		select="select w-36 flex m-auto"
-		amountText={$i18n.t('games')}
-		showNumerals
-		maxNumerals={1}
-		bind:settings={paginationSettings}
-		on:page={onPageChange}
-		on:amount={onAmountChange}
-	/> -->
+	<div class="flex flex-col items-center justify-between gap-y-2 md:flex-row">
+		<select
+			class="select max-w-[150px]"
+			bind:value={pageSize}
+			onchange={(e) => {
+				const value = Number(e.currentTarget.value);
+				onAmountChange(value);
+			}}
+		>
+			{#each paginationSettings.amounts as v}
+				<option value={v}>{v} {$i18n.t('games')}</option>
+			{/each}
+		</select>
+		<Pagination
+			data={sourceData}
+			page={pageNumber}
+			onPageChange={(e) => onPageChange(e.page)}
+			{pageSize}
+			count={totalCount}
+			siblingCount={0}
+		></Pagination>
+	</div>
 	<div class="table-container">
 		<table class="table-hover table">
 			<tbody>
