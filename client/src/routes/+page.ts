@@ -46,7 +46,7 @@ const getGame = async () => {
 		const response = await axios.post<GameDto>(`/games`, payload);
 		const game = response.data;
 		return { gameId: game.id };
-	} catch (error) {
+	} catch {
 		return { gameId: '-1' };
 	}
 };

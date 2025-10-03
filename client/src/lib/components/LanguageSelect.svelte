@@ -11,7 +11,7 @@
 </script>
 
 <div class="flex gap-x-3">
-	{#each languageOptions as language}
+	{#each languageOptions as language (language)}
 		<button
 			aria-label="Select {language}"
 			on:click={() => onChange(language)}

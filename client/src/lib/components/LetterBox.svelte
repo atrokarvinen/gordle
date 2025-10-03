@@ -1,16 +1,15 @@
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { LetterState } from '../models';
 
-	interface $$Props extends HTMLInputAttributes {
-		letterState: LetterState;
-		letter: string;
-		font?: string;
-		readonly?: boolean;
-		cursor?: string;
-		focused?: boolean;
-		icon?: string;
-	}
+	// interface $$Props extends HTMLInputAttributes {
+	// 	letterState: LetterState;
+	// 	letter: string;
+	// 	font?: string;
+	// 	readonly?: boolean;
+	// 	cursor?: string;
+	// 	focused?: boolean;
+	// 	icon?: string;
+	// }
 
 	export let icon: string | undefined = undefined;
 	export let letterState: LetterState;

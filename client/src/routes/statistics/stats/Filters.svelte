@@ -48,7 +48,7 @@
 <label>
 	{$i18n.t('filter_by_word_length')}:
 	<select class="select w-32" bind:value={selectedWordLength}>
-		{#each wordLengthOptions as wordLengthOption}
+		{#each wordLengthOptions as wordLengthOption (wordLengthOption.value)}
 			<option value={wordLengthOption.value}>{wordLengthOption.label}</option>
 		{/each}
 	</select>

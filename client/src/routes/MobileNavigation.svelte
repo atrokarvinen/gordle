@@ -14,7 +14,7 @@
 <nav>
 	<ul class="flex flex-col items-center gap-2 p-2">
 		<MobileNavigationLink link={homeLink} />
-		{#each links as link}
+		{#each links as link (link.href)}
 			<MobileNavigationLink {link} />
 		{/each}
 	</ul>

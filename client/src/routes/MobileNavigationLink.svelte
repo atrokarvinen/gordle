@@ -9,11 +9,6 @@
 
 	const { link }: Props = $props();
 
-	let isLinkActive = $state(false);
-	$effect(() => {
-		isLinkActive = isActive(link.href, page.url.pathname);
-	});
-
 	const isActive = (href: string, currentUrl: string) => {
 		if (href === '/' && currentUrl.startsWith('/game')) return true;
 		const lastPart = href.split('/').pop();
@@ -21,6 +16,8 @@
 		const withoutQuery = lastPart.split('?')[0];
 		return currentUrl.includes(withoutQuery);
 	};
+
+	let isLinkActive = $derived(isActive(link.href, page.url.pathname));
 </script>
 
 <li class="w-full">

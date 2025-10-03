@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import { axios } from '$lib/axios';
 import type { GameDto } from '$lib/models.js';
-import type { AxiosError } from 'axios';
+import { isAxiosError, type AxiosError } from 'axios';
 
 export const load = async ({ params }) => {
 	if (!browser) {
@@ -17,10 +17,12 @@ export const load = async ({ params }) => {
 		const gameResponse = await axios.get<GameDto>(`/games/${gameId}`);
 		const game = gameResponse.data;
 		return { game };
-	} catch (error: any) {
-		const axiosError: AxiosError = error;
-		if (axiosError?.response?.status === 403) {
-			return { unauthorized: true };
+	} catch (error: unknown) {
+		if (isAxiosError(error)) {
+			const axiosError: AxiosError = error;
+			if (axiosError?.response?.status === 403) {
+				return { unauthorized: true };
+			}
 		}
 		return { game: null };
 	}

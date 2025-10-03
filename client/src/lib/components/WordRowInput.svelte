@@ -8,7 +8,7 @@
 </script>
 
 <div data-testid="word-guess-row" class="flex gap-x-1">
-	{#each currentGuess as letter, i}
+	{#each currentGuess as letter, i (i)}
 		<LetterBox
 			focused={currentIndex === i}
 			{letter}

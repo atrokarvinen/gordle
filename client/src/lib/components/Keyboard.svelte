@@ -32,12 +32,12 @@
 
 <div class="mt-4 flex flex-col items-center gap-y-2">
 	<div class="ml-0 flex gap-x-1">
-		{#each qwertyLine1 as letter}
+		{#each qwertyLine1 as letter (letter)}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
 	</div>
-	<div class={`flex gap-x-1`}>
-		{#each qwertyLine2 as letter}
+	<div class="flex gap-x-1">
+		{#each qwertyLine2 as letter (letter)}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
 	</div>
@@ -50,7 +50,7 @@
 				{submitting}
 			/>
 		</div>
-		{#each qwertyLine3 as letter}
+		{#each qwertyLine3 as letter (letter)}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />
 		{/each}
 		<div class="ml-1">

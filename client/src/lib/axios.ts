@@ -7,10 +7,15 @@ export const axios = base.create({
 	withCredentials: true
 });
 
-export const getApiErrorMessage = (error: any): { message: string; data: any } => {
+type ApiErrorMessage = {
+	message?: string;
+};
+
+export const getApiErrorMessage = (error: unknown) => {
+	const apiError = error as ApiErrorMessage;
 	if (isAxiosError(error)) {
 		const axiosError = error;
-		const responseData: any = axiosError.response?.data;
+		const responseData = axiosError.response?.data;
 		const message = responseData.message;
 		if (typeof message === 'string') {
 			const translationKey = messageToTranslationKey(message);
@@ -18,10 +23,10 @@ export const getApiErrorMessage = (error: any): { message: string; data: any } =
 		}
 		return { message: axiosError.message, data: undefined };
 	}
-	if (typeof error?.messsage === 'string') {
-		return { message: error.message, data: undefined };
+	if (typeof apiError?.message === 'string') {
+		return { message: apiError.message, data: undefined };
 	}
-	return { message: error, data: undefined };
+	return { message: error as string, data: undefined };
 };
 
 const messageToTranslationKey = (message: string): string => {

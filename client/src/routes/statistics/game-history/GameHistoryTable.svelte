@@ -6,6 +6,7 @@
 	import { i18n } from '$lib/translations/i18n';
 	import { uiLanguageStore } from '$lib/translations/uiLanguageStore';
 	import { Pagination } from '@skeletonlabs/skeleton-svelte';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { DEFAULT_LIMIT, DEFAULT_PAGE } from './defaults';
 
 	interface Props {
@@ -37,13 +38,13 @@
 	let pageSize = $state(paginationSettings.limit);
 
 	const onPageChange = (pageNumber: number) => {
-		let query = new URLSearchParams(page.url.searchParams.toString());
+		let query = new SvelteURLSearchParams(page.url.searchParams.toString());
 		query.set('page', pageNumber.toString());
 		goto(`?${query.toString()}`);
 	};
 
 	const onAmountChange = (amount: number) => {
-		let query = new URLSearchParams(page.url.searchParams.toString());
+		let query = new SvelteURLSearchParams(page.url.searchParams.toString());
 		const maxPage = Math.ceil(totalCount / amount);
 		const pageNumber = Math.min(paginationSettings.page, maxPage);
 
@@ -63,7 +64,7 @@
 				onAmountChange(value);
 			}}
 		>
-			{#each paginationSettings.amounts as v}
+			{#each paginationSettings.amounts as v (v)}
 				<option value={v}>{v} {$i18n.t('games')}</option>
 			{/each}
 		</select>
@@ -79,7 +80,7 @@
 	<div class="table-container">
 		<table class="table-hover table">
 			<tbody>
-				{#each games as game}
+				{#each games as game (game.id)}
 					<tr
 						id="table-row"
 						class={`${rowClass(game)} ${rowClassEven(game)} ${game.gameover.win ? 'success' : 'error'}`}

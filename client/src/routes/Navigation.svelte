@@ -30,7 +30,7 @@
 				<i class="fas fa-bars"></i>
 			</button>
 		{:else}
-			{#each links as link}
+			{#each links as link (link.href)}
 				<a
 					aria-label={link.ariaLabel}
 					data-testid={link.datatestid}

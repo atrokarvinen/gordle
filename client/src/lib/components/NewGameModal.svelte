@@ -43,7 +43,7 @@
 		<label class="label">
 			{$i18n.t('word_length')}
 			<select class="select" bind:value={wordLength}>
-				{#each wordLengthOptions as option}
+				{#each wordLengthOptions as option (option)}
 					<option value={option}>{option}</option>
 				{/each}
 			</select>
@@ -51,7 +51,7 @@
 		<label class="label">
 			{$i18n.t('max_guesses')}
 			<select class="select" bind:value={maxAttempts}>
-				{#each attemptsOptions as option}
+				{#each attemptsOptions as option (option)}
 					<option value={option}>{option}</option>
 				{/each}
 			</select>

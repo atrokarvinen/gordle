@@ -14,7 +14,7 @@
 
 				// Check if user was redirected already once and game was not found.
 				// This blocks endless redirect loop.
-				const redirected = (page.state as any).redirected;
+				const redirected = page.state.redirected;
 				const gameNotFound = gameId === -1;
 				if (redirected && gameNotFound) {
 					retryFailed = true;

@@ -12,6 +12,6 @@
 	{#if value}
 		<StatisticsView data={value.data} />
 	{/if}
-{:catch error}
+{:catch}
 	<p>{$i18n.t('failed_to_load_statistics')}</p>
 {/await}

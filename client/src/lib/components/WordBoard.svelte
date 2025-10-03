@@ -21,7 +21,7 @@
 </script>
 
 <div class="flex flex-col gap-y-1">
-	{#each allWords as word, index}
+	{#each allWords as word, index (index)}
 		<div data-testid="guess-row" class="flex gap-x-1">
 			{#if index === currentGuessIndex && !isGameStopped}
 				<WordRowInput {currentGuess} currentIndex={currentLetterIndex} {letterClicked} />

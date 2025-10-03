@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { alphabetStore } from '$lib/alphabetStore';
-	import { languageStore } from '$lib/languageStore';
 
 	export let currentIndex: number;
 	export let currentGuess: string[];
 	export let submitGuess: () => void;
-	$: lang = $languageStore;
 
 	const onKeyDown = (e: KeyboardEvent) => {
 		const index = currentIndex;
