@@ -23,6 +23,7 @@ export const englishKeys = {
 			give_up: 'Give up',
 			give_up_confirm: 'Are you sure you want to give up current game',
 			history: 'History',
+			home: 'Home',
 			how_to_play: 'How to play',
 			info: 'Info',
 			info_paragraph:

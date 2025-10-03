@@ -8,7 +8,7 @@
 
 {#await data.loadPromise}
 	<div class="flex justify-center">
-		<ProgressRing width="w-16" />
+		<ProgressRing size="size-16" />
 	</div>
 {:then dto}
 	{#if dto?.data.games.length === 0}

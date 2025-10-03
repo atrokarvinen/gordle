@@ -7,7 +7,7 @@
 </script>
 
 {#await data.loadPromise}
-	<ProgressRing width="w-16" />
+	<ProgressRing size="size-16" />
 {:then value}
 	{#if value}
 		<StatisticsView data={value.data} />

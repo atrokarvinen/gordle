@@ -3,13 +3,19 @@
 	import { i18n } from '$lib/translations/i18n';
 	import { type LinkType } from './links';
 
-	// const drawerStore = getDrawerStore();
+	interface Props {
+		link: LinkType;
+	}
 
-	export let link: LinkType;
+	const { link }: Props = $props();
 
-	$: isLinkActive = isActive(link.href, page.url.pathname);
+	let isLinkActive = $state(false);
+	$effect(() => {
+		isLinkActive = isActive(link.href, page.url.pathname);
+	});
 
 	const isActive = (href: string, currentUrl: string) => {
+		if (href === '/' && currentUrl.startsWith('/game')) return true;
 		const lastPart = href.split('/').pop();
 		if (!lastPart) return false;
 		const withoutQuery = lastPart.split('?')[0];
@@ -17,14 +23,11 @@
 	};
 </script>
 
-<li>
+<li class="w-full">
 	<a
+		class="btn w-full {isLinkActive ? 'preset-filled-primary-500' : ''}"
 		href={link.href}
 		data-testid={link.datatestid}
-		class={isLinkActive ? 'bg-primary-active-token' : ''}
-		on:click={() => {
-			// drawerStore.close();
-		}}
 	>
 		<span class="text-center">
 			<i class={link.iconClass + ' w-4'}></i>

@@ -1,22 +1,15 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import Drawer from '$lib/components/Drawer.svelte';
 	import { AppBar } from '@skeletonlabs/skeleton-svelte';
-	// import MediaQuery from 'svelte-media-queries';
 	import { MediaQuery } from 'svelte/reactivity';
 	import { links } from './links';
 
-	// const drawerStore = getDrawerStore();
-	// const openDrawer = () => {
-	// 	drawerStore.open({
-	// 		width: 'w-48',
-	// 		position: 'right',
-	// 		id: 'mobile-nav'
-	// 	});
-	// };
-
+	let isDrawerOpen = false;
 	let isSmallDevice = new MediaQuery('(max-width: 480px)');
 </script>
 
+<Drawer isOpen={isDrawerOpen} onClose={() => (isDrawerOpen = false)} />
 <AppBar>
 	{#snippet lead()}
 		<a
@@ -32,9 +25,7 @@
 				aria-label="Open navigation menu"
 				data-testid="hamburger"
 				class="btn-icon preset-filled-surface-500"
-				on:click={() => {
-					// openDrawer();
-				}}
+				on:click={() => (isDrawerOpen = !isDrawerOpen)}
 			>
 				<i class="fas fa-bars"></i>
 			</button>

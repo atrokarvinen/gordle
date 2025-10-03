@@ -38,5 +38,5 @@
 		</div>
 	</aside>
 {:else}
-	<ProgressRing />
+	<ProgressRing size="size-16" />
 {/if}

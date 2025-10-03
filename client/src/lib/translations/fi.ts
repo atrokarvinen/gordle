@@ -23,6 +23,7 @@ export const finnishKeys = {
 			give_up: 'Luovuta',
 			give_up_confirm: 'Oletko varma että haluat luovuttaa',
 			history: 'Historia',
+			home: 'Koti',
 			how_to_play: 'Miten pelataan',
 			info: 'Info',
 			info_paragraph:
