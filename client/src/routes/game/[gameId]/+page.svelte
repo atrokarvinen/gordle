@@ -60,7 +60,7 @@
 		} catch (error) {
 			const err = getApiErrorMessage(error);
 			toaster.error({
-				//
+				type: 'error',
 				title: $i18n.t(err.message, { data: err.data })
 			});
 		} finally {
