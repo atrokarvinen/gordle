@@ -57,7 +57,7 @@
 			</select>
 		</label>
 	</form>
-	<footer class="modal-footer">
+	<footer class="flex flex-row justify-end gap-x-2">
 		<button class="btn preset-filled-secondary-500" on:click={onClose}>{$i18n.t('close')}</button>
 		<button class="btn preset-filled-primary-500" on:click={createGame}>{$i18n.t('create')}</button>
 	</footer>

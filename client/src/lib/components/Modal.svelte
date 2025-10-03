@@ -33,7 +33,10 @@
 
 <dialog
 	data-dialog
-	class="rounded-container bg-surface-100-900 -translate-1/2 backdrop:bg-surface-50/75 dark:backdrop:bg-surface-950/75 left-1/2 top-1/2 z-10 max-w-[640px] space-y-4 p-4 text-inherit"
+	class="rounded-container bg-surface-100-900
+		-translate-1/2 backdrop:bg-surface-50/75
+		dark:backdrop:bg-surface-950/75 left-1/2
+		top-1/2 z-10 w-72 max-w-[640px] space-y-4 p-4 text-inherit"
 	bind:this={htmlDialog}
 >
 	<h2 class="h3">{title}</h2>
@@ -44,7 +47,7 @@
 		<form method="dialog" class="flex justify-end gap-x-2">
 			<button
 				type="button"
-				class="btn preset-tonal"
+				class="btn preset-filled-secondary-500"
 				data-dialog-close
 				onclick={() => {
 					response(false);
@@ -53,7 +56,7 @@
 			>
 			<button
 				type="button"
-				class="btn preset-filled"
+				class="btn preset-filled-primary-500"
 				onclick={() => {
 					response(true);
 					onClose();
