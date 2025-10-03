@@ -1,5 +1,5 @@
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
-import base, { AxiosError, isAxiosError } from 'axios';
+import base, { isAxiosError } from 'axios';
 import { englishKeys } from './translations/en';
 
 export const axios = base.create({
@@ -9,7 +9,7 @@ export const axios = base.create({
 
 export const getApiErrorMessage = (error: any): { message: string; data: any } => {
 	if (isAxiosError(error)) {
-		const axiosError: AxiosError = error;
+		const axiosError = error;
 		const responseData: any = axiosError.response?.data;
 		const message = responseData.message;
 		if (typeof message === 'string') {

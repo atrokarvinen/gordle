@@ -90,7 +90,7 @@
 						<td class="w-8"
 							><a
 								href={resolve(`/game/[gameId]`, { gameId: game.id.toString() })}
-								class="btn btn-sm preset-filled-primary-500">{$i18n.t('view')}</a
+								class="btn preset-filled-primary-500 btn-sm">{$i18n.t('view')}</a
 							></td
 						>
 					</tr>

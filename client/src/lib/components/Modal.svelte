@@ -49,9 +49,9 @@
 
 <dialog
 	data-dialog
-	class="rounded-container bg-surface-100-900
-		-translate-1/2 left-1/2
-		top-1/2 z-10 w-72 max-w-[640px] space-y-4 p-4 text-inherit"
+	class="top-1/2 left-1/2
+		z-10 w-72
+		max-w-[640px] -translate-1/2 space-y-4 rounded-container bg-surface-100-900 p-4 text-inherit"
 	bind:this={htmlDialog}
 >
 	<h2 class="h3">{title}</h2>
