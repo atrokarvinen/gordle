@@ -5,7 +5,7 @@
 	export let word: Guess;
 </script>
 
-{#each word.letters as letter (letter.letter + letter.state)}
+{#each word.letters as letter, i (i)}
 	<LetterBox letter={letter.letter} letterState={letter.state} />
 {/each}
 <span data-testid="guessed-word" hidden>{word.word}</span>

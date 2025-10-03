@@ -1,15 +1,21 @@
-import { Page, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 import { NewGame } from "./models/newGame";
 
 export class GamePageModel {
   page: Page;
 
+  giveUpButton: Locator;
+
   constructor(page: Page) {
     this.page = page;
+    this.giveUpButton = this.page.getByRole("button", {
+      name: "Give up",
+      exact: true,
+    });
   }
 
   async giveUp() {
-    await this.page.getByRole("button", { name: "Give up" }).click();
+    await this.giveUpButton.click();
     await this.page.getByRole("button", { name: "Confirm" }).click();
   }
 
@@ -73,7 +79,7 @@ export class GamePageModel {
   }
 
   async verifyGameActive() {
-    await expect(this.page.getByText("Give up")).toBeVisible();
+    await expect(this.giveUpButton).toBeVisible();
   }
 
   async verifyGameover() {
