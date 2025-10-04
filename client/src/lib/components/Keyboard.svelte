@@ -9,6 +9,7 @@
 	$: qwertyLine1 = $alphabetStore.qwerty1;
 	$: qwertyLine2 = $alphabetStore.qwerty2;
 	$: qwertyLine3 = $alphabetStore.qwerty3;
+	$: qwertyLineExtra = $alphabetStore.qwertyExtra;
 
 	let guessLetterMap: Record<string, LetterState> = {};
 	$: {
@@ -31,6 +32,13 @@
 </script>
 
 <div class="mt-4 flex flex-col items-center gap-y-2">
+	{#if qwertyLineExtra}
+		<div class="ml-0 flex gap-x-1">
+			{#each qwertyLineExtra as letter (letter)}
+				<KeyboardButton {letter} state={guessLetterMap[letter]} />
+			{/each}
+		</div>
+	{/if}
 	<div class="ml-0 flex gap-x-1">
 		{#each qwertyLine1 as letter (letter)}
 			<KeyboardButton {letter} state={guessLetterMap[letter]} />

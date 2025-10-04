@@ -36,7 +36,8 @@
 	$: border = $$props.focused ? 'border-2 border-primary-500' : 'border-2 border-transparent';
 	const height = 'md:h-12 h-7';
 	$: width = icon ? 'md:w-24 w-14' : 'md:w-12 w-7';
-	$: classNames = `font-verdana text-center font-bold uppercase outline-none md:text-2xl  ${width} ${height} ${cursor} ${bgColor} ${border}`;
+	$: uppercaseClass = ['ß'].includes(letter) ? '' : 'uppercase';
+	$: classNames = `font-verdana text-center font-bold outline-none md:text-2xl  ${width} ${height} ${cursor} ${bgColor} ${border} ${uppercaseClass}`;
 </script>
 
 <button

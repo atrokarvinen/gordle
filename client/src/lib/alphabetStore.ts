@@ -6,6 +6,7 @@ export type Alphabets = {
 	qwerty1: string[];
 	qwerty2: string[];
 	qwerty3: string[];
+	qwertyExtra?: string[];
 };
 
 export const alphabetStore = writable<Alphabets>({
@@ -23,12 +24,28 @@ languageStore.subscribe((lang) => {
 			qwerty2: 'asdfghjkl'.split(''),
 			qwerty3: 'zxcvbnm'.split('')
 		});
-	} else if (lang === 'fi') {
+	} else if (lang === 'fi' || lang === 'se') {
 		alphabetStore.set({
 			alphabets: 'abcdefghijklmnopqrstuvwxyzäöå'.split(''),
 			qwerty1: 'qwertyuiopå'.split(''),
 			qwerty2: 'asdfghjkläö'.split(''),
 			qwerty3: 'zxcvbnm'.split('')
+		});
+	} else if (lang === 'de') {
+		alphabetStore.set({
+			alphabets: 'abcdefghijklmnopqrstuvwxyzäöüß'.split(''),
+			qwerty1: 'qwertyuiop'.split(''),
+			qwerty2: 'asdfghjkl'.split(''),
+			qwerty3: 'zxcvbnm'.split(''),
+			qwertyExtra: 'äöüß'.split('')
+		});
+	} else if (lang === 'pl') {
+		alphabetStore.set({
+			alphabets: 'aąbcćdeęfghijklłmnoóprsśtuwyzźż'.split(''),
+			qwerty1: 'qwertyuiop'.split(''),
+			qwerty2: 'asdfghjkl'.split(''),
+			qwerty3: 'zxcvbnm'.split(''),
+			qwertyExtra: 'ąćęłńóśź'.split('')
 		});
 	}
 });
