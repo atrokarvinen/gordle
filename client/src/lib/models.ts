@@ -58,3 +58,5 @@ export type GameHistoryDto = {
 	totalCount: number;
 	games: GameDto[];
 };
+
+export type Difficulty = 'easy_words' | 'all_words';

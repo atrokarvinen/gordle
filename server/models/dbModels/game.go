@@ -7,6 +7,7 @@ type Game struct {
 	Answer            string
 	AnswerDescription string
 	AnswerExamples    string
+	Difficulty        string
 	MaxAttempts       int
 	WordLength        int
 	Language          string

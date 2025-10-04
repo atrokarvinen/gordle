@@ -6,9 +6,10 @@ type DictionaryClientFactory struct {
 }
 
 func (d DictionaryClientFactory) GetDictionaryClient(language string) IDictionaryClient {
-	if language == "en" {
+	switch language {
+	case "en":
 		return d.DictionaryClientEn
-	} else if language == "fi" {
+	case "fi":
 		return d.DictionaryClientFi
 	}
 	panic("Invalid language '" + language + "'.")

@@ -15,6 +15,7 @@ import (
 )
 
 func main() {
+	// tools.ParseTxtAnswers()
 	InitEnv()
 
 	db := database.Init()

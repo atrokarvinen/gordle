@@ -1,6 +1,6 @@
 package answers
 
-var AnswersLetters7 = []string{
+var AnswersEn7 = []string{
 	"abalone",
 	"abandon",
 	"abdomen",

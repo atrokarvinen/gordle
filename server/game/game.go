@@ -17,12 +17,13 @@ type Game struct {
 
 func (g Game) CreateGame(userId int, gameOptions dto.CreateGameRequest) models.Game {
 	playedAnswers := g.DataProvider.GetPlayedAnswers(userId)
-	answer := GenerateRandomAnswer(gameOptions.Language, gameOptions.WordLength, playedAnswers)
+	answer := GenerateRandomAnswer(gameOptions.Language, gameOptions.Difficulty, gameOptions.WordLength, playedAnswers)
 	fmt.Printf("Creating game: Answer=%s, MaxAttempts=%d, WordLength=%d, Language=%s...\n",
 		answer, gameOptions.MaxAttempts, gameOptions.WordLength, gameOptions.Language)
 
 	game := dbModels.Game{
 		Answer:      answer,
+		Difficulty:  gameOptions.Difficulty,
 		MaxAttempts: gameOptions.MaxAttempts,
 		WordLength:  gameOptions.WordLength,
 		Language:    gameOptions.Language,

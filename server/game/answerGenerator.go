@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func GenerateRandomAnswer(lang string, wordLength int, playedAnswers []string) string {
-	allAnswers := answers.GetAnswers(lang, wordLength)
+func GenerateRandomAnswer(lang string, difficulty string, wordLength int, playedAnswers []string) string {
+	allAnswers := answers.GetAnswers(lang, difficulty, wordLength)
 	allAnswers = strListToLower(allAnswers)
 	playedAnswers = strListToLower(playedAnswers)
 	leastPlayedAnswers := GetLeastPlayedAnswers(playedAnswers, allAnswers)

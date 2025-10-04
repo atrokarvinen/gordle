@@ -1,6 +1,6 @@
 package answers
 
-var AnswersLetters5 = []string{
+var AnswersEn5 = []string{
 	"abbot",
 	"abide",
 	"abode",

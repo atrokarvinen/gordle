@@ -36,11 +36,12 @@ func (a Api) ValidateGuess(word string, gameId int, userId int) error {
 
 func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) (m.DictionaryDetails, error) {
 	// Check if word is in the list of answers
+	difficulty := gameOptions.Difficulty
 	wordLength := gameOptions.WordLength
 	lang := gameOptions.Language
-	allAnswers := answers.GetAnswers(lang, wordLength)
+	allAnswers := answers.GetAnswers(lang, difficulty, wordLength)
 	for _, answer := range allAnswers {
-		if strings.ToLower(word) == strings.ToLower(answer) {
+		if strings.EqualFold(word, answer) {
 			fmt.Printf("Word %q is in the list of answers\n", word)
 			return m.DictionaryDetails{}, nil
 		}
