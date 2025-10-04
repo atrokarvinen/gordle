@@ -41,11 +41,11 @@ languageStore.subscribe((lang) => {
 		});
 	} else if (lang === 'pl') {
 		alphabetStore.set({
-			alphabets: 'aąbcćdeęfghijklłmnoóprsśtuwyzźż'.split(''),
+			alphabets: 'abcdefghijklmnopqrstuvwxyząćęłńóśźż'.split(''),
 			qwerty1: 'qwertyuiop'.split(''),
 			qwerty2: 'asdfghjkl'.split(''),
 			qwerty3: 'zxcvbnm'.split(''),
-			qwertyExtra: 'ąćęłńóśź'.split('')
+			qwertyExtra: 'ąćęłńóśźż'.split('')
 		});
 	}
 });

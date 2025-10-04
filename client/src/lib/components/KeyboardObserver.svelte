@@ -35,7 +35,7 @@
 			submitGuess();
 		}
 		if ($alphabetStore.alphabets.includes(key.toLocaleLowerCase())) {
-			currentGuess = currentGuess.map((l, i) => (i === index ? key.toUpperCase() : l));
+			currentGuess = currentGuess.map((l, i) => (i === index ? key.toLowerCase() : l));
 			currentIndex = Math.min(index + 1, currentGuess.length - 1);
 		}
 	};
