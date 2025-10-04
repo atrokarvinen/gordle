@@ -2,6 +2,7 @@ export const englishKeys = {
 	en: {
 		translation: {
 			all: 'All',
+			all_words: 'All words',
 			answer_was: 'Answer was',
 			auth_error: 'Something went wrong in authentication.',
 			cancel: 'Cancel',
@@ -10,6 +11,8 @@ export const englishKeys = {
 			confirm: 'Confirm',
 			create: 'Create',
 			definition: 'Definition',
+			difficulty: 'Difficulty',
+			easy_words: 'Easy words',
 			example: 'Example',
 			failed_to_load_history: 'Failed to load game history.',
 			failed_to_load_statistics: 'Failed to load statistics.',

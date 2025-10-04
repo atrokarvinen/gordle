@@ -2,6 +2,7 @@ export const swedishKeys = {
 	se: {
 		translation: {
 			all: 'Allt',
+			all_words: 'Alla ord',
 			answer_was: 'Svaret var',
 			auth_error: 'Något gick fel vid autentisering.',
 			cancel: 'Avbryta',
@@ -10,6 +11,8 @@ export const swedishKeys = {
 			confirm: 'Bekräfta',
 			create: 'Skapa',
 			definition: 'Definition',
+			difficulty: 'Svårighetsgrad',
+			easy_words: 'Lätta ord',
 			example: 'Exempel',
 			failed_to_load_history: 'Misslyckades med att ladda spelhistorik.',
 			failed_to_load_statistics: 'Misslyckades med att ladda statistik.',

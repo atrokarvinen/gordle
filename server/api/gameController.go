@@ -110,7 +110,7 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails m.Dictionary
 		return wordDetails
 	}
 
-	answerDetails, err := a.DictionaryFactory.GetDictionaryClient(lang).GetWord(answer)
+	answerDetails, err := a.DictionaryFactory.GetDictionaryClient(lang).GetWord(answer, lang)
 	if err != nil {
 		fmt.Println("Error getting word:", err.Error(), ", using default word details")
 		answerDetails = m.GetDefaultWordDetails(answer)

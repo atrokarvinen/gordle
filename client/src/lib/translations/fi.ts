@@ -2,6 +2,7 @@ export const finnishKeys = {
 	fi: {
 		translation: {
 			all: 'Kaikki',
+			all_words: 'Kaikki sanat',
 			answer_was: 'Vastaus oli',
 			auth_error: 'Jotain meni pieleen tunnistautumisessa.',
 			cancel: 'Peruuta',
@@ -10,6 +11,8 @@ export const finnishKeys = {
 			confirm: 'Kyllä',
 			create: 'Luo',
 			definition: 'Määritelmä',
+			difficulty: 'Vaikeusaste',
+			easy_words: 'Helpot sanat',
 			example: 'Esimerkki',
 			failed_to_load_history: 'Aiempien pelien lataaminen epäonnistui.',
 			failed_to_load_statistics: 'Tilastojen lataaminen epäonnistui.',

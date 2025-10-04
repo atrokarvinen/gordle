@@ -2,6 +2,7 @@ export const germanKeys = {
 	de: {
 		translation: {
 			all: 'Alle',
+			all_words: 'Alle Wörter',
 			answer_was: 'Die Antwort war',
 			auth_error: 'Bei der Authentifizierung ist ein Fehler aufgetreten.',
 			cancel: 'Abbrechen',
@@ -10,6 +11,8 @@ export const germanKeys = {
 			confirm: 'Bestätigen',
 			create: 'Erstellen',
 			definition: 'Definition',
+			difficulty: 'Schwierigkeitsgrad',
+			easy_words: 'Einfache Wörter',
 			example: 'Beispiel',
 			failed_to_load_history: 'Fehler beim Laden der Spielhistorie.',
 			failed_to_load_statistics: 'Fehler beim Laden der Statistiken.',

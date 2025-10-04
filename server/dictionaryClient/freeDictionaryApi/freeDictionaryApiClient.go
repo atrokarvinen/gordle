@@ -1,15 +1,18 @@
-package dictionaryApi
+package freeDictionaryApi
 
 import (
 	"encoding/json"
 	"gordle/dictionaryClient/models"
 	"net/http"
+	"net/url"
 )
 
-type DictionaryApiClient struct{}
+type FreeDictionaryApiClient struct{}
 
-func (d DictionaryApiClient) GetWord(word string, lang string) (models.DictionaryDetails, error) {
-	url := "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
+func (d FreeDictionaryApiClient) GetWord(word string, lang string) (models.DictionaryDetails, error) {
+	urlEncodedWord := url.QueryEscape(word)
+	url := "https://freedictionaryapi.com/api/v1/entries/" + lang + "/" + urlEncodedWord
+
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return models.DictionaryDetails{}, err
@@ -20,7 +23,7 @@ func (d DictionaryApiClient) GetWord(word string, lang string) (models.Dictionar
 	}
 	defer response.Body.Close()
 
-	var details []Response
+	var details Response
 	err = json.NewDecoder(response.Body).Decode(&details)
 	if err != nil {
 		return models.DictionaryDetails{}, err

@@ -2,6 +2,7 @@ export const polishKeys = {
 	pl: {
 		translation: {
 			all: 'Wszystko',
+			all_words: 'Wszystkie słowa',
 			answer_was: 'Odpowiedź brzmiała',
 			auth_error: 'Wystąpił błąd podczas uwierzytelniania.',
 			cancel: 'Anuluj',
@@ -10,6 +11,8 @@ export const polishKeys = {
 			confirm: 'Potwierdź',
 			create: 'Utwórz',
 			definition: 'Definicja',
+			difficulty: 'Poziom trudności',
+			easy_words: 'Łatwe słowa',
 			example: 'Przykład',
 			failed_to_load_history: 'Nie udało się załadować historii gier.',
 			failed_to_load_statistics: 'Nie udało się załadować statystyk.',

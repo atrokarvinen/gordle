@@ -15,7 +15,7 @@ type KielitoimistoApiClient struct {
 var AccessToken string
 var RefreshToken string
 
-func (w KielitoimistoApiClient) GetWord(word string) (models.DictionaryDetails, error) {
+func (w KielitoimistoApiClient) GetWord(word string, lang string) (models.DictionaryDetails, error) {
 	accessToken, err := w.getAccessToken()
 	if err != nil {
 		return models.DictionaryDetails{}, err
