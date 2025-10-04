@@ -54,6 +54,13 @@ func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) 
 		return m.DictionaryDetails{}, fmt.Errorf("word_not_found")
 	}
 
+	hasDefitions := len(wordDetails.Definitions) > 0
+	hasExamples := len(wordDetails.Examples) > 0
+	if !hasDefitions && !hasExamples {
+		fmt.Printf("Word %q has no definitions or examples\n", word)
+		return m.DictionaryDetails{}, fmt.Errorf("word_not_found")
+	}
+
 	return wordDetails, nil
 }
 
