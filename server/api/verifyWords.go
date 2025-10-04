@@ -14,8 +14,7 @@ func VerifyWords(apiClient dictionaryClient.IDictionaryClient, lang string, word
 	words := answers.GetAnswers(lang, "easy", wordLength)
 	saveFile := fmt.Sprintf("./game/answers/answers_%s_%d.go", lang, wordLength)
 
-	valids := []string{}
-	invalids := []string{}
+	valids := make([]string, 0, len(words))
 	wordIndex := 0
 	for _, word := range words {
 		wordIndex++
@@ -35,23 +34,20 @@ func VerifyWords(apiClient dictionaryClient.IDictionaryClient, lang string, word
 		if err != nil {
 			fmt.Println("Error getting word", err)
 			fmt.Printf("Word '%s' is invalid\n", word)
-			invalids = append(invalids, word)
 			continue
 		}
 
 		hasDefinitions := len(details.Definitions) > 0
 		hasExamples := len(details.Examples) > 0
 		if !hasDefinitions && !hasExamples {
-			fmt.Printf("Word '%s' is invalid, no definitions or examples\n", word)
-			invalids = append(invalids, word)
+			// fmt.Printf("Word '%s' is invalid, no definitions or examples\n", word)
 			continue
 		}
 
-		fmt.Printf("Word '%s' is valid\n", word)
+		// fmt.Printf("Word '%s' is valid\n", word)
 		valids = append(valids, word)
 	}
 
-	// formattedValids := formatStringArray(valids)
 	file, err := os.OpenFile(saveFile, os.O_APPEND|os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -89,14 +85,7 @@ func VerifyWords(apiClient dictionaryClient.IDictionaryClient, lang string, word
 		return
 	}
 
-	formattedInvalids := formatStringArray(invalids)
-	err = os.WriteFile("invalids.txt", []byte(fmt.Sprintf("%v", formattedInvalids)), 0644)
-	if err != nil {
-		fmt.Println("Error writing invalids.txt", err)
-	}
-
 	fmt.Printf("Valid words: %d / %d\n", len(valids), len(words))
-	fmt.Printf("Invalid words: %d / %d\n", len(invalids), len(words))
 	fmt.Println("Done")
 }
 
