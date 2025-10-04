@@ -11,17 +11,33 @@ import (
 
 func main() {
 	clientGeneral := freeDictionaryApi.FreeDictionaryApiClient{}
-	api.VerifyWords(clientGeneral, "de", 8)
 
-	api.VerifyWords(clientGeneral, "sv", 5)
-	api.VerifyWords(clientGeneral, "sv", 6)
-	api.VerifyWords(clientGeneral, "sv", 7)
-	api.VerifyWords(clientGeneral, "sv", 8)
+	api.RemoveDuplicates(clientGeneral, "pl", 5)
+	api.RemoveDuplicates(clientGeneral, "pl", 6)
+	api.RemoveDuplicates(clientGeneral, "pl", 7)
+	api.RemoveDuplicates(clientGeneral, "pl", 8)
 
-	api.VerifyWords(clientGeneral, "pl", 5)
-	api.VerifyWords(clientGeneral, "pl", 6)
-	api.VerifyWords(clientGeneral, "pl", 7)
-	api.VerifyWords(clientGeneral, "pl", 8)
+	api.RemoveDuplicates(clientGeneral, "de", 5)
+	api.RemoveDuplicates(clientGeneral, "de", 6)
+	api.RemoveDuplicates(clientGeneral, "de", 7)
+	api.RemoveDuplicates(clientGeneral, "de", 8)
+
+	api.RemoveDuplicates(clientGeneral, "sv", 5)
+	api.RemoveDuplicates(clientGeneral, "sv", 6)
+	api.RemoveDuplicates(clientGeneral, "sv", 7)
+	api.RemoveDuplicates(clientGeneral, "sv", 8)
+
+	// api.VerifyWords(clientGeneral, "de", 8)
+
+	// api.VerifyWords(clientGeneral, "sv", 5)
+	// api.VerifyWords(clientGeneral, "sv", 6)
+	// api.VerifyWords(clientGeneral, "sv", 7)
+	// api.VerifyWords(clientGeneral, "sv", 8)
+
+	// api.VerifyWords(clientGeneral, "pl", 5)
+	// api.VerifyWords(clientGeneral, "pl", 6)
+	// api.VerifyWords(clientGeneral, "pl", 7)
+	// api.VerifyWords(clientGeneral, "pl", 8)
 
 	// tools.ParseTxtAnswers()
 	// InitEnv()

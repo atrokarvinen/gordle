@@ -13,8 +13,6 @@ func VerifyWords(apiClient dictionaryClient.IDictionaryClient, lang string, word
 	langCapitalized := strings.ToUpper(lang[:1]) + lang[1:]
 	words := answers.GetAnswers(lang, "easy", wordLength)
 	saveFile := fmt.Sprintf("./game/answers/answers_%s_%d.go", lang, wordLength)
-	top10Words := words[0:10]
-	words = top10Words
 
 	valids := []string{}
 	invalids := []string{}
