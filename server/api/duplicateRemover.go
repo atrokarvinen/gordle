@@ -5,6 +5,7 @@ import (
 	"gordle/dictionaryClient"
 	"gordle/game/answers"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -23,6 +24,7 @@ func RemoveDuplicates(apiClient dictionaryClient.IDictionaryClient, lang string,
 	for word := range uniqueWordsMap {
 		uniqueWords = append(uniqueWords, word)
 	}
+	sort.Strings(uniqueWords)
 
 	file, err := os.OpenFile(saveFile, os.O_APPEND|os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
