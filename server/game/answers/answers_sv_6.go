@@ -1,6 +1,6 @@
 package answers
 
-var AnswersSv6 = []string{
+var AnswersSe6 = []string{
 	"abnorm",
 	"aborts",
 	"abrupt",

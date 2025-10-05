@@ -9,7 +9,7 @@ func GetAnswers(lang string, difficulty string, wordLength int) []string {
 	case "en":
 		return GetAnswersEn(difficulty, wordLength)
 	case "sv":
-		return GetAnswersSv(difficulty, wordLength)
+		return GetAnswersSe(difficulty, wordLength)
 	case "de":
 		return GetAnswersDe(difficulty, wordLength)
 	case "pl":
@@ -46,16 +46,16 @@ func GetAnswersFi(difficulty string, wordLength int) []string {
 	panic(fmt.Sprintf("Unknown word length '%d'", wordLength))
 }
 
-func GetAnswersSv(difficulty string, wordLength int) []string {
+func GetAnswersSe(difficulty string, wordLength int) []string {
 	switch wordLength {
 	case 5:
-		return AnswersSv5
+		return AnswersSe5
 	case 6:
-		return AnswersSv6
+		return AnswersSe6
 	case 7:
-		return AnswersSv7
+		return AnswersSe7
 	case 8:
-		return AnswersSv8
+		return AnswersSe8
 	}
 	panic(fmt.Sprintf("Unknown word length '%d'", wordLength))
 }

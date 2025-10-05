@@ -1,6 +1,6 @@
 package answers
 
-var AnswersSv8 = []string{
+var AnswersSe8 = []string{
 	"abandons",
 	"abborrar",
 	"abborren",
