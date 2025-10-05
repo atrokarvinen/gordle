@@ -10,8 +10,9 @@ import (
 type FreeDictionaryApiClient struct{}
 
 func (d FreeDictionaryApiClient) GetWord(word string, lang string) (models.DictionaryDetails, error) {
+	mappedLang := mapLanguage(lang)
 	urlEncodedWord := url.QueryEscape(word)
-	url := "https://freedictionaryapi.com/api/v1/entries/" + lang + "/" + urlEncodedWord
+	url := "https://freedictionaryapi.com/api/v1/entries/" + mappedLang + "/" + urlEncodedWord
 
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -31,4 +32,12 @@ func (d FreeDictionaryApiClient) GetWord(word string, lang string) (models.Dicti
 	mappedDetails := mapWordDetails(details)
 
 	return mappedDetails, nil
+}
+
+func mapLanguage(lang string) string {
+	switch lang {
+	case "se":
+		return "sv"
+	}
+	return lang
 }
