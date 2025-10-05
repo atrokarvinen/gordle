@@ -18,23 +18,23 @@ import (
 func main() {
 	clientGeneral := freeDictionaryApi.FreeDictionaryApiClient{}
 
+	// tools.ParseTxtAnswers()
 	difficulty := "easy"
-	api.VerifyWords(clientGeneral, "de", 5, difficulty)
-	api.VerifyWords(clientGeneral, "de", 6, difficulty)
-	api.VerifyWords(clientGeneral, "de", 7, difficulty)
-	api.VerifyWords(clientGeneral, "de", 8, difficulty)
+	// api.VerifyWords(clientGeneral, "de", 5, difficulty)
+	// api.VerifyWords(clientGeneral, "de", 6, difficulty)
+	// api.VerifyWords(clientGeneral, "de", 7, difficulty)
+	// api.VerifyWords(clientGeneral, "de", 8, difficulty)
 
-	api.VerifyWords(clientGeneral, "se", 5, difficulty)
-	api.VerifyWords(clientGeneral, "se", 6, difficulty)
-	api.VerifyWords(clientGeneral, "se", 7, difficulty)
-	api.VerifyWords(clientGeneral, "se", 8, difficulty)
+	// api.VerifyWords(clientGeneral, "se", 5, difficulty)
+	// api.VerifyWords(clientGeneral, "se", 6, difficulty)
+	// api.VerifyWords(clientGeneral, "se", 7, difficulty)
+	// api.VerifyWords(clientGeneral, "se", 8, difficulty)
 
 	api.VerifyWords(clientGeneral, "fi", 5, difficulty)
 	api.VerifyWords(clientGeneral, "fi", 6, difficulty)
 	api.VerifyWords(clientGeneral, "fi", 7, difficulty)
 	api.VerifyWords(clientGeneral, "fi", 8, difficulty)
 
-	// tools.ParseTxtAnswers()
 	return
 
 	InitEnv()

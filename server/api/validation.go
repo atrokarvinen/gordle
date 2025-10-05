@@ -36,7 +36,7 @@ func (a Api) ValidateGuess(word string, gameId int, userId int) error {
 
 func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) (m.DictionaryDetails, error) {
 	// Check if word is in the list of answers
-	difficulty := gameOptions.Difficulty
+	difficulty := "all_words"
 	wordLength := gameOptions.WordLength
 	lang := gameOptions.Language
 	allAnswers := answers.GetAnswers(lang, difficulty, wordLength)

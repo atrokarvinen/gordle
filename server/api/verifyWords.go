@@ -13,8 +13,10 @@ func VerifyWords(apiClient dictionaryClient.IDictionaryClient, lang string, word
 	langCapitalized := strings.ToUpper(lang[:1]) + lang[1:]
 	words := answers.GetAnswers(lang, difficulty, wordLength)
 	difficultyString := ""
+	difficultyStringCapitalized := ""
 	if difficulty == "easy" {
 		difficultyString = "_easy"
+		difficultyStringCapitalized = "Easy"
 	}
 	saveFile := fmt.Sprintf("./game/answers/answers_%s%s_%d.go", lang, difficultyString, wordLength)
 
@@ -68,7 +70,7 @@ func VerifyWords(apiClient dictionaryClient.IDictionaryClient, lang string, word
 		fmt.Println("Error writing to file:", err)
 		return
 	}
-	_, err = file.WriteString(fmt.Sprintf("var Answers%s%d = []string{\n", langCapitalized, wordLength))
+	_, err = file.WriteString(fmt.Sprintf("var Answers%s%s%d = []string{\n", langCapitalized, difficultyStringCapitalized, wordLength))
 	if err != nil {
 		fmt.Println("Error writing to file:", err)
 		return

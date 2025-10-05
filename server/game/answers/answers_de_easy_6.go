@@ -120,7 +120,6 @@ var AnswersDeEasy6 = []string{
 	"meiner",
 	"melden",
 	"musste",
-	"männer",
 	"möchte",
 	"müssen",
 	"nehmen",
