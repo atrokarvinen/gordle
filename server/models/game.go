@@ -7,6 +7,7 @@ type Game struct {
 	Answer            string    `json:"-"`
 	AnswerDescription []string  `json:"-"`
 	AnswerExamples    []string  `json:"-"`
+	Difficulty        string    `json:"difficulty"`
 	MaxAttempts       int       `json:"maxAttempts"`
 	WordLength        int       `json:"wordLength"`
 	Language          string    `json:"language"`

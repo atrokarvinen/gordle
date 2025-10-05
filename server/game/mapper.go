@@ -20,6 +20,7 @@ func (g Game) MapDbGameToGame(dbGame dbModels.Game) models.Game {
 	return models.Game{
 		Id:                int(dbGame.ID),
 		Guesses:           g.MapDbGuessesToGuesses(dbGame.Guesses, dbGame.Answer),
+		Difficulty:        dbGame.Difficulty,
 		MaxAttempts:       dbGame.MaxAttempts,
 		WordLength:        dbGame.WordLength,
 		Language:          dbGame.Language,

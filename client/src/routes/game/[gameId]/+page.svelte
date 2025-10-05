@@ -32,6 +32,7 @@
 	$: gameover = data.game?.gameover ?? undefined;
 	$: currentGuessIndex = guesses.length;
 	$: word = currentGuess.join('');
+	$: difficulty = data.game?.difficulty ?? 'all_words';
 	$: wordLength = data.game?.wordLength ?? 6;
 	$: maxAttempts = data.game?.maxAttempts ?? 6;
 	$: emptyGuess = Array.from(Array(wordLength).keys()).map(() => '');
@@ -98,7 +99,7 @@
 
 			<div class="flex flex-col gap-y-3">
 				{#if isGameStopped}
-					<NewGameButton {wordLength} {maxAttempts} />
+					<NewGameButton {wordLength} {maxAttempts} {difficulty} />
 				{:else}
 					<QuitGameButton {gameId} {onGameover} />
 				{/if}
