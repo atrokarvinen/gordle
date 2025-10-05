@@ -9,10 +9,14 @@ import (
 	"time"
 )
 
-func VerifyWords(apiClient dictionaryClient.IDictionaryClient, lang string, wordLength int) {
+func VerifyWords(apiClient dictionaryClient.IDictionaryClient, lang string, wordLength int, difficulty string) {
 	langCapitalized := strings.ToUpper(lang[:1]) + lang[1:]
-	words := answers.GetAnswers(lang, "easy", wordLength)
-	saveFile := fmt.Sprintf("./game/answers/answers_%s_%d.go", lang, wordLength)
+	words := answers.GetAnswers(lang, difficulty, wordLength)
+	difficultyString := ""
+	if difficulty == "easy" {
+		difficultyString = "_easy"
+	}
+	saveFile := fmt.Sprintf("./game/answers/answers_%s%s_%d.go", lang, difficultyString, wordLength)
 
 	valids := make([]string, 0, len(words))
 	wordIndex := 0

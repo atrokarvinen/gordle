@@ -16,23 +16,27 @@ import (
 )
 
 func main() {
-	// clientGeneral := freeDictionaryApi.FreeDictionaryApiClient{}
+	clientGeneral := freeDictionaryApi.FreeDictionaryApiClient{}
 
-	// api.VerifyWords(clientGeneral, "de", 8)
+	difficulty := "easy"
+	api.VerifyWords(clientGeneral, "de", 5, difficulty)
+	api.VerifyWords(clientGeneral, "de", 6, difficulty)
+	api.VerifyWords(clientGeneral, "de", 7, difficulty)
+	api.VerifyWords(clientGeneral, "de", 8, difficulty)
 
-	// api.VerifyWords(clientGeneral, "se", 5)
-	// api.VerifyWords(clientGeneral, "se", 6)
-	// api.VerifyWords(clientGeneral, "se", 7)
+	api.VerifyWords(clientGeneral, "se", 5, difficulty)
+	api.VerifyWords(clientGeneral, "se", 6, difficulty)
+	api.VerifyWords(clientGeneral, "se", 7, difficulty)
+	api.VerifyWords(clientGeneral, "se", 8, difficulty)
 
-	// api.VerifyWords(clientGeneral, "pl", 5)
-
-	// api.VerifyWords(clientGeneral, "se", 8)
-
-	// api.VerifyWords(clientGeneral, "pl", 6)
-	// api.VerifyWords(clientGeneral, "pl", 7)
-	// api.VerifyWords(clientGeneral, "pl", 8)
+	api.VerifyWords(clientGeneral, "fi", 5, difficulty)
+	api.VerifyWords(clientGeneral, "fi", 6, difficulty)
+	api.VerifyWords(clientGeneral, "fi", 7, difficulty)
+	api.VerifyWords(clientGeneral, "fi", 8, difficulty)
 
 	// tools.ParseTxtAnswers()
+	return
+
 	InitEnv()
 
 	db := database.Init()
@@ -43,7 +47,7 @@ func main() {
 	gameEngine := game.Game{DataProvider: dataProvider}
 	clientFi := kielitoimistoApi.KielitoimistoApiClient{}
 	clientEn := dictionaryApi.DictionaryApiClient{}
-	clientGeneral := freeDictionaryApi.FreeDictionaryApiClient{}
+	// clientGeneral := freeDictionaryApi.FreeDictionaryApiClient{}
 	clientFactory := dictionaryClient.DictionaryClientFactory{
 		DictionaryClientEn:      clientEn,
 		DictionaryClientFi:      clientFi,

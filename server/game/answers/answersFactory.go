@@ -35,13 +35,25 @@ func GetAnswersEn(difficulty string, wordLength int) []string {
 func GetAnswersFi(difficulty string, wordLength int) []string {
 	switch wordLength {
 	case 5:
-		return AnswersFi5
+		if difficulty == "all_words" {
+			return AnswersFi5
+		}
+		return AnswersFiEasy5
 	case 6:
-		return AnswersFi6
+		if difficulty == "all_words" {
+			return AnswersFi6
+		}
+		return AnswersFiEasy6
 	case 7:
-		return AnswersFi7
+		if difficulty == "all_words" {
+			return AnswersFi7
+		}
+		return AnswersFiEasy7
 	case 8:
-		return AnswersFi8
+		if difficulty == "all_words" {
+			return AnswersFi8
+		}
+		return AnswersFiEasy8
 	}
 	panic(fmt.Sprintf("Unknown word length '%d'", wordLength))
 }
@@ -49,13 +61,25 @@ func GetAnswersFi(difficulty string, wordLength int) []string {
 func GetAnswersSe(difficulty string, wordLength int) []string {
 	switch wordLength {
 	case 5:
-		return AnswersSe5
+		if difficulty == "all_words" {
+			return AnswersSe5
+		}
+		return AnswersSeEasy5
 	case 6:
-		return AnswersSe6
+		if difficulty == "all_words" {
+			return AnswersSe6
+		}
+		return AnswersSeEasy6
 	case 7:
-		return AnswersSe7
+		if difficulty == "all_words" {
+			return AnswersSe7
+		}
+		return AnswersSeEasy7
 	case 8:
-		return AnswersSe8
+		if difficulty == "all_words" {
+			return AnswersSe8
+		}
+		return AnswersSeEasy8
 	}
 	panic(fmt.Sprintf("Unknown word length '%d'", wordLength))
 }
@@ -63,13 +87,25 @@ func GetAnswersSe(difficulty string, wordLength int) []string {
 func GetAnswersDe(difficulty string, wordLength int) []string {
 	switch wordLength {
 	case 5:
-		return AnswersDe5
+		if difficulty == "all_words" {
+			return AnswersDe5
+		}
+		return AnswersDeEasy5
 	case 6:
-		return AnswersDe6
+		if difficulty == "all_words" {
+			return AnswersDe6
+		}
+		return AnswersDeEasy6
 	case 7:
-		return AnswersDe7
+		if difficulty == "all_words" {
+			return AnswersDe7
+		}
+		return AnswersDeEasy7
 	case 8:
-		return AnswersDe8
+		if difficulty == "all_words" {
+			return AnswersDe8
+		}
+		return AnswersDeEasy8
 	}
 	panic(fmt.Sprintf("Unknown word length '%d'", wordLength))
 }

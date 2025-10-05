@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 	"unicode/utf8"
 )
@@ -43,16 +44,22 @@ func ReadCsvRecords(fileName string) ([][]string, error) {
 }
 
 func ParseTxtAnswers() {
-	// file := "swe_wordlist.txt"
+	isOneLine := true
+	isEasy := true
+
+	// file := "answers_swe_easy.txt"
 	// lang := "se"
 
-	// file := "wordlist-german.txt"
+	// file := "answers_german_easy.txt"
 	// lang := "de"
 
-	file := "dictionary-pl.txt"
-	lang := "pl"
+	// file := "dictionary-pl.txt"
+	// lang := "pl"
 
-	records, err := ReadTxtRecords(file)
+	file := "answers_fi_easy2.txt"
+	lang := "fi"
+
+	records, err := ReadTxtRecords(file, isOneLine)
 	if err != nil {
 		fmt.Println("Error reading records: " + err.Error())
 		return
@@ -61,11 +68,11 @@ func ParseTxtAnswers() {
 	top_n_records := GetTopNRecords(records, n)
 	wordLengths := []int{5, 6, 7, 8}
 	for _, length := range wordLengths {
-		SaveAnswers(top_n_records, length, lang)
+		SaveAnswers(top_n_records, length, lang, isEasy)
 	}
 }
 
-func ReadTxtRecords(fileName string) ([][]string, error) {
+func ReadTxtRecords(fileName string, isOneLine bool) ([][]string, error) {
 	fmt.Println("Parsing answers from file '" + fileName + "'...")
 
 	data, err := os.Open(fileName)
@@ -76,6 +83,9 @@ func ReadTxtRecords(fileName string) ([][]string, error) {
 
 	scanner := bufio.NewScanner(data)
 	var records [][]string
+	if isOneLine {
+		scanner.Split(bufio.ScanWords)
+	}
 	for scanner.Scan() {
 		line := scanner.Text()
 		records = append(records, []string{line})
@@ -88,9 +98,15 @@ func ReadTxtRecords(fileName string) ([][]string, error) {
 	return records, nil
 }
 
-func SaveAnswers(records [][]string, length int, lang string) {
+func SaveAnswers(records [][]string, length int, lang string, isEasy ...bool) {
 	langCapitalized := strings.ToUpper(lang[0:1]) + lang[1:]
-	fileName := fmt.Sprintf("answers_%s_%d.go", lang, length)
+	easyString := ""
+	easyStringCapitalized := ""
+	if len(isEasy) > 0 && isEasy[0] {
+		easyString = "_easy"
+		easyStringCapitalized = "Easy"
+	}
+	fileName := fmt.Sprintf("answers_%s%s_%d.go", lang, easyString, length)
 	f, err := os.Create(fileName)
 	if err != nil {
 		fmt.Println("Error creating file: " + err.Error())
@@ -100,11 +116,12 @@ func SaveAnswers(records [][]string, length int, lang string) {
 	defer f.Close()
 
 	words := GetWordsOfLength(records, length, lang)
+	words = GetUniqueWords(words)
 
 	fmt.Fprintln(f, "package answers")
-	fmt.Fprintf(f, "var Answers%s%d = []string{\n", langCapitalized, length)
+	fmt.Fprintf(f, "\nvar Answers%s%s%d = []string{\n", langCapitalized, easyStringCapitalized, length)
 	for _, word := range words {
-		text := fmt.Sprintf("\"%s\",\n", word)
+		text := fmt.Sprintf("\t\"%s\",\n", word)
 		fmt.Print(text)
 		f.WriteString(text)
 	}
@@ -141,6 +158,7 @@ func GetWordsOfLength(records [][]string, length int, lang string) []string {
 func GetAlphabets(lang string) string {
 	switch lang {
 	case "se":
+		return "abcdefghijklmnopqrstuvwxyzåäö"
 	case "fi":
 		return "abcdefghijklmnopqrstuvwxyzåäö"
 	case "de":
@@ -158,4 +176,17 @@ func GetTopNRecords(records [][]string, n int) [][]string {
 		return records
 	}
 	return records[:n]
+}
+
+func GetUniqueWords(words []string) []string {
+	uniqueWordsMap := make(map[string]bool)
+	for _, word := range words {
+		uniqueWordsMap[word] = true
+	}
+	uniqueWords := []string{}
+	for word := range uniqueWordsMap {
+		uniqueWords = append(uniqueWords, word)
+	}
+	sort.Strings(uniqueWords)
+	return uniqueWords
 }
