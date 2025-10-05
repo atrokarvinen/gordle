@@ -24,11 +24,7 @@
 
 <p>{$i18n.t('filter_by_language')}:</p>
 <div class="flex items-center">
-	<LanguageSelect
-		languageOptions={['en', 'fi']}
-		onChange={languageChanged}
-		value={selectedLanguage}
-	/>
+	<LanguageSelect onChange={languageChanged} value={selectedLanguage} />
 	{#if selectedLanguage}
 		<div class="ml-5">
 			<button
