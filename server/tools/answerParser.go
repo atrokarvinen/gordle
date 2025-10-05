@@ -44,7 +44,7 @@ func ReadCsvRecords(fileName string) ([][]string, error) {
 
 func ParseTxtAnswers() {
 	// file := "swe_wordlist.txt"
-	// lang := "sv"
+	// lang := "se"
 
 	// file := "wordlist-german.txt"
 	// lang := "de"
@@ -140,8 +140,7 @@ func GetWordsOfLength(records [][]string, length int, lang string) []string {
 
 func GetAlphabets(lang string) string {
 	switch lang {
-	case "sv":
-		return "abcdefghijklmnopqrstuvwxyzåäö"
+	case "se":
 	case "fi":
 		return "abcdefghijklmnopqrstuvwxyzåäö"
 	case "de":

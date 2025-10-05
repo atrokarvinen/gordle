@@ -12,7 +12,7 @@ func (d DictionaryClientFactory) GetDictionaryClient(language string) IDictionar
 		return d.DictionaryClientEn
 	case "fi":
 		return d.DictionaryClientFi
-	case "de", "sv", "pl":
+	case "de", "se", "pl":
 		return d.DictionaryClientGeneral
 	}
 	panic("Invalid language '" + language + "'.")

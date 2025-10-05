@@ -8,7 +8,7 @@ func GetAnswers(lang string, difficulty string, wordLength int) []string {
 		return GetAnswersFi(difficulty, wordLength)
 	case "en":
 		return GetAnswersEn(difficulty, wordLength)
-	case "sv":
+	case "se":
 		return GetAnswersSe(difficulty, wordLength)
 	case "de":
 		return GetAnswersDe(difficulty, wordLength)

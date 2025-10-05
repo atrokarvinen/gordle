@@ -20,13 +20,13 @@ func main() {
 
 	// api.VerifyWords(clientGeneral, "de", 8)
 
-	// api.VerifyWords(clientGeneral, "sv", 5)
-	// api.VerifyWords(clientGeneral, "sv", 6)
-	// api.VerifyWords(clientGeneral, "sv", 7)
+	// api.VerifyWords(clientGeneral, "se", 5)
+	// api.VerifyWords(clientGeneral, "se", 6)
+	// api.VerifyWords(clientGeneral, "se", 7)
 
 	// api.VerifyWords(clientGeneral, "pl", 5)
 
-	// api.VerifyWords(clientGeneral, "sv", 8)
+	// api.VerifyWords(clientGeneral, "se", 8)
 
 	// api.VerifyWords(clientGeneral, "pl", 6)
 	// api.VerifyWords(clientGeneral, "pl", 7)
