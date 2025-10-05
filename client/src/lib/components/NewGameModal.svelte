@@ -44,14 +44,14 @@
 <div class="w-modal card space-y-4 p-4">
 	<form class="form space-y-2">
 		<LanguageSelect value={language} onChange={(lang) => (language = lang)} />
-		<!-- <label class="label">
+		<label class="label">
 			{$i18n.t('difficulty')}
 			<select class="select" bind:value={difficulty}>
 				{#each difficultyOptions as option (option)}
 					<option value={option}>{$i18n.t(option)}</option>
 				{/each}
 			</select>
-		</label> -->
+		</label>
 		<label class="label">
 			{$i18n.t('word_length')}
 			<select class="select" bind:value={wordLength}>
