@@ -48,7 +48,7 @@ func (a Api) ValidateWordExists(word string, gameOptions dto.CreateGameRequest) 
 	}
 
 	// Check word from the dictionary API
-	wordDetails, err := a.DictionaryFactory.GetDictionaryClient(lang).GetWord(word, lang)
+	wordDetails, err := a.DictionaryFactory.GetDictionaryClient(lang, difficulty).GetWord(word, lang)
 	if err != nil {
 		fmt.Println("Error getting word:", err)
 		return m.DictionaryDetails{}, fmt.Errorf("word_not_found")

@@ -16,10 +16,11 @@ import (
 )
 
 func main() {
-	clientGeneral := freeDictionaryApi.FreeDictionaryApiClient{}
+	// clientGeneral := freeDictionaryApi.FreeDictionaryApiClient{}
 
 	// tools.ParseTxtAnswers()
 	// difficulty := "easy"
+	// difficulty := "all_words"
 	// api.VerifyWords(clientGeneral, "de", 5, difficulty)
 	// api.VerifyWords(clientGeneral, "de", 6, difficulty)
 	// api.VerifyWords(clientGeneral, "de", 7, difficulty)
@@ -35,7 +36,7 @@ func main() {
 	// api.VerifyWords(clientGeneral, "fi", 7, difficulty)
 	// api.VerifyWords(clientGeneral, "fi", 8, difficulty)
 
-	return
+	// return
 
 	InitEnv()
 
@@ -47,7 +48,7 @@ func main() {
 	gameEngine := game.Game{DataProvider: dataProvider}
 	clientFi := kielitoimistoApi.KielitoimistoApiClient{}
 	clientEn := dictionaryApi.DictionaryApiClient{}
-	// clientGeneral := freeDictionaryApi.FreeDictionaryApiClient{}
+	clientGeneral := freeDictionaryApi.FreeDictionaryApiClient{}
 	clientFactory := dictionaryClient.DictionaryClientFactory{
 		DictionaryClientEn:      clientEn,
 		DictionaryClientFi:      clientFi,

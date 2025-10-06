@@ -38,7 +38,7 @@ func (a Api) GuessWord(c *gin.Context) {
 
 	results := a.Game.GuessWord(gameId, guess.Word)
 	gameover := a.Game.CheckGameOver(gameId)
-	answerDetails := a.getAnswerDetails(gameover, wordDetails, game.Language)
+	answerDetails := a.getAnswerDetails(gameover, wordDetails, game.Language, game.Difficulty)
 	gameover.Definitions = answerDetails.Definitions
 	gameover.Examples = answerDetails.Examples
 	if gameover.IsGameover {

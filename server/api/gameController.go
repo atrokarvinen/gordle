@@ -75,7 +75,7 @@ func (a Api) DeleteGame(c *gin.Context) {
 	fmt.Printf("Deleting game '%d'...\n", gameId)
 
 	gameover := models.Gameover{IsGameover: true, Win: false, Answer: game.Answer}
-	answerDetails := a.getAnswerDetails(gameover, m.DictionaryDetails{}, game.Language)
+	answerDetails := a.getAnswerDetails(gameover, m.DictionaryDetails{}, game.Language, game.Difficulty)
 	fmt.Println("Answer description:", answerDetails)
 	game.Gameover.IsGameover = true
 	game.Gameover.Definitions = answerDetails.Definitions
@@ -93,7 +93,7 @@ func (a Api) DeleteGame(c *gin.Context) {
 	c.JSON(http.StatusOK, game)
 }
 
-func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails m.DictionaryDetails, lang string) m.DictionaryDetails {
+func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails m.DictionaryDetails, lang string, difficulty string) m.DictionaryDetails {
 	isGameover := gameover.IsGameover
 	answer := gameover.Answer
 	isWon := gameover.Win
@@ -110,7 +110,7 @@ func (a Api) getAnswerDetails(gameover models.Gameover, wordDetails m.Dictionary
 		return wordDetails
 	}
 
-	answerDetails, err := a.DictionaryFactory.GetDictionaryClient(lang).GetWord(answer, lang)
+	answerDetails, err := a.DictionaryFactory.GetDictionaryClient(lang, difficulty).GetWord(answer, lang)
 	if err != nil {
 		fmt.Println("Error getting word:", err.Error(), ", using default word details")
 		answerDetails = m.GetDefaultWordDetails(answer)
