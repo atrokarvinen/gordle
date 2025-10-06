@@ -11,7 +11,7 @@ func (d DictionaryClientFactory) GetDictionaryClient(language string, difficulty
 	case "en":
 		return d.DictionaryClientEn
 	case "fi":
-		if difficulty == "easy" {
+		if difficulty == "easy_words" {
 			return d.DictionaryClientGeneral
 		}
 		return d.DictionaryClientFi
