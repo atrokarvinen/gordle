@@ -11,11 +11,11 @@ test.beforeEach(async ({ game }) => {
 
 test("loads unfinished game", async ({ game }) => {
   await game.guessWord("sudden");
-  await game.verifyRowHasGuess("SUDDEN", 0);
+  await game.verifyRowHasGuess("sudden", 0);
 
   await game.page.reload();
 
-  await game.verifyRowHasGuess("SUDDEN", 0);
+  await game.verifyRowHasGuess("sudden", 0);
 });
 
 test("loads ended game and answer", async ({ game }) => {

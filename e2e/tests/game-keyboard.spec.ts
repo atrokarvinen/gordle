@@ -5,14 +5,14 @@ test("allows typing in guess with PC keyboard", async ({ game }) => {
   await game.verifyGameActive();
   await game.page.keyboard.type("tester");
 
-  await expect(game.page.getByTestId("word-guess")).toHaveValue("TESTER");
+  await expect(game.page.getByTestId("word-guess")).toHaveValue("tester");
 });
 
 test("allows typing in guess with UI keyboard", async ({ game }) => {
   await game.verifyGameActive();
   await game.typeLetters("tester");
 
-  await expect(game.page.getByTestId("word-guess")).toHaveValue("TESTER");
+  await expect(game.page.getByTestId("word-guess")).toHaveValue("tester");
 });
 
 test("erases word correctly", async ({ game }) => {
@@ -20,11 +20,11 @@ test("erases word correctly", async ({ game }) => {
   await game.page.keyboard.type("tester");
   await game.page.keyboard.press("Backspace");
 
-  await expect(game.page.getByTestId("word-guess")).toHaveValue("TESTE");
+  await expect(game.page.getByTestId("word-guess")).toHaveValue("teste");
   expect(await game.isLetterActive(5)).toBeTruthy();
 
   await game.page.keyboard.press("Backspace");
-  await expect(game.page.getByTestId("word-guess")).toHaveValue("TEST");
+  await expect(game.page.getByTestId("word-guess")).toHaveValue("test");
   expect(await game.isLetterActive(4)).toBeTruthy();
 
   await game.page.keyboard.press("Backspace");
