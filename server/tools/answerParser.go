@@ -44,11 +44,11 @@ func ReadCsvRecords(fileName string) ([][]string, error) {
 }
 
 func ParseTxtAnswers() {
-	isOneLine := true
+	isOneLine := false
 	isEasy := true
 
-	// file := "answers_swe_easy.txt"
-	// lang := "se"
+	file := "answers_swe_easy.txt"
+	lang := "se"
 
 	// file := "answers_german_easy.txt"
 	// lang := "de"
@@ -56,8 +56,8 @@ func ParseTxtAnswers() {
 	// file := "dictionary-pl.txt"
 	// lang := "pl"
 
-	file := "answers_fi_easy2.txt"
-	lang := "fi"
+	// file := "answers_fi_easy.txt"
+	// lang := "fi"
 
 	records, err := ReadTxtRecords(file, isOneLine)
 	if err != nil {
@@ -106,7 +106,7 @@ func SaveAnswers(records [][]string, length int, lang string, isEasy ...bool) {
 		easyString = "_easy"
 		easyStringCapitalized = "Easy"
 	}
-	fileName := fmt.Sprintf("answers_%s%s_%d.go", lang, easyString, length)
+	fileName := fmt.Sprintf("./game/answers/answers_%s%s_%d.go", lang, easyString, length)
 	f, err := os.Create(fileName)
 	if err != nil {
 		fmt.Println("Error creating file: " + err.Error())
