@@ -1,72 +1,41 @@
 <script lang="ts">
-	type EChartsOption = echarts.EChartsOption;
-
 	import type { GameDto } from '$lib/models';
-
 	import { i18n } from '$lib/translations/i18n';
+	import type { EChartsOption } from 'echarts';
 	import { echarts } from './echarts';
-	export let filteredGames: GameDto[];
+
+	interface Props {
+		filteredGames: GameDto[];
+	}
+
+	const { filteredGames }: Props = $props();
 
 	const maxGuesses = 8;
-	const guessArray = Array.from({ length: maxGuesses }, (_, i) => i + 1);
-	const yLabels = [...guessArray, $i18n.t('lose')].reverse();
-	let winData: number[][];
-	let lossData: number;
-	$: winData = guessArray.map((guess) => {
-		const gamesWithGuess = filteredGames.filter((game) => {
-			const guessCountMatches = game.guesses?.length === guess;
-			const isWin = game.state === 2;
-			return guessCountMatches && isWin;
-		});
-		const count = gamesWithGuess.length;
-		return [guess, (count / filteredGames.length) * 100];
-	});
-	$: {
-		const totalPlayed = filteredGames.length;
-		const wins = filteredGames.filter((g) => g.state === 2).length;
-		const totalWinRate = filteredGames.length === 0 ? 0 : (wins / filteredGames.length) * 100;
-		if (totalPlayed === 0) {
-			lossData = 0;
-		} else {
-			lossData = 100 - totalWinRate;
-		}
-	}
 
-	const getLost = () => {
+	const getWinData = (filteredGames: GameDto[]) => {
+		const guessArray = Array.from({ length: maxGuesses }, (_, i) => i + 1);
+		const winsByGuess = guessArray.map((guess) => {
+			const gamesWithGuess = filteredGames.filter((game) => {
+				const guessCountMatches = game.guesses?.length === guess;
+				const isWin = game.state === 2;
+				return guessCountMatches && isWin;
+			});
+			const count = gamesWithGuess.length;
+			return [guess, (count / filteredGames.length) * 100];
+		});
+		return winsByGuess;
+	};
+
+	const getLossData = (filteredGames: GameDto[]) => {
+		const losses = filteredGames.filter((game) => game.state === 3).length;
 		const totalPlayed = filteredGames.length;
-		const wins = filteredGames.filter((g) => g.state === 2).length;
-		const totalWinRate = filteredGames.length === 0 ? 0 : (wins / filteredGames.length) * 100;
 		if (totalPlayed === 0) return 0;
-		return 100 - totalWinRate;
+		return (losses / totalPlayed) * 100;
 	};
 
-	const getWon = (guess: number) => {
-		const gamesWithGuess = filteredGames.filter((game) => {
-			const guessCountMatches = game.guesses?.length === guess;
-			const isWin = game.state === 2;
-			return guessCountMatches && isWin;
-		});
-		const count = gamesWithGuess.length;
-		return (count / filteredGames.length) * 100;
-	};
-
-	$: allData = yLabels.map((label, i) => {
-		const isLost = label === $i18n.t('lose');
-		const guess = +label;
-		return isLost ? getLost() : getWon(guess);
-	});
-
-	$: {
-		console.log('ylabels:', yLabels);
-		console.log('winData:', winData);
-		console.log('lossData:', lossData);
-		console.log('allData:', allData);
-	}
-
-	const textColor = '#e4e5ec';
-	let option: EChartsOption;
-	$: {
-		option = {
+	const getChartOptions = (winData: number[][], lossData: number) => {
+		const textColor = '#e4e5ec';
+		const option: EChartsOption = {
 			title: {
 				text: $i18n.t('games_by_guess_count'),
 				left: 'center',
@@ -100,7 +69,12 @@
 				}
 			]
 		};
-	}
+		return option;
+	};
+
+	let winData = $derived(getWinData(filteredGames));
+	let lossData = $derived(getLossData(filteredGames));
+	let option = $derived(getChartOptions(winData, lossData));
 </script>
 
 <div id="chartWrapper" class="h-96" use:echarts={option}></div>

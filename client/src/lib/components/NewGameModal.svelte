@@ -41,7 +41,7 @@
 	};
 </script>
 
-<div class="w-modal card space-y-4 p-4">
+<div class="w-modal space-y-4 card p-4">
 	<form class="form space-y-2">
 		<LanguageSelect value={language} onChange={(lang) => (language = lang)} />
 		<label class="label">
