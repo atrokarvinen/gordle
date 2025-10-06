@@ -38,6 +38,7 @@ export const germanKeys = {
 			letter_incorrect: 'Buchstabe ist nicht im Wort',
 			letter_unknown: 'Buchstabe wurde noch nicht geraten',
 			lose: 'Verlieren',
+			losses: 'Verluste',
 			max_guesses: 'Maximale Versuche',
 			new_game: 'Neues Spiel',
 			new_game_info: 'Wählen Sie die Optionen für das neue Spiel.',
@@ -51,6 +52,7 @@ export const germanKeys = {
 			victory: 'Sieg',
 			view: 'Ansicht',
 			win: 'Gewinnen',
+			wins: 'Siege',
 			word_length: 'Wortlänge',
 			word_length_wrong: 'Wortlänge ist nicht korrekt.',
 			word_not_found: 'Wort "{{data.word}}" nicht gefunden in Sprache "{{data.language}}".'

@@ -38,6 +38,7 @@ export const polishKeys = {
 			letter_incorrect: 'Litera nie jest w słowie',
 			letter_unknown: 'Litera nie została jeszcze odgadnięta',
 			lose: 'Przegrać',
+			losses: 'Przegrane',
 			max_guesses: 'Maksymalne próby',
 			new_game: 'Nowa gra',
 			new_game_info: 'Wybierz opcje dla nowej gry.',
@@ -51,6 +52,7 @@ export const polishKeys = {
 			victory: 'Zwycięstwo',
 			view: 'Widok',
 			win: 'Wygrana',
+			wins: 'Wygrane',
 			word_length: 'Długość słowa',
 			word_length_wrong: 'Długość słowa jest niepoprawna.',
 			word_not_found: 'Słowo "{{data.word}}" nie zostało znalezione w języku "{{data.language}}".'

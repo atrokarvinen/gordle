@@ -38,6 +38,7 @@ export const swedishKeys = {
 			letter_incorrect: 'Bokstaven finns inte i ordet',
 			letter_unknown: 'Bokstaven har inte gissats än',
 			lose: 'Förlora',
+			losses: 'Förluster',
 			max_guesses: 'Max gissningar',
 			new_game: 'Nytt spel',
 			new_game_info: 'Välj alternativen för det nya spelet.',
@@ -51,6 +52,7 @@ export const swedishKeys = {
 			victory: 'Seger',
 			view: 'Visa',
 			win: 'Vinna',
+			wins: 'Vinster',
 			word_length: 'Ordlängd',
 			word_length_wrong: 'Ordlängd är inte korrekt.',
 			word_not_found: 'Ordet "{{data.word}}" hittades inte på språket "{{data.language}}".'

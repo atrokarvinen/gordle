@@ -38,6 +38,7 @@ export const englishKeys = {
 			letter_incorrect: 'Letter is not in the word',
 			letter_unknown: 'Letter has not been guessed yet',
 			lose: 'Lose',
+			losses: 'Losses',
 			max_guesses: 'Max guesses',
 			new_game: 'New game',
 			new_game_info: 'Select the options for the new game.',
@@ -51,6 +52,7 @@ export const englishKeys = {
 			victory: 'Victory',
 			view: 'View',
 			win: 'Win',
+			wins: 'Wins',
 			word_length: 'Word length',
 			word_length_wrong: 'Word length is not correct.',
 			word_not_found: 'Word "{{data.word}}" not found in language "{{data.language}}".'

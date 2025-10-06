@@ -38,6 +38,7 @@ export const finnishKeys = {
 			letter_incorrect: 'Kirjain ei ole ratkaisussa',
 			letter_unknown: 'Kirjainta ei ole vielä arvattu',
 			lose: 'Häviö',
+			losses: 'Häviöt',
 			max_guesses: 'Arvausten lukumäärä',
 			new_game: 'Uusi peli',
 			new_game_info: 'Valitse uuden pelin asetukset.',
@@ -51,6 +52,7 @@ export const finnishKeys = {
 			victory: 'Voitto',
 			view: 'Katso',
 			win: 'Voitto',
+			wins: 'Voitot',
 			word_length: 'Sanan pituus',
 			word_length_wrong: 'Syötetyn sanan pituus on väärä.',
 			word_not_found: 'Sanaa "{{data.word}}" ei löytynyt kielellä "{{data.language}}".'
