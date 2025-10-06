@@ -9,44 +9,58 @@
 	import QuitGameButton from '$lib/components/QuitGameButton.svelte';
 	import WordBoard from '$lib/components/WordBoard.svelte';
 	import { languageStore } from '$lib/languageStore.js';
-	import type { GameoverDto } from '$lib/models';
+	import type { Difficulty, GameoverDto, Guess } from '$lib/models';
 	import { toaster } from '$lib/toaster.js';
 	import { i18n } from '$lib/translations/i18n.js';
+	import type { PageData } from './$types.js';
 	import { submitGuess as requestCreateGuess } from './api.js';
 
-	export let data;
+	interface Props {
+		data: PageData;
+	}
 
-	$: {
+	const { data }: Props = $props();
+
+	$effect(() => {
 		if (data.unauthorized) {
 			goto(resolve('/'), { state: { redirected: true } });
 		}
-	}
+	});
 
-	let currentIndex = 0;
-	let isGameStopped = false;
-	let submitting = false;
-	let currentGuess: string[] = [''];
+	let currentIndex = $state(0);
+	let isGameStopped = $state(false);
+	let submitting = $state(false);
+	let currentGuess: string[] = $state(['']);
+	let gameId: number = $state(-1);
+	let guesses: Guess[] = $state([]);
+	let gameover: GameoverDto | undefined = $state(undefined);
+	let difficulty: Difficulty = $state('all_words');
+	let wordLength: number = $state(6);
+	let maxAttempts: number = $state(6);
 
-	$: gameId = data.game?.id ?? -1;
-	$: guesses = data.game?.guesses ?? [];
-	$: gameover = data.game?.gameover ?? undefined;
-	$: currentGuessIndex = guesses.length;
-	$: word = currentGuess.join('');
-	$: difficulty = data.game?.difficulty ?? 'all_words';
-	$: wordLength = data.game?.wordLength ?? 6;
-	$: maxAttempts = data.game?.maxAttempts ?? 6;
-	$: emptyGuess = Array.from(Array(wordLength).keys()).map(() => '');
-	$: console.log('loaded game:', data.game);
-	$: console.log('currentGuess:', currentGuess);
+	$effect(() => {
+		gameId = data.game?.id ?? -1;
+		guesses = data.game?.guesses ?? [];
+		gameover = data.game?.gameover ?? undefined;
+		difficulty = data.game?.difficulty ?? 'all_words';
+		wordLength = data.game?.wordLength ?? 6;
+		maxAttempts = data.game?.maxAttempts ?? 6;
+	});
 
-	$: $languageStore = data.game?.language ?? 'en';
+	let currentGuessIndex = $derived(guesses.length);
+	let word = $derived(currentGuess.join(''));
+	let emptyGuess = $derived(Array.from(Array(wordLength).keys()).map(() => ''));
 
-	$: {
+	$effect(() => {
+		$languageStore = data.game?.language ?? 'en';
+	});
+
+	$effect(() => {
 		const isGameover = gameover?.isGameover ?? false;
 		const noGameFound = gameId === -1;
 		isGameStopped = isGameover || noGameFound;
 		resetGuess();
-	}
+	});
 
 	const submitGuess = async () => {
 		if (submitting) return;
