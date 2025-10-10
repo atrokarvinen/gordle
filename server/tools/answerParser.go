@@ -47,17 +47,8 @@ func ParseTxtAnswers() {
 	isOneLine := false
 	isEasy := true
 
-	file := "answers_swe_easy.txt"
-	lang := "se"
-
-	// file := "answers_german_easy.txt"
-	// lang := "de"
-
-	// file := "dictionary-pl.txt"
-	// lang := "pl"
-
-	// file := "answers_fi_easy.txt"
-	// lang := "fi"
+	file := "answers_polish_easy.txt"
+	lang := "pl"
 
 	records, err := ReadTxtRecords(file, isOneLine)
 	if err != nil {

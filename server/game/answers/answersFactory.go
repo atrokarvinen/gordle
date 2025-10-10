@@ -113,13 +113,25 @@ func GetAnswersDe(difficulty string, wordLength int) []string {
 func GetAnswersPl(difficulty string, wordLength int) []string {
 	switch wordLength {
 	case 5:
-		return AnswersPl5
+		if difficulty == "all_words" {
+			return AnswersPl5
+		}
+		return AnswersPlEasy5
 	case 6:
-		return AnswersPl6
+		if difficulty == "all_words" {
+			return AnswersPl6
+		}
+		return AnswersPlEasy6
 	case 7:
-		return AnswersPl7
+		if difficulty == "all_words" {
+			return AnswersPl7
+		}
+		return AnswersPlEasy7
 	case 8:
-		return AnswersPl8
+		if difficulty == "all_words" {
+			return AnswersPl8
+		}
+		return AnswersPlEasy8
 	}
 	panic(fmt.Sprintf("Unknown word length '%d'", wordLength))
 }
